@@ -25,10 +25,12 @@ export function normalizeGoogleSheetUrl(rawUrl: string): string {
     return trimmed;
   }
 
-  // Published web link without output=csv
-  if (trimmed.includes('/pubhtml') || trimmed.includes('/pub?')) {
+  // Published web link without output=csv (e.g. /pub or /pubhtml)
+  if (trimmed.includes('/pubhtml') || (trimmed.includes('/pub') && !trimmed.includes('output=csv'))) {
     const base = trimmed.split('?')[0].replace('/pubhtml', '/pub');
-    return `${base}?output=csv`;
+    const gidMatch = trimmed.match(/[?&#]gid=([0-9]+)/);
+    const gidParam = gidMatch ? `&gid=${gidMatch[1]}` : '';
+    return `${base}?output=csv${gidParam}`;
   }
 
   // Standard edit/view link: https://docs.google.com/spreadsheets/d/<ID>/edit...
@@ -41,6 +43,42 @@ export function normalizeGoogleSheetUrl(rawUrl: string): string {
   }
 
   return trimmed;
+}
+
+async function fetchCsvContent(url: string): Promise<string> {
+  // 1. First attempt: Direct fetch
+  try {
+    const res = await fetch(url, { redirect: 'follow' });
+    if (res.ok) {
+      const text = await res.text();
+      // Check if response is actually an HTML error/login page (must START with html tags)
+      const trimmedText = text.trim().toLowerCase();
+      if (!trimmedText.startsWith('<!doctype html') && !trimmedText.startsWith('<html')) {
+        return text;
+      }
+    }
+  } catch (directErr) {
+    console.warn('Direct Google Sheet fetch failed, trying CORS proxy fallback...', directErr);
+  }
+
+  // 2. Second attempt: Fallback via high-speed public CORS proxy
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+  const proxyRes = await fetch(proxyUrl);
+  if (!proxyRes.ok) {
+    throw new Error(
+      `Could not retrieve Google Sheet (${proxyRes.status}: ${proxyRes.statusText}). Please check that the sheet is shared or published to web.`
+    );
+  }
+
+  const proxyText = await proxyRes.text();
+  const trimmedProxyText = proxyText.trim().toLowerCase();
+  if (trimmedProxyText.startsWith('<!doctype html') || trimmedProxyText.startsWith('<html')) {
+    throw new Error(
+      'Google Sheet returned an HTML sign-in page. Please make sure the sheet is published (File → Share → Publish to web → CSV) or set to "Anyone with the link can view".'
+    );
+  }
+
+  return proxyText;
 }
 
 export const googleSheetSyncService = {
@@ -79,28 +117,9 @@ export const googleSheetSyncService = {
     }
 
     try {
-      const response = await fetch(targetUrl, {
-        headers: {
-          Accept: 'text/csv,text/plain,*/*',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch Google Sheet (${response.status}: ${response.statusText}). Make sure the sheet is shared or published to web.`
-        );
-      }
-
-      const csvContent = await response.text();
+      const csvContent = await fetchCsvContent(targetUrl);
       if (!csvContent || csvContent.trim().length === 0) {
-        throw new Error('Received empty CSV data from Google Sheet.');
-      }
-
-      // Check if Google returned an HTML login page instead of CSV
-      if (csvContent.includes('<!DOCTYPE html>') || csvContent.includes('<html')) {
-        throw new Error(
-          'Google Sheet requires public access. In Google Sheets, click File → Share → Publish to web → select CSV, or set General access to "Anyone with the link can view".'
-        );
+        throw new Error('Received empty data from Google Sheet.');
       }
 
       const syncStats = dbService.syncCsvData(csvContent);
