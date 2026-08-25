@@ -18,11 +18,42 @@ export function normalizePriority(raw: string | undefined | null): IssuePriority
 export function normalizeStatus(raw: string | undefined | null): IssueStatus {
   if (!raw) return 'New';
   const clean = raw.trim();
-  if (['Done', 'Accepted', 'Request', 'Feature', 'Rejected'].includes(clean)) {
-    return clean as IssueStatus;
+  const lower = clean.toLowerCase();
+
+  if (
+    lower === 'done' ||
+    lower === 'completed' ||
+    lower === 'resolved' ||
+    lower === 'fixed' ||
+    lower === 'closed'
+  ) {
+    return 'Done';
   }
-  if (clean.toLowerCase() === 'completed' || clean.toLowerCase() === 'resolved') return 'Done';
-  if (clean.toLowerCase() === 'in progress' || clean.toLowerCase() === 'accepted') return 'Accepted';
+  if (
+    lower === 'accepted' ||
+    lower === 'in progress' ||
+    lower === 'in-progress' ||
+    lower === 'approved' ||
+    lower === 'investigating'
+  ) {
+    return 'Accepted';
+  }
+  if (lower === 'feature' || lower === 'enhancement' || lower === 'idea') {
+    return 'Feature';
+  }
+  if (lower === 'request' || lower === 'feedback' || lower === 'need info' || lower === 'needs info') {
+    return 'Request';
+  }
+  if (
+    lower === 'rejected' ||
+    lower === 'wontfix' ||
+    lower === "won't fix" ||
+    lower === 'invalid' ||
+    lower === 'cancelled' ||
+    lower === 'declined'
+  ) {
+    return 'Rejected';
+  }
   return 'New';
 }
 

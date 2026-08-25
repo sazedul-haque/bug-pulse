@@ -46,9 +46,13 @@ export function normalizeGoogleSheetUrl(rawUrl: string): string {
 }
 
 async function fetchCsvContent(url: string): Promise<string> {
+  const cacheBuster = `_t=${Date.now()}`;
+  const separator = url.includes('?') ? '&' : '?';
+  const liveUrl = `${url}${separator}${cacheBuster}`;
+
   // 1. First attempt: Direct fetch
   try {
-    const res = await fetch(url, { redirect: 'follow' });
+    const res = await fetch(liveUrl, { redirect: 'follow', cache: 'no-cache' });
     if (res.ok) {
       const text = await res.text();
       // Check if response is actually an HTML error/login page (must START with html tags)
@@ -61,9 +65,9 @@ async function fetchCsvContent(url: string): Promise<string> {
     console.warn('Direct Google Sheet fetch failed, trying CORS proxy fallback...', directErr);
   }
 
-  // 2. Second attempt: Fallback via high-speed public CORS proxy
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-  const proxyRes = await fetch(proxyUrl);
+  // 2. Second attempt: Fallback via high-speed public CORS proxy with cache busting
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(liveUrl)}`;
+  const proxyRes = await fetch(proxyUrl, { cache: 'no-cache' });
   if (!proxyRes.ok) {
     throw new Error(
       `Could not retrieve Google Sheet (${proxyRes.status}: ${proxyRes.statusText}). Please check that the sheet is shared or published to web.`
