@@ -10,6 +10,7 @@ import { IssueDrawer } from './components/IssueDrawer';
 import { CreateIssueModal } from './components/CreateIssueModal';
 import { SqlStudioModal } from './components/SqlStudioModal';
 import { ImportExportModal } from './components/ImportExportModal';
+import { googleSheetSyncService } from './services/googleSheetSync';
 import { Activity, Loader2, Database } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -36,7 +37,7 @@ export const App: React.FC = () => {
     }
   }, [selectedIssue]);
 
-  // Initial DB load
+  // Initial DB load & Auto-sync check
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -45,6 +46,15 @@ export const App: React.FC = () => {
         if (mounted) {
           reloadData();
           setIsLoading(false);
+
+          // Check if Auto-Sync with Google Sheets is enabled
+          if (googleSheetSyncService.isAutoSyncEnabled() && googleSheetSyncService.getSavedUrl()) {
+            googleSheetSyncService.syncLiveSheet().then((res) => {
+              if (res.success && mounted) {
+                reloadData();
+              }
+            });
+          }
         }
       } catch (err) {
         console.error('Failed to initialize SQLite:', err);

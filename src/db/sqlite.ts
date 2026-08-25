@@ -151,12 +151,103 @@ class DatabaseService {
   }
 
   public importCsvData(csvText: string): number {
-    if (!this.db) return 0;
+    const result = this.syncCsvData(csvText);
+    return result.added + result.updated;
+  }
+
+  public syncCsvData(csvText: string): { added: number; updated: number; total: number } {
+    if (!this.db) return { added: 0, updated: 0, total: 0 };
     const parsed = Papa.parse<any>(csvText.trim(), {
       header: true,
       skipEmptyLines: true,
     });
-    return this.insertRawRows(parsed.data);
+
+    const rows = parsed.data;
+    if (!rows || rows.length === 0) return { added: 0, updated: 0, total: 0 };
+
+    let added = 0;
+    let updated = 0;
+
+    for (const row of rows) {
+      const name = (row['Name'] || row['name'] || '').trim();
+      const details = (row['Details'] || row['details'] || '').trim();
+      if (!name && !details) continue;
+
+      const files = (row['Files'] || row['files'] || '').trim();
+      const rawAction = (row['Action'] || row['action'] || 'New').trim();
+      const action = normalizeStatus(rawAction);
+      const fixedVersion = (row['Fixed Version'] || row['fixed_version'] || '').trim();
+      const createdBy = (row['Created by'] || row['created_by'] || 'Support Agent').trim();
+      const lastEditedBy = (row['Last edited by'] || row['last_edited_by'] || '').trim();
+      const createdTime = (row['Created time'] || row['created_time'] || '').trim();
+      const rawPriority = (row['Priority'] || row['priority'] || '').trim();
+      const priority = normalizePriority(rawPriority);
+      const userImpactCount = parseInt(
+        row['How many user experienced'] || row['user_impact_count'] || '0',
+        10
+      ) || 0;
+      const category = detectCategory(name, details);
+      const timestamp = parseDateToTimestamp(createdTime);
+
+      // Check if existing record exists by name match
+      const checkStmt = this.db.prepare('SELECT id, details FROM issues WHERE name = ? LIMIT 1');
+      checkStmt.bind([name]);
+      const hasMatch = checkStmt.step();
+
+      if (hasMatch) {
+        const rowData = checkStmt.getAsObject();
+        checkStmt.free();
+
+        // Update existing record
+        this.db.run(
+          `UPDATE issues SET 
+            details = ?, files = ?, action = ?, fixed_version = ?,
+            last_edited_by = ?, priority = ?, user_impact_count = ?, category = ?
+          WHERE id = ?`,
+          [
+            details || (rowData.details as string),
+            files,
+            action,
+            fixedVersion,
+            lastEditedBy,
+            priority,
+            userImpactCount,
+            category,
+            rowData.id,
+          ]
+        );
+        updated++;
+      } else {
+        checkStmt.free();
+        // Insert new record
+        this.db.run(
+          `INSERT INTO issues (
+            name, details, files, action, fixed_version, created_by,
+            last_edited_by, created_time, created_timestamp, priority,
+            raw_priority, user_impact_count, category
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            name,
+            details,
+            files,
+            action,
+            fixedVersion,
+            createdBy,
+            lastEditedBy,
+            createdTime,
+            timestamp,
+            priority,
+            rawPriority,
+            userImpactCount,
+            category,
+          ]
+        );
+        added++;
+      }
+    }
+
+    this.persist();
+    return { added, updated, total: rows.length };
   }
 
   public getAllIssues(): Issue[] {

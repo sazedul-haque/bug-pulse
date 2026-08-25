@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Activity,
   BarChart3,
@@ -6,14 +6,15 @@ import {
   Table as TableIcon,
   Terminal,
   Plus,
-  Upload,
   Search,
   Sun,
   Moon,
   Database,
+  Zap,
 } from 'lucide-react';
 import { ViewMode } from '../types/issue';
 import { useTheme } from '../context/ThemeContext';
+import { googleSheetSyncService } from '../services/googleSheetSync';
 
 interface NavbarProps {
   currentView: ViewMode;
@@ -36,6 +37,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenImportExport,
 }) => {
   const { theme, toggleTheme } = useTheme();
+  const [hasLiveSync, setHasLiveSync] = useState(false);
+
+  useEffect(() => {
+    setHasLiveSync(Boolean(googleSheetSyncService.getSavedUrl()));
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl transition-colors duration-200 shadow-xs">
@@ -69,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <nav className="flex items-center rounded-xl bg-slate-100/90 dark:bg-slate-900/90 p-1 border border-slate-200/80 dark:border-slate-800">
           <button
             onClick={() => onViewChange('analytics')}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${
               currentView === 'analytics'
                 ? 'bg-white dark:bg-indigo-600 text-indigo-600 dark:text-white shadow-xs font-semibold'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/60'
@@ -81,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={() => onViewChange('kanban')}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${
               currentView === 'kanban'
                 ? 'bg-white dark:bg-indigo-600 text-indigo-600 dark:text-white shadow-xs font-semibold'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/60'
@@ -93,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={() => onViewChange('table')}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${
               currentView === 'table'
                 ? 'bg-white dark:bg-indigo-600 text-indigo-600 dark:text-white shadow-xs font-semibold'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/60'
@@ -105,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={onOpenSql}
-            className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-purple-700 dark:text-purple-300 hover:bg-purple-100/70 dark:hover:bg-purple-950/50 transition-all ml-0.5"
+            className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-purple-700 dark:text-purple-300 hover:bg-purple-100/70 dark:hover:bg-purple-950/50 transition-all ml-0.5 cursor-pointer"
             title="SQL Query Studio"
           >
             <Terminal className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
@@ -132,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={toggleTheme}
             aria-label="Toggle Theme"
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-all shadow-2xs"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-all shadow-2xs cursor-pointer"
           >
             {theme === 'dark' ? (
               <Sun className="h-4 w-4 text-amber-400 transition-transform duration-200 rotate-0 hover:rotate-45" />
@@ -141,13 +147,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* Import / Export */}
+          {/* Sync / CSV Trigger */}
           <button
             onClick={onOpenImportExport}
-            title="Import/Export CSV or SQLite Backup"
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-all shadow-2xs"
+            title={hasLiveSync ? 'Slack Live Sync Connected' : 'Connect Slack Sync / CSV'}
+            className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-all shadow-2xs cursor-pointer"
           >
-            <Upload className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+            <div className="relative flex items-center">
+              <Zap className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              {hasLiveSync && (
+                <span className="absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              )}
+            </div>
             <span className="hidden xl:inline">Sync / CSV</span>
           </button>
 
