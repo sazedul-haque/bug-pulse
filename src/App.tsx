@@ -70,22 +70,31 @@ export const App: React.FC = () => {
   const handleUpdateStatus = (id: number, action: IssueStatus) => {
     dbService.updateStatus(id, action);
     reloadData();
+
+    const updated = dbService.getAllIssues().find((i) => i.id === id);
+    if (updated) {
+      googleSheetSyncService.pushIssueToSheet(updated);
+    }
   };
 
   // Update Priority
   const handleUpdatePriority = (id: number, priority: IssuePriority) => {
     const issue = issues.find((i) => i.id === id);
     if (!issue) return;
-    dbService.updateIssue({ ...issue, priority });
+    const updated = { ...issue, priority };
+    dbService.updateIssue(updated);
     reloadData();
+    googleSheetSyncService.pushIssueToSheet(updated);
   };
 
   // Update Impact Count
   const handleUpdateImpact = (id: number, count: number) => {
     const issue = issues.find((i) => i.id === id);
     if (!issue) return;
-    dbService.updateIssue({ ...issue, userImpactCount: count });
+    const updated = { ...issue, userImpactCount: count };
+    dbService.updateIssue(updated);
     reloadData();
+    googleSheetSyncService.pushIssueToSheet(updated);
   };
 
   // Delete Issue
@@ -97,8 +106,9 @@ export const App: React.FC = () => {
 
   // Create Issue
   const handleCreateIssue = (data: any) => {
-    dbService.insertIssue(data);
+    const newIssue = dbService.insertIssue(data);
     reloadData();
+    googleSheetSyncService.pushIssueToSheet(newIssue);
   };
 
   // Filter issues by quick search if applicable

@@ -1,4 +1,5 @@
 import { dbService } from '../db/sqlite';
+import { Issue } from '../types/issue';
 
 export interface SyncResult {
   success: boolean;
@@ -10,6 +11,7 @@ export interface SyncResult {
 }
 
 const STORAGE_SYNC_URL_KEY = 'bugpulse_google_sheet_url';
+const STORAGE_WEBHOOK_URL_KEY = 'bugpulse_apps_script_url';
 const STORAGE_LAST_SYNC_KEY = 'bugpulse_last_sync_time';
 const STORAGE_AUTO_SYNC_KEY = 'bugpulse_auto_sync_enabled';
 
@@ -19,6 +21,11 @@ const STORAGE_AUTO_SYNC_KEY = 'bugpulse_auto_sync_enabled';
 export function normalizeGoogleSheetUrl(rawUrl: string): string {
   const trimmed = rawUrl.trim();
   if (!trimmed) return '';
+
+  // Google Apps Script Web App URL (doGet returns JSON)
+  if (trimmed.includes('script.google.com') && trimmed.includes('/exec')) {
+    return trimmed;
+  }
 
   // Already a published CSV URL
   if (trimmed.includes('output=csv') || trimmed.includes('format=csv')) {
@@ -94,6 +101,14 @@ export const googleSheetSyncService = {
     localStorage.setItem(STORAGE_SYNC_URL_KEY, url.trim());
   },
 
+  getSavedWebhookUrl(): string {
+    return localStorage.getItem(STORAGE_WEBHOOK_URL_KEY) || '';
+  },
+
+  saveWebhookUrl(url: string): void {
+    localStorage.setItem(STORAGE_WEBHOOK_URL_KEY, url.trim());
+  },
+
   getLastSyncTime(): string | null {
     return localStorage.getItem(STORAGE_LAST_SYNC_KEY);
   },
@@ -105,6 +120,57 @@ export const googleSheetSyncService = {
 
   setAutoSyncEnabled(enabled: boolean): void {
     localStorage.setItem(STORAGE_AUTO_SYNC_KEY, String(enabled));
+  },
+
+  /**
+   * Push a created or updated issue directly to the Google Sheet via Apps Script Webhook
+   */
+  async pushIssueToSheet(issue: Partial<Issue> & { name: string }): Promise<{ success: boolean; action?: string; error?: string }> {
+    const webhookUrl = this.getSavedWebhookUrl() || (this.getSavedUrl().includes('script.google.com') ? this.getSavedUrl() : '');
+    if (!webhookUrl) {
+      // No two-way webhook configured
+      return { success: false, error: 'No Two-Way Apps Script Webhook URL configured' };
+    }
+
+    try {
+      const payload = {
+        name: issue.name,
+        details: issue.details,
+        files: issue.files || '',
+        action: issue.action,
+        fixedVersion: issue.fixedVersion || '',
+        createdBy: issue.createdBy || 'Support Agent',
+        lastEditedBy: issue.lastEditedBy || 'BugPulse User',
+        createdTime: issue.createdTime,
+        priority: issue.priority,
+        userImpactCount: issue.userImpactCount || 0,
+      };
+
+      // Google Apps Script requires text/plain or no-cors / standard POST to prevent preflight errors
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Google Apps Script returned status ${response.status}`);
+      }
+
+      const resJson = await response.json();
+      return {
+        success: resJson.success !== false,
+        action: resJson.action || 'saved',
+      };
+    } catch (err: any) {
+      console.warn('Failed to push update to Google Sheet webhook:', err);
+      return {
+        success: false,
+        error: err?.message || 'Failed to push to Google Sheet',
+      };
+    }
   },
 
   async syncLiveSheet(url?: string): Promise<SyncResult> {
@@ -121,6 +187,27 @@ export const googleSheetSyncService = {
     }
 
     try {
+      // Check if target is a Google Apps Script Web App (doGet)
+      if (targetUrl.includes('script.google.com') && targetUrl.includes('/exec')) {
+        const res = await fetch(targetUrl, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`Apps Script returned ${res.status}`);
+        const json = await res.json();
+        if (json && Array.isArray(json.data)) {
+          const syncStats = dbService.insertRawRows(json.data);
+          const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          localStorage.setItem(STORAGE_LAST_SYNC_KEY, timestamp);
+          this.saveUrl(targetUrl);
+          this.saveWebhookUrl(targetUrl);
+          return {
+            success: true,
+            added: syncStats,
+            updated: 0,
+            total: json.data.length,
+            timestamp,
+          };
+        }
+      }
+
       const csvContent = await fetchCsvContent(targetUrl);
       if (!csvContent || csvContent.trim().length === 0) {
         throw new Error('Received empty data from Google Sheet.');
