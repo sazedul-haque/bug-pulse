@@ -9,4 +9,11 @@ export default defineConfig({
     tailwindcss(),
   ],
   base: './', // relative path for GitHub Pages compatibility
+  server: {
+    port: 5180,
+    strictPort: false,
+  },
+  preview: {
+    port: 5180,
+  },
 })
