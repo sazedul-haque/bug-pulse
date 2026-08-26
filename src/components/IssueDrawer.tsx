@@ -12,6 +12,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useAgent } from '../context/AgentContext';
 
 interface IssueDrawerProps {
   issue: Issue | null;
@@ -31,6 +32,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
   onDelete,
 }) => {
   const { isEditor, openPasskeyModal } = useAuth();
+  const { resolveAgentName, getAgentAvatarBg } = useAgent();
   const [copied, setCopied] = React.useState(false);
 
   if (!issue) return null;
@@ -279,19 +281,39 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800">
-                  <span className="text-slate-500 block text-[10px]">Created By (Slack Agent)</span>
-                  <span className="font-mono text-slate-800 dark:text-slate-200 font-medium">{issue.createdBy}</span>
+                  <span className="text-slate-500 block text-[10px]">Created By</span>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <div
+                      className={`h-5 w-5 rounded-md flex items-center justify-center font-bold text-[9px] shrink-0 ${getAgentAvatarBg(
+                        resolveAgentName(issue.createdBy)
+                      )}`}
+                    >
+                      {resolveAgentName(issue.createdBy).slice(0, 2).toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-slate-800 dark:text-slate-200 font-semibold block truncate">
+                        {resolveAgentName(issue.createdBy)}
+                      </span>
+                      {resolveAgentName(issue.createdBy) !== issue.createdBy && (
+                        <span className="font-mono text-[10px] text-slate-400 block truncate">
+                          {issue.createdBy}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800">
                   <span className="text-slate-500 block text-[10px]">Date Logged</span>
-                  <span className="text-slate-800 dark:text-slate-200">{issue.createdTime || 'N/A'}</span>
+                  <span className="text-slate-800 dark:text-slate-200 font-medium block mt-0.5">{issue.createdTime || 'N/A'}</span>
                 </div>
 
                 {issue.lastEditedBy && (
                   <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800">
                     <span className="text-slate-500 block text-[10px]">Last Edited By</span>
-                    <span className="font-mono text-slate-800 dark:text-slate-200">{issue.lastEditedBy}</span>
+                    <span className="text-slate-800 dark:text-slate-200 font-semibold block mt-0.5">
+                      {resolveAgentName(issue.lastEditedBy)}
+                    </span>
                   </div>
                 )}
 

@@ -14,11 +14,13 @@ import {
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Issue } from '../types/issue';
 import { useTheme } from '../context/ThemeContext';
+import { useAgent } from '../context/AgentContext';
 import {
   Flame,
   UserCheck,
   ExternalLink,
   Sparkles,
+  Users,
 } from 'lucide-react';
 
 ChartJS.register(
@@ -44,6 +46,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   onSelectIssue,
 }) => {
   const { theme } = useTheme();
+  const { resolveAgentName, agentMap, openAgentModal } = useAgent();
   const isDark = theme === 'dark';
 
   // Status breakdown
@@ -285,37 +288,56 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 <p className="text-xs text-slate-500 dark:text-slate-400">Slack agents by logged workflow items</p>
               </div>
             </div>
+
+            <button
+              onClick={openAgentModal}
+              title="Edit Agent Names & Roles"
+              className="flex items-center gap-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/70 hover:bg-indigo-100 dark:hover:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/40 px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer"
+            >
+              <Users className="h-3.5 w-3.5" />
+              <span>Manage Names</span>
+            </button>
           </div>
 
           <div className="space-y-3">
-            {topReporters.map(([reporter, count], idx) => (
-              <div
-                key={reporter}
-                className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-950/90 text-xs font-bold text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40">
-                    #{idx + 1}
+            {topReporters.map(([reporter, count], idx) => {
+              const displayName = resolveAgentName(reporter);
+              const info = agentMap[reporter];
+              const role = info?.role || 'Support Agent';
+
+              return (
+                <div
+                  key={reporter}
+                  onClick={openAgentModal}
+                  title="Click to edit agent display name"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/60 cursor-pointer transition-colors group"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-950/90 text-xs font-bold text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40 shrink-0">
+                      #{idx + 1}
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 block truncate">
+                        {displayName}
+                      </span>
+                      <p className="text-[10px] text-slate-500 font-mono truncate">
+                        {role} {displayName !== reporter ? `• ${reporter}` : ''}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-xs font-medium text-slate-800 dark:text-slate-200 font-mono">
-                      {reporter}
-                    </span>
-                    <p className="text-[10px] text-slate-500">Slack Agent</p>
+                  <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                    <span className="text-sm font-bold text-slate-900 dark:text-white">{count}</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">issues</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-bold text-slate-900 dark:text-white">{count}</span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">issues</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="mt-4 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-800/40 text-xs text-indigo-800 dark:text-indigo-300 flex items-start gap-2">
             <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
             <p>
-              New issues logged in Slack will auto-credit the reporter ID when importing or synchronizing.
+              Click <strong>Manage Names</strong> to map your team's Slack IDs to their real display names.
             </p>
           </div>
         </div>

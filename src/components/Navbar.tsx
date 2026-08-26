@@ -13,10 +13,12 @@ import {
   Zap,
   Lock,
   Unlock,
+  Users,
 } from 'lucide-react';
 import { ViewMode } from '../types/issue';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
+import { useAgent } from '../context/AgentContext';
 import { googleSheetSyncService } from '../services/googleSheetSync';
 
 interface NavbarProps {
@@ -41,6 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const { theme, toggleTheme } = useTheme();
   const { isEditor, openPasskeyModal } = useAuth();
+  const { openAgentModal } = useAgent();
   const [hasLiveSync, setHasLiveSync] = useState(false);
 
   useEffect(() => {
@@ -164,6 +167,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
             <span className="hidden xl:inline">Sync / CSV</span>
+          </button>
+
+          {/* Team Members / Agent Names */}
+          <button
+            onClick={openAgentModal}
+            title="Slack Team Members & Agent Names"
+            className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-all shadow-2xs cursor-pointer"
+          >
+            <Users className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+            <span className="hidden xl:inline">Team</span>
           </button>
 
           {/* Auth Role Badge (Viewer / Editor) */}

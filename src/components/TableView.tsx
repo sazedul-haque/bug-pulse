@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Issue, IssuePriority, IssueStatus } from '../types/issue';
 import { useAuth } from '../context/AuthContext';
+import { useAgent } from '../context/AgentContext';
 import {
   ArrowUpDown,
   Search,
@@ -26,6 +27,7 @@ export const TableView: React.FC<TableViewProps> = ({
   onUpdateStatus,
 }) => {
   const { isEditor, openPasskeyModal } = useAuth();
+  const { resolveAgentName, getAgentAvatarBg } = useAgent();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
   const [priorityFilter, setPriorityFilter] = useState<string>('All');
@@ -373,8 +375,22 @@ export const TableView: React.FC<TableViewProps> = ({
                     </td>
 
                     {/* Reporter */}
-                    <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono text-[11px]">
-                      {issue.createdBy}
+                    <td className="py-3.5 px-4 whitespace-nowrap">
+                      <div className="flex items-center gap-1.5">
+                        <div
+                          className={`h-5 w-5 rounded-md flex items-center justify-center font-bold text-[9px] shadow-2xs shrink-0 ${getAgentAvatarBg(
+                            resolveAgentName(issue.createdBy)
+                          )}`}
+                        >
+                          {resolveAgentName(issue.createdBy).slice(0, 2).toUpperCase()}
+                        </div>
+                        <span
+                          className="text-slate-700 dark:text-slate-300 font-medium text-xs truncate max-w-[140px]"
+                          title={`${resolveAgentName(issue.createdBy)} (${issue.createdBy})`}
+                        >
+                          {resolveAgentName(issue.createdBy)}
+                        </span>
+                      </div>
                     </td>
 
                     {/* Date Logged */}

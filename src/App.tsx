@@ -11,6 +11,7 @@ import { CreateIssueModal } from './components/CreateIssueModal';
 import { SqlStudioModal } from './components/SqlStudioModal';
 import { ImportExportModal } from './components/ImportExportModal';
 import { PasskeyModal } from './components/PasskeyModal';
+import { AgentMappingModal } from './components/AgentMappingModal';
 import { googleSheetSyncService } from './services/googleSheetSync';
 import { Activity, Loader2, Database } from 'lucide-react';
 
@@ -233,6 +234,8 @@ export const App: React.FC = () => {
       />
 
       <PasskeyModal />
+
+      <AgentMappingModal issues={issues} />
     </div>
   );
 };

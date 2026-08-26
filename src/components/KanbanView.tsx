@@ -13,6 +13,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useAgent } from '../context/AgentContext';
 
 interface KanbanViewProps {
   issues: Issue[];
@@ -86,6 +87,7 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
   onUpdateStatus,
 }) => {
   const { isEditor, openPasskeyModal } = useAuth();
+  const { resolveAgentName, getAgentAvatarBg } = useAgent();
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case 'High':
@@ -173,9 +175,17 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
 
                     {/* Footer Info */}
                     <div className="mt-auto flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-2 text-[10px] text-slate-500">
-                      <div className="flex items-center gap-1">
-                        <User className="h-3 w-3 text-slate-400" />
-                        <span className="font-mono">{issue.createdBy}</span>
+                      <div className="flex items-center gap-1.5 min-w-0" title={`${resolveAgentName(issue.createdBy)} (${issue.createdBy})`}>
+                        <div
+                          className={`h-4 w-4 rounded-xs flex items-center justify-center font-bold text-[8px] shrink-0 ${getAgentAvatarBg(
+                            resolveAgentName(issue.createdBy)
+                          )}`}
+                        >
+                          {resolveAgentName(issue.createdBy).slice(0, 1).toUpperCase()}
+                        </div>
+                        <span className="font-medium text-slate-700 dark:text-slate-300 truncate max-w-[110px]">
+                          {resolveAgentName(issue.createdBy)}
+                        </span>
                       </div>
 
                       <div className="flex items-center gap-2">
