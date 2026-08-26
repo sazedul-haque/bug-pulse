@@ -9,7 +9,9 @@ import {
   Trash2,
   Copy,
   Check,
+  Lock,
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 interface IssueDrawerProps {
   issue: Issue | null;
@@ -28,6 +30,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
   onUpdateImpact,
   onDelete,
 }) => {
+  const { isEditor, openPasskeyModal } = useAuth();
   const [copied, setCopied] = React.useState(false);
 
   if (!issue) return null;
@@ -125,38 +128,64 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800">
               {/* Status */}
               <div>
-                <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
-                  Status
+                <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1 flex items-center justify-between">
+                  <span>Status</span>
+                  {!isEditor && <Lock className="h-3 w-3 text-slate-400" />}
                 </label>
-                <select
-                  value={issue.action}
-                  onChange={(e) => onUpdateStatus(issue.id, e.target.value as IssueStatus)}
-                  className="w-full rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none cursor-pointer"
-                >
-                  <option value="Done">Done (Resolved)</option>
-                  <option value="Accepted">Accepted (In Progress)</option>
-                  <option value="Feature">Feature Request</option>
-                  <option value="Request">Request / Tweak</option>
-                  <option value="Rejected">Rejected / Invalid</option>
-                  <option value="New">New / Triage</option>
-                </select>
+                {isEditor ? (
+                  <select
+                    value={issue.action}
+                    onChange={(e) => onUpdateStatus(issue.id, e.target.value as IssueStatus)}
+                    className="w-full rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none cursor-pointer"
+                  >
+                    <option value="Done">Done (Resolved)</option>
+                    <option value="Accepted">Accepted (In Progress)</option>
+                    <option value="Feature">Feature Request</option>
+                    <option value="Request">Request / Tweak</option>
+                    <option value="Rejected">Rejected / Invalid</option>
+                    <option value="New">New / Triage</option>
+                  </select>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={openPasskeyModal}
+                    title="Unlock Editor Mode to modify status"
+                    className="w-full text-left rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400 transition-colors flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{issue.action}</span>
+                    <Lock className="h-3 w-3 text-slate-400" />
+                  </button>
+                )}
               </div>
 
               {/* Priority */}
               <div>
-                <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
-                  Priority
+                <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1 flex items-center justify-between">
+                  <span>Priority</span>
+                  {!isEditor && <Lock className="h-3 w-3 text-slate-400" />}
                 </label>
-                <select
-                  value={issue.priority}
-                  onChange={(e) => onUpdatePriority(issue.id, e.target.value as IssuePriority)}
-                  className="w-full rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none cursor-pointer"
-                >
-                  <option value="High">🔥 High / Urgent</option>
-                  <option value="Mid">⚡ Mid</option>
-                  <option value="Low">🌱 Low</option>
-                  <option value="Unassigned">Unassigned</option>
-                </select>
+                {isEditor ? (
+                  <select
+                    value={issue.priority}
+                    onChange={(e) => onUpdatePriority(issue.id, e.target.value as IssuePriority)}
+                    className="w-full rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none cursor-pointer"
+                  >
+                    <option value="High">🔥 High / Urgent</option>
+                    <option value="Mid">⚡ Mid</option>
+                    <option value="Low">🌱 Low</option>
+                    <option value="Unassigned">Unassigned</option>
+                  </select>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={openPasskeyModal}
+                    title="Unlock Editor Mode to modify priority"
+                    className="w-full text-left rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400 transition-colors flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{issue.priority}</span>
+                    <Lock className="h-3 w-3 text-slate-400" />
+                  </button>
+                )}
               </div>
 
               {/* User Impact Count */}
@@ -168,17 +197,20 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                   <input
                     type="number"
                     min="0"
+                    disabled={!isEditor}
                     value={issue.userImpactCount}
                     onChange={(e) => onUpdateImpact(issue.id, parseInt(e.target.value, 10) || 0)}
-                    className="w-20 rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700"
+                    className="w-20 rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 disabled:opacity-60"
                   />
-                  <button
-                    onClick={() => onUpdateImpact(issue.id, issue.userImpactCount + 1)}
-                    title="Increment customer count"
-                    className="rounded-lg bg-slate-200 dark:bg-slate-800 px-2 py-1 text-xs text-amber-700 dark:text-amber-300 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold cursor-pointer"
-                  >
-                    +1
-                  </button>
+                  {isEditor && (
+                    <button
+                      onClick={() => onUpdateImpact(issue.id, issue.userImpactCount + 1)}
+                      title="Increment customer count"
+                      className="rounded-lg bg-slate-200 dark:bg-slate-800 px-2 py-1 text-xs text-amber-700 dark:text-amber-300 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold cursor-pointer"
+                    >
+                      +1
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -286,14 +318,19 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
           <div className="border-t border-slate-200 dark:border-slate-800 p-4 bg-slate-50/90 dark:bg-slate-950/60 flex items-center justify-between">
             <button
               onClick={() => {
+                if (!isEditor) {
+                  openPasskeyModal();
+                  return;
+                }
                 if (confirm(`Are you sure you want to delete issue #${issue.id}?`)) {
                   onDelete(issue.id);
                   onClose();
                 }
               }}
+              title={isEditor ? 'Delete this issue' : 'Unlock Editor Mode to delete issues'}
               className="flex items-center gap-1.5 text-xs text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 px-3 py-2 rounded-lg transition-colors border border-rose-200 dark:border-rose-900/30 cursor-pointer"
             >
-              <Trash2 className="h-4 w-4" />
+              {isEditor ? <Trash2 className="h-4 w-4" /> : <Lock className="h-3.5 w-3.5" />}
               <span>Delete Issue</span>
             </button>
 

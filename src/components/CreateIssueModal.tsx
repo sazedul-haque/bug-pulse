@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { IssueCategory, IssuePriority, IssueStatus } from '../types/issue';
 import { detectCategory } from '../services/categorization';
-import { X, Sparkles, PlusCircle, FilePlus2 } from 'lucide-react';
+import { X, Sparkles, PlusCircle, FilePlus2, Lock } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 interface CreateIssueModalProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
   onClose,
   onSubmit,
 }) => {
+  const { isEditor, openPasskeyModal } = useAuth();
   const [name, setName] = useState('');
   const [details, setDetails] = useState('');
   const [priority, setPriority] = useState<IssuePriority>('Mid');
@@ -61,6 +63,10 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isEditor) {
+      openPasskeyModal();
+      return;
+    }
     if (!name.trim()) return;
 
     onSubmit({

@@ -10,7 +10,9 @@ import {
   Link2,
   User,
   Flame,
+  Lock,
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 interface KanbanViewProps {
   issues: Issue[];
@@ -83,6 +85,7 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
   onSelectIssue,
   onUpdateStatus,
 }) => {
+  const { isEditor, openPasskeyModal } = useAuth();
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case 'High':
@@ -192,21 +195,36 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
 
                     {/* Quick Move Status Buttons on Hover */}
                     <div className="absolute right-2 top-2 hidden group-hover:flex items-center gap-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur rounded-lg p-0.5 border border-slate-200 dark:border-slate-700 shadow-md">
-                      <select
-                        value={issue.action}
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={(e) => {
-                          e.stopPropagation();
-                          onUpdateStatus(issue.id, e.target.value as IssueStatus);
-                        }}
-                        className="bg-transparent text-[10px] text-slate-700 dark:text-slate-200 border-none focus:ring-0 cursor-pointer py-0 px-1"
-                      >
-                        {COLUMNS.map((c) => (
-                          <option key={c.status} value={c.status} className="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">
-                            {c.title}
-                          </option>
-                        ))}
-                      </select>
+                      {isEditor ? (
+                        <select
+                          value={issue.action}
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            onUpdateStatus(issue.id, e.target.value as IssueStatus);
+                          }}
+                          className="bg-transparent text-[10px] text-slate-700 dark:text-slate-200 border-none focus:ring-0 cursor-pointer py-0 px-1 font-semibold"
+                        >
+                          {COLUMNS.map((c) => (
+                            <option key={c.status} value={c.status} className="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">
+                              {c.title}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openPasskeyModal();
+                          }}
+                          title="Unlock Editor Mode to move status"
+                          className="flex items-center gap-0.5 px-1 py-0.5 text-[10px] text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
+                        >
+                          <Lock className="h-2.5 w-2.5" />
+                          <span>Move</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))

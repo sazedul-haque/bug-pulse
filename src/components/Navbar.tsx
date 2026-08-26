@@ -11,9 +11,12 @@ import {
   Moon,
   Database,
   Zap,
+  Lock,
+  Unlock,
 } from 'lucide-react';
 import { ViewMode } from '../types/issue';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import { googleSheetSyncService } from '../services/googleSheetSync';
 
 interface NavbarProps {
@@ -37,6 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenImportExport,
 }) => {
   const { theme, toggleTheme } = useTheme();
+  const { isEditor, openPasskeyModal } = useAuth();
   const [hasLiveSync, setHasLiveSync] = useState(false);
 
   useEffect(() => {
@@ -162,12 +166,42 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="hidden xl:inline">Sync / CSV</span>
           </button>
 
+          {/* Auth Role Badge (Viewer / Editor) */}
+          <button
+            onClick={openPasskeyModal}
+            title={isEditor ? 'Editor Mode Active (Click to manage)' : 'Viewer Mode (Click to unlock Editor)'}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium border transition-all cursor-pointer shadow-2xs ${
+              isEditor
+                ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60'
+                : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            {isEditor ? (
+              <>
+                <Unlock className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span className="hidden lg:inline">Editor</span>
+              </>
+            ) : (
+              <>
+                <Lock className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
+                <span className="hidden lg:inline">Viewer</span>
+              </>
+            )}
+          </button>
+
           {/* Create Issue */}
           <button
-            onClick={onOpenCreate}
+            onClick={() => {
+              if (!isEditor) {
+                openPasskeyModal();
+              } else {
+                onOpenCreate();
+              }
+            }}
+            title={isEditor ? 'Create a new support issue' : 'Unlock Editor to create issues'}
             className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-indigo-500/25 hover:from-indigo-500 hover:to-purple-500 hover:shadow-indigo-500/40 active:scale-98 transition-all cursor-pointer"
           >
-            <Plus className="h-3.5 w-3.5" />
+            {isEditor ? <Plus className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
             <span className="whitespace-nowrap">New Issue</span>
           </button>
         </div>

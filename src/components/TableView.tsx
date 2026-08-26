@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Issue, IssuePriority, IssueStatus } from '../types/issue';
+import { useAuth } from '../context/AuthContext';
 import {
   ArrowUpDown,
   Search,
@@ -7,6 +8,7 @@ import {
   Link2,
   ChevronLeft,
   ChevronRight,
+  Lock,
 } from 'lucide-react';
 
 interface TableViewProps {
@@ -23,6 +25,7 @@ export const TableView: React.FC<TableViewProps> = ({
   onSelectIssue,
   onUpdateStatus,
 }) => {
+  const { isEditor, openPasskeyModal } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
   const [priorityFilter, setPriorityFilter] = useState<string>('All');
@@ -318,38 +321,55 @@ export const TableView: React.FC<TableViewProps> = ({
                       {getPriorityBadge(issue.priority)}
                     </td>
 
-                    {/* Status Dropdown */}
+                    {/* Status Dropdown / Badge */}
                     <td className="py-3.5 px-4 whitespace-nowrap">
-                      <select
-                        value={issue.action}
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={(e) => {
-                          e.stopPropagation();
-                          onUpdateStatus(issue.id, e.target.value as IssueStatus);
-                        }}
-                        className={`rounded-lg px-2.5 py-1 text-xs font-semibold border cursor-pointer ${getStatusBadgeClass(
-                          issue.action
-                        )} focus:outline-none`}
-                      >
-                        <option value="Done" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
-                          Done
-                        </option>
-                        <option value="Accepted" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
-                          Accepted
-                        </option>
-                        <option value="Feature" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
-                          Feature
-                        </option>
-                        <option value="Request" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
-                          Request
-                        </option>
-                        <option value="Rejected" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
-                          Rejected
-                        </option>
-                        <option value="New" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
-                          New
-                        </option>
-                      </select>
+                      {isEditor ? (
+                        <select
+                          value={issue.action}
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            onUpdateStatus(issue.id, e.target.value as IssueStatus);
+                          }}
+                          className={`rounded-lg px-2.5 py-1 text-xs font-semibold border cursor-pointer ${getStatusBadgeClass(
+                            issue.action
+                          )} focus:outline-none`}
+                        >
+                          <option value="Done" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                            Done
+                          </option>
+                          <option value="Accepted" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                            Accepted
+                          </option>
+                          <option value="Feature" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                            Feature
+                          </option>
+                          <option value="Request" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                            Request
+                          </option>
+                          <option value="Rejected" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                            Rejected
+                          </option>
+                          <option value="New" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                            New
+                          </option>
+                        </select>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openPasskeyModal();
+                          }}
+                          title="Click to unlock Editor Mode"
+                          className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold border cursor-pointer hover:opacity-80 transition-opacity ${getStatusBadgeClass(
+                            issue.action
+                          )}`}
+                        >
+                          <span>{issue.action}</span>
+                          <Lock className="h-3 w-3 opacity-60" />
+                        </button>
+                      )}
                     </td>
 
                     {/* Reporter */}
