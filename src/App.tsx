@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { dbService } from './db/sqlite';
 import { Issue, IssuePriority, IssueStatus, ViewMode } from './types/issue';
 import { Navbar } from './components/Navbar';
@@ -13,14 +13,68 @@ import { ImportExportModal } from './components/ImportExportModal';
 import { PasskeyModal } from './components/PasskeyModal';
 import { AgentMappingModal } from './components/AgentMappingModal';
 import { googleSheetSyncService } from './services/googleSheetSync';
+import { useAuth } from './context/AuthContext';
 import { Activity, Loader2, Database } from 'lucide-react';
 
+const getInitialUrlState = () => {
+  const params = new URLSearchParams(window.location.search);
+  const view = (params.get('view') as ViewMode) || 'analytics';
+  const search = params.get('search') || '';
+  const status = params.get('status') || 'All';
+  const priority = params.get('priority') || 'All';
+  const category = params.get('category') || 'All';
+  return { view, search, status, priority, category };
+};
+
 export const App: React.FC = () => {
+  const { isEditor } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [issues, setIssues] = useState<Issue[]>([]);
-  const [currentView, setCurrentView] = useState<ViewMode>('analytics');
-  const [searchQuery, setSearchQuery] = useState('');
+  
+  // URL Query Parameters State
+  const initial = useMemo(() => getInitialUrlState(), []);
+  const [currentView, setCurrentView] = useState<ViewMode>(initial.view);
+  const [searchQuery, setSearchQuery] = useState(initial.search);
+  const [statusFilter, setStatusFilter] = useState<string>(initial.status);
+  const [priorityFilter, setPriorityFilter] = useState<string>(initial.priority);
+  const [categoryFilter, setCategoryFilter] = useState<string>(initial.category);
+
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
+
+  // Sync state to URL query parameters
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (currentView !== 'analytics') params.set('view', currentView);
+    if (searchQuery) params.set('search', searchQuery);
+    if (statusFilter !== 'All') params.set('status', statusFilter);
+    if (priorityFilter !== 'All') params.set('priority', priorityFilter);
+    if (categoryFilter !== 'All') params.set('category', categoryFilter);
+
+    const queryString = params.toString() ? `?${params.toString()}` : window.location.pathname;
+    window.history.replaceState(null, '', queryString);
+  }, [currentView, searchQuery, statusFilter, priorityFilter, categoryFilter]);
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const state = getInitialUrlState();
+      setCurrentView(state.view);
+      setSearchQuery(state.search);
+      setStatusFilter(state.status);
+      setPriorityFilter(state.priority);
+      setCategoryFilter(state.category);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Fallback to analytics if in Viewer mode while on Kanban view
+  useEffect(() => {
+    if (!isEditor && currentView === 'kanban') {
+      setCurrentView('analytics');
+    }
+  }, [isEditor, currentView]);
 
   // Modals state
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -113,17 +167,25 @@ export const App: React.FC = () => {
     googleSheetSyncService.pushIssueToSheet(newIssue);
   };
 
-  // Filter issues by quick search if applicable
-  const displayedIssues = issues.filter((i) => {
-    if (!searchQuery) return true;
-    const q = searchQuery.toLowerCase();
-    return (
-      i.name.toLowerCase().includes(q) ||
-      i.details.toLowerCase().includes(q) ||
-      i.createdBy.toLowerCase().includes(q) ||
-      i.category.toLowerCase().includes(q)
-    );
-  });
+  // Filter issues for Analytics & Kanban (TableView has its own internal filtering connected to filters)
+  const displayedIssues = useMemo(() => {
+    return issues.filter((i) => {
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const matchTitle = i.name.toLowerCase().includes(q);
+        const matchDetails = i.details.toLowerCase().includes(q);
+        const matchReporter = (i.createdBy || '').toLowerCase().includes(q);
+        const matchCategory = (i.category || '').toLowerCase().includes(q);
+        if (!matchTitle && !matchDetails && !matchReporter && !matchCategory) {
+          return false;
+        }
+      }
+      if (statusFilter !== 'All' && i.action !== statusFilter) return false;
+      if (priorityFilter !== 'All' && i.priority !== priorityFilter) return false;
+      if (categoryFilter !== 'All' && i.category !== categoryFilter) return false;
+      return true;
+    });
+  }, [issues, searchQuery, statusFilter, priorityFilter, categoryFilter]);
 
   if (isLoading) {
     return (
@@ -162,14 +224,29 @@ export const App: React.FC = () => {
 
       {/* Main Content Area */}
       <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6">
-        {/* KPI Metric Overview */}
-        <StatsOverview issues={issues} />
+        {/* Clickable KPI Metric Overview Cards */}
+        <StatsOverview
+          issues={issues}
+          onCardClick={({ status, priority }) => {
+            setCurrentView('table');
+            if (status !== undefined) setStatusFilter(status);
+            if (priority !== undefined) setPriorityFilter(priority);
+          }}
+        />
 
         {/* View Content */}
         {currentView === 'analytics' && (
           <AnalyticsView
             issues={displayedIssues}
             onSelectIssue={(issue) => setSelectedIssue(issue)}
+            onFilterCategory={(cat) => {
+              setCurrentView('table');
+              setCategoryFilter(cat);
+            }}
+            onFilterStatus={(st) => {
+              setCurrentView('table');
+              setStatusFilter(st);
+            }}
           />
         )}
 
@@ -183,9 +260,17 @@ export const App: React.FC = () => {
 
         {currentView === 'table' && (
           <TableView
-            issues={displayedIssues}
+            issues={issues}
             onSelectIssue={(issue) => setSelectedIssue(issue)}
             onUpdateStatus={handleUpdateStatus}
+            searchTerm={searchQuery}
+            onSearchChange={setSearchQuery}
+            statusFilter={statusFilter}
+            onStatusFilterChange={setStatusFilter}
+            priorityFilter={priorityFilter}
+            onPriorityFilterChange={setPriorityFilter}
+            categoryFilter={categoryFilter}
+            onCategoryFilterChange={setCategoryFilter}
           />
         )}
       </main>

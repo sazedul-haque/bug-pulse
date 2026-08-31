@@ -39,11 +39,14 @@ interface AnalyticsViewProps {
   issues: Issue[];
   onSelectIssue: (issue: Issue) => void;
   onFilterCategory?: (category: string) => void;
+  onFilterStatus?: (status: string) => void;
 }
 
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   issues,
   onSelectIssue,
+  onFilterCategory,
+  onFilterStatus,
 }) => {
   const { theme } = useTheme();
   const { resolveAgentName, agentMap, openAgentModal } = useAgent();

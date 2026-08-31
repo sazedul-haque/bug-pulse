@@ -203,9 +203,9 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
                       </div>
                     </div>
 
-                    {/* Quick Move Status Buttons on Hover */}
-                    <div className="absolute right-2 top-2 hidden group-hover:flex items-center gap-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur rounded-lg p-0.5 border border-slate-200 dark:border-slate-700 shadow-md">
-                      {isEditor ? (
+                    {/* Quick Move Status Dropdown on Hover (Only for Editor) */}
+                    {isEditor && (
+                      <div className="absolute right-2 top-2 hidden group-hover:flex items-center gap-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur rounded-lg p-0.5 border border-slate-200 dark:border-slate-700 shadow-md">
                         <select
                           value={issue.action}
                           onClick={(e) => e.stopPropagation()}
@@ -221,21 +221,8 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
                             </option>
                           ))}
                         </select>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openPasskeyModal();
-                          }}
-                          title="Unlock Editor Mode to move status"
-                          className="flex items-center gap-0.5 px-1 py-0.5 text-[10px] text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
-                        >
-                          <Lock className="h-2.5 w-2.5" />
-                          <span>Move</span>
-                        </button>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 ))
               )}

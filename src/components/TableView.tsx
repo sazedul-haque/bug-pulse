@@ -16,6 +16,14 @@ interface TableViewProps {
   issues: Issue[];
   onSelectIssue: (issue: Issue) => void;
   onUpdateStatus: (id: number, status: IssueStatus) => void;
+  searchTerm?: string;
+  onSearchChange?: (val: string) => void;
+  statusFilter?: string;
+  onStatusFilterChange?: (val: string) => void;
+  priorityFilter?: string;
+  onPriorityFilterChange?: (val: string) => void;
+  categoryFilter?: string;
+  onCategoryFilterChange?: (val: string) => void;
 }
 
 type SortField = 'id' | 'name' | 'priority' | 'category' | 'action' | 'createdTimestamp' | 'userImpactCount';
@@ -25,17 +33,56 @@ export const TableView: React.FC<TableViewProps> = ({
   issues,
   onSelectIssue,
   onUpdateStatus,
+  searchTerm: propSearchTerm,
+  onSearchChange,
+  statusFilter: propStatusFilter,
+  onStatusFilterChange,
+  priorityFilter: propPriorityFilter,
+  onPriorityFilterChange,
+  categoryFilter: propCategoryFilter,
+  onCategoryFilterChange,
 }) => {
-  const { isEditor, openPasskeyModal } = useAuth();
+  const { isEditor } = useAuth();
   const { resolveAgentName, getAgentAvatarBg } = useAgent();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('All');
-  const [priorityFilter, setPriorityFilter] = useState<string>('All');
-  const [categoryFilter, setCategoryFilter] = useState<string>('All');
+
+  const [internalSearch, setInternalSearch] = useState('');
+  const [internalStatus, setInternalStatus] = useState<string>('All');
+  const [internalPriority, setInternalPriority] = useState<string>('All');
+  const [internalCategory, setInternalCategory] = useState<string>('All');
+
+  const searchTerm = propSearchTerm !== undefined ? propSearchTerm : internalSearch;
+  const statusFilter = propStatusFilter !== undefined ? propStatusFilter : internalStatus;
+  const priorityFilter = propPriorityFilter !== undefined ? propPriorityFilter : internalPriority;
+  const categoryFilter = propCategoryFilter !== undefined ? propCategoryFilter : internalCategory;
+
   const [sortField, setSortField] = useState<SortField>('id');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
+
+  const handleSearchChange = (val: string) => {
+    if (onSearchChange) onSearchChange(val);
+    else setInternalSearch(val);
+    setCurrentPage(1);
+  };
+
+  const handleStatusChange = (val: string) => {
+    if (onStatusFilterChange) onStatusFilterChange(val);
+    else setInternalStatus(val);
+    setCurrentPage(1);
+  };
+
+  const handlePriorityChange = (val: string) => {
+    if (onPriorityFilterChange) onPriorityFilterChange(val);
+    else setInternalPriority(val);
+    setCurrentPage(1);
+  };
+
+  const handleCategoryChange = (val: string) => {
+    if (onCategoryFilterChange) onCategoryFilterChange(val);
+    else setInternalCategory(val);
+    setCurrentPage(1);
+  };
 
   // Extract unique categories & reporters
   const categories = useMemo(() => {
@@ -151,10 +198,7 @@ export const TableView: React.FC<TableViewProps> = ({
               type="text"
               placeholder="Search title, details, reporter..."
               value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setCurrentPage(1);
-              }}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 py-1.5 pl-8 pr-3 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"
             />
           </div>
@@ -162,10 +206,7 @@ export const TableView: React.FC<TableViewProps> = ({
           {/* Status Filter */}
           <select
             value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={(e) => handleStatusChange(e.target.value)}
             className="rounded-xl bg-slate-50 dark:bg-slate-950 py-1.5 px-3 text-xs text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none cursor-pointer"
           >
             <option value="All" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">All Statuses</option>
@@ -180,10 +221,7 @@ export const TableView: React.FC<TableViewProps> = ({
           {/* Priority Filter */}
           <select
             value={priorityFilter}
-            onChange={(e) => {
-              setPriorityFilter(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={(e) => handlePriorityChange(e.target.value)}
             className="rounded-xl bg-slate-50 dark:bg-slate-950 py-1.5 px-3 text-xs text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none cursor-pointer"
           >
             <option value="All" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">All Priorities</option>
@@ -195,10 +233,7 @@ export const TableView: React.FC<TableViewProps> = ({
           {/* Category Filter */}
           <select
             value={categoryFilter}
-            onChange={(e) => {
-              setCategoryFilter(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={(e) => handleCategoryChange(e.target.value)}
             className="rounded-xl bg-slate-50 dark:bg-slate-950 py-1.5 px-3 text-xs text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none max-w-[200px] cursor-pointer"
           >
             <option value="All" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">All Categories</option>
@@ -357,20 +392,13 @@ export const TableView: React.FC<TableViewProps> = ({
                           </option>
                         </select>
                       ) : (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openPasskeyModal();
-                          }}
-                          title="Click to unlock Editor Mode"
-                          className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold border cursor-pointer hover:opacity-80 transition-opacity ${getStatusBadgeClass(
+                        <span
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold border ${getStatusBadgeClass(
                             issue.action
                           )}`}
                         >
-                          <span>{issue.action}</span>
-                          <Lock className="h-3 w-3 opacity-60" />
-                        </button>
+                          {issue.action}
+                        </span>
                       )}
                     </td>
 
