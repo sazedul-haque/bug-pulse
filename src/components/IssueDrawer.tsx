@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   Flame,
@@ -36,9 +36,21 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
   onUpdateImpact,
   onDelete,
 }) => {
-  const { isEditor, openPasskeyModal } = useAuth();
+  const { isEditor } = useAuth();
   const { resolveAgentName, getAgentAvatarBg } = useAgent();
   const [copied, setCopied] = useState(false);
+
+  // Close on Escape key press (must be before early return)
+  useEffect(() => {
+    if (!issue) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [issue, onClose]);
 
   if (!issue) return null;
 
@@ -120,9 +132,15 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/40 backdrop-blur-xs transition-opacity animate-in fade-in">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 overflow-hidden bg-slate-950/40 backdrop-blur-xs transition-opacity animate-in fade-in cursor-pointer"
+    >
       <div className="absolute inset-y-0 right-0 flex max-w-full pl-10">
-        <div className="w-screen max-w-2xl bg-white dark:bg-slate-900 shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-colors">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="w-screen max-w-2xl bg-white dark:bg-slate-900 shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-colors cursor-default"
+        >
           {/* Header */}
           <div className="border-b border-slate-200 dark:border-slate-800 p-5 bg-slate-50/70 dark:bg-slate-950/50">
             <div className="flex items-center justify-between gap-4 mb-3">

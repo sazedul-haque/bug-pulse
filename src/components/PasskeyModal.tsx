@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
   Lock,
@@ -33,6 +33,18 @@ export const PasskeyModal: React.FC = () => {
   const [oldKey, setOldKey] = useState('');
   const [newKey, setNewKey] = useState('');
   const [confirmKey, setConfirmKey] = useState('');
+
+  // Close on Escape (must be before early return)
+  useEffect(() => {
+    if (!isPasskeyModalOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closePasskeyModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isPasskeyModalOpen, closePasskeyModal]);
 
   if (!isPasskeyModalOpen) return null;
 
@@ -83,8 +95,14 @@ export const PasskeyModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col transition-colors">
+    <div
+      onClick={closePasskeyModal}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col transition-colors cursor-default"
+      >
         {/* Header */}
         <div className="border-b border-slate-200 dark:border-slate-800 p-5 bg-slate-50/80 dark:bg-slate-950/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">

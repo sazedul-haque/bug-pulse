@@ -53,8 +53,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/85 dark:bg-slate-950/85 backdrop-blur-xl transition-colors duration-200 shadow-2xs">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6">
         {/* Brand */}
-        <div className="flex items-center gap-3">
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 shadow-xs">
+        <div
+          onClick={() => onViewChange('analytics')}
+          className="flex items-center gap-3 cursor-pointer select-none group"
+          title="BugPulse Home (Analytics)"
+        >
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 shadow-xs group-hover:scale-105 transition-transform">
             <Activity className="h-4 w-4 text-white" />
             <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
@@ -149,25 +153,29 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* Sync / CSV */}
-          <button
-            onClick={onOpenImportExport}
-            title={hasLiveSync ? 'Slack Live Sync Connected' : 'Connect Slack Sync / CSV'}
-            className="flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-2 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 transition-all cursor-pointer"
-          >
-            <Zap className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span className="hidden xl:inline">Sync</span>
-          </button>
+          {/* Sync / CSV (Only for Editor) */}
+          {isEditor && (
+            <button
+              onClick={onOpenImportExport}
+              title={hasLiveSync ? 'Slack Live Sync Connected' : 'Connect Slack Sync / CSV'}
+              className="flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-2 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 transition-all cursor-pointer"
+            >
+              <Zap className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="hidden xl:inline">Sync</span>
+            </button>
+          )}
 
-          {/* Team */}
-          <button
-            onClick={openAgentModal}
-            title="Slack Team Members & Agent Names"
-            className="flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-2 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 transition-all cursor-pointer"
-          >
-            <Users className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
-            <span className="hidden xl:inline">Team</span>
-          </button>
+          {/* Team (Only for Editor) */}
+          {isEditor && (
+            <button
+              onClick={openAgentModal}
+              title="Slack Team Members & Agent Names"
+              className="flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-2 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-800 transition-all cursor-pointer"
+            >
+              <Users className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+              <span className="hidden xl:inline">Team</span>
+            </button>
+          )}
 
           {/* Auth Role Badge (Viewer / Editor) */}
           <button

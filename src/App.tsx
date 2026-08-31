@@ -210,7 +210,14 @@ export const App: React.FC = () => {
       {/* Top Clean Sticky Navigation */}
       <Navbar
         currentView={currentView}
-        onViewChange={setCurrentView}
+        onViewChange={(view) => {
+          setCurrentView(view);
+          if (view === 'analytics') {
+            setStatusFilter('All');
+            setPriorityFilter('All');
+            setCategoryFilter('All');
+          }
+        }}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onOpenCreate={() => setIsCreateOpen(true)}
