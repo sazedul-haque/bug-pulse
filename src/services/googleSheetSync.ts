@@ -92,9 +92,12 @@ async function fetchCsvContent(url: string): Promise<string> {
   return proxyText;
 }
 
+export const DEFAULT_GOOGLE_SHEET_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeoT0oS8Xp-VgHYUDiSyK6-mrwO7CAyWZK_I6lhVEVOvwv5QqaSsvqrSvjs-WXbWcDlA-d_xmO0VDk/pub?output=csv';
+
 export const googleSheetSyncService = {
   getSavedUrl(): string {
-    return localStorage.getItem(STORAGE_SYNC_URL_KEY) || '';
+    return localStorage.getItem(STORAGE_SYNC_URL_KEY) || DEFAULT_GOOGLE_SHEET_URL;
   },
 
   saveUrl(url: string): void {
@@ -115,7 +118,8 @@ export const googleSheetSyncService = {
 
   isAutoSyncEnabled(): boolean {
     const val = localStorage.getItem(STORAGE_AUTO_SYNC_KEY);
-    return val === 'true';
+    // Defaults to true for all users on launch unless explicitly set to 'false'
+    return val !== 'false';
   },
 
   setAutoSyncEnabled(enabled: boolean): void {

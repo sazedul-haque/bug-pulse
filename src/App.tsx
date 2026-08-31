@@ -23,7 +23,9 @@ const getInitialUrlState = () => {
   const status = params.get('status') || 'All';
   const priority = params.get('priority') || 'All';
   const category = params.get('category') || 'All';
-  return { view, search, status, priority, category };
+  const page = Math.max(1, parseInt(params.get('page') || '1', 10));
+  const pageSize = parseInt(params.get('pageSize') || '15', 10);
+  return { view, search, status, priority, category, page, pageSize };
 };
 
 export const App: React.FC = () => {
@@ -38,6 +40,8 @@ export const App: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>(initial.status);
   const [priorityFilter, setPriorityFilter] = useState<string>(initial.priority);
   const [categoryFilter, setCategoryFilter] = useState<string>(initial.category);
+  const [currentPage, setCurrentPage] = useState<number>(initial.page);
+  const [pageSize, setPageSize] = useState<number>(initial.pageSize);
 
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
 
@@ -49,10 +53,12 @@ export const App: React.FC = () => {
     if (statusFilter !== 'All') params.set('status', statusFilter);
     if (priorityFilter !== 'All') params.set('priority', priorityFilter);
     if (categoryFilter !== 'All') params.set('category', categoryFilter);
+    if (currentPage > 1) params.set('page', String(currentPage));
+    if (pageSize !== 15) params.set('pageSize', String(pageSize));
 
     const queryString = params.toString() ? `?${params.toString()}` : window.location.pathname;
     window.history.replaceState(null, '', queryString);
-  }, [currentView, searchQuery, statusFilter, priorityFilter, categoryFilter]);
+  }, [currentView, searchQuery, statusFilter, priorityFilter, categoryFilter, currentPage, pageSize]);
 
   // Handle browser back/forward buttons
   useEffect(() => {
@@ -63,6 +69,8 @@ export const App: React.FC = () => {
       setStatusFilter(state.status);
       setPriorityFilter(state.priority);
       setCategoryFilter(state.category);
+      setCurrentPage(state.page);
+      setPageSize(state.pageSize);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -216,10 +224,14 @@ export const App: React.FC = () => {
             setStatusFilter('All');
             setPriorityFilter('All');
             setCategoryFilter('All');
+            setCurrentPage(1);
           }
         }}
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={(q) => {
+          setSearchQuery(q);
+          setCurrentPage(1);
+        }}
         onOpenCreate={() => setIsCreateOpen(true)}
         onOpenSql={() => setIsSqlOpen(true)}
         onOpenImportExport={() => setIsImportExportOpen(true)}
@@ -236,6 +248,7 @@ export const App: React.FC = () => {
           issues={issues}
           onCardClick={({ status, priority }) => {
             setCurrentView('table');
+            setCurrentPage(1);
             if (status !== undefined) setStatusFilter(status);
             if (priority !== undefined) setPriorityFilter(priority);
           }}
@@ -248,10 +261,12 @@ export const App: React.FC = () => {
             onSelectIssue={(issue) => setSelectedIssue(issue)}
             onFilterCategory={(cat) => {
               setCurrentView('table');
+              setCurrentPage(1);
               setCategoryFilter(cat);
             }}
             onFilterStatus={(st) => {
               setCurrentView('table');
+              setCurrentPage(1);
               setStatusFilter(st);
             }}
           />
@@ -271,13 +286,29 @@ export const App: React.FC = () => {
             onSelectIssue={(issue) => setSelectedIssue(issue)}
             onUpdateStatus={handleUpdateStatus}
             searchTerm={searchQuery}
-            onSearchChange={setSearchQuery}
+            onSearchChange={(q) => {
+              setSearchQuery(q);
+              setCurrentPage(1);
+            }}
             statusFilter={statusFilter}
-            onStatusFilterChange={setStatusFilter}
+            onStatusFilterChange={(st) => {
+              setStatusFilter(st);
+              setCurrentPage(1);
+            }}
             priorityFilter={priorityFilter}
-            onPriorityFilterChange={setPriorityFilter}
+            onPriorityFilterChange={(pr) => {
+              setPriorityFilter(pr);
+              setCurrentPage(1);
+            }}
             categoryFilter={categoryFilter}
-            onCategoryFilterChange={setCategoryFilter}
+            onCategoryFilterChange={(cat) => {
+              setCategoryFilter(cat);
+              setCurrentPage(1);
+            }}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
           />
         )}
       </main>

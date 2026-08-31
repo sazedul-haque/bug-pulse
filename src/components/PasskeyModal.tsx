@@ -61,7 +61,7 @@ export const PasskeyModal: React.FC = () => {
       setPasskeyInput('');
       closePasskeyModal();
     } else {
-      setErrorMsg('Incorrect passkey. (Default: ollyo2026)');
+      setErrorMsg('Incorrect passkey. Please try again.');
     }
   };
 
@@ -155,9 +155,8 @@ export const PasskeyModal: React.FC = () => {
             /* Login Form */
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
-                  <span>Team Passkey</span>
-                  <span className="text-[11px] text-slate-400 font-normal">Default: ollyo2026</span>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">
+                  Team Passkey
                 </label>
                 <div className="relative">
                   <input
