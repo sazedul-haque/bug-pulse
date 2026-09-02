@@ -35,9 +35,9 @@ const COLUMNS: ColumnConfig[] = [
     status: 'New',
     title: 'New / Triage',
     icon: AlertCircle,
-    badgeColor: 'bg-slate-200/80 dark:bg-slate-500/20 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700',
-    borderColor: 'border-slate-200 dark:border-slate-800',
-    bgColor: 'bg-slate-100/60 dark:bg-slate-900/30',
+    badgeColor: 'bg-slate-200/80 dark:bg-sky-500/20 text-sky-700 dark:text-sky-200 border-slate-300 dark:border-slate-700',
+    borderColor: 'border-sky-200 dark:border-[#152a4a]',
+    bgColor: 'bg-sky-100/60 dark:bg-[#0a1628]/30',
   },
   {
     status: 'Accepted',
@@ -59,9 +59,9 @@ const COLUMNS: ColumnConfig[] = [
     status: 'Request',
     title: 'Requests / Tweaks',
     icon: HelpCircle,
-    badgeColor: 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-800 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800/40',
-    borderColor: 'border-indigo-200/80 dark:border-indigo-900/30',
-    bgColor: 'bg-indigo-50/40 dark:bg-indigo-950/10',
+    badgeColor: 'bg-cyan-100 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-300 border-cyan-200 dark:border-cyan-800/40',
+    borderColor: 'border-cyan-200/80 dark:border-cyan-900/30',
+    bgColor: 'bg-cyan-50/40 dark:bg-cyan-950/10',
   },
   {
     status: 'Done',
@@ -104,7 +104,7 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
         );
       case 'Low':
         return (
-          <span className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+          <span className="rounded bg-sky-100 dark:bg-[#0f2040] px-1.5 py-0.5 text-[10px] font-medium text-sky-600 dark:text-[#4a6a8a] border border-sky-200 dark:border-slate-700">
             Low
           </span>
         );
@@ -127,8 +127,8 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
             {/* Column Header */}
             <div className="flex items-center justify-between px-2 py-2 mb-3">
               <div className="flex items-center gap-2">
-                <Icon className="h-4 w-4 text-slate-600 dark:text-slate-300" />
-                <h4 className="text-xs font-semibold text-slate-800 dark:text-slate-200 tracking-wide">
+                <Icon className="h-4 w-4 text-sky-600 dark:text-sky-200" />
+                <h4 className="text-xs font-semibold text-sky-800 dark:text-sky-100 tracking-wide">
                   {col.title}
                 </h4>
               </div>
@@ -142,7 +142,7 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
             {/* Card List */}
             <div className="flex flex-1 flex-col gap-2.5 overflow-y-auto max-h-[calc(100vh-230px)] pr-1">
               {colIssues.length === 0 ? (
-                <div className="flex h-32 items-center justify-center rounded-xl border border-dashed border-slate-300 dark:border-slate-800 text-xs text-slate-400 dark:text-slate-500">
+                <div className="flex h-32 items-center justify-center rounded-xl border border-dashed border-slate-300 dark:border-[#152a4a] text-xs text-sky-400/70 dark:text-[#3a5a7a]">
                   No issues in this stage
                 </div>
               ) : (
@@ -150,31 +150,31 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
                   <div
                     key={issue.id}
                     onClick={() => onSelectIssue(issue)}
-                    className="group relative flex flex-col rounded-xl bg-white dark:bg-slate-900/90 p-3.5 border border-slate-200/80 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-500/50 hover:shadow-xs shadow-2xs transition-all cursor-pointer"
+                    className="group relative flex flex-col rounded-xl bg-white dark:bg-[#061220]/90 p-3.5 border border-sky-200/80 dark:border-[#152a4a] hover:border-cyan-400 dark:hover:border-cyan-500/50 hover:shadow-xs shadow-2xs transition-all cursor-pointer"
                   >
                     {/* Header: Priority & Category */}
                     <div className="flex items-center justify-between gap-1 mb-2">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {getPriorityBadge(issue.priority)}
-                        <span className="rounded bg-indigo-50 dark:bg-indigo-950/60 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/30">
+                        <span className="rounded bg-cyan-50 dark:bg-cyan-950/60 px-1.5 py-0.5 text-[10px] font-medium text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/30">
                           {issue.category}
                         </span>
                       </div>
-                      <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">#{issue.id}</span>
+                      <span className="text-[10px] text-sky-400/70 dark:text-[#3a5a7a] font-mono">#{issue.id}</span>
                     </div>
 
                     {/* Title */}
-                    <h5 className="text-xs font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors line-clamp-2 leading-relaxed mb-2">
+                    <h5 className="text-xs font-semibold text-sky-900 dark:text-sky-50 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors line-clamp-2 leading-relaxed mb-2">
                       {issue.name || '(Untitled Issue)'}
                     </h5>
 
                     {/* Details Snippet */}
-                    <p className="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed mb-3">
+                    <p className="text-[11px] text-sky-600 dark:text-[#4a6a8a] line-clamp-2 leading-relaxed mb-3">
                       {issue.details}
                     </p>
 
                     {/* Footer Info */}
-                    <div className="mt-auto flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-2 text-[10px] text-slate-500">
+                    <div className="mt-auto flex items-center justify-between border-t border-sky-100 dark:border-[#152a4a]/80 pt-2 text-[10px] text-slate-500">
                       <div className="flex items-center gap-1.5 min-w-0" title={`${resolveAgentName(issue.createdBy)} (${issue.createdBy})`}>
                         <div
                           className={`h-4 w-4 rounded-xs flex items-center justify-center font-bold text-[8px] shrink-0 ${getAgentAvatarBg(
@@ -183,14 +183,14 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
                         >
                           {resolveAgentName(issue.createdBy).slice(0, 1).toUpperCase()}
                         </div>
-                        <span className="font-medium text-slate-700 dark:text-slate-300 truncate max-w-[110px]">
+                        <span className="font-medium text-sky-700 dark:text-sky-200 truncate max-w-[110px]">
                           {resolveAgentName(issue.createdBy)}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-2">
                         {issue.extractedLinks.length > 0 && (
-                          <span className="flex items-center gap-0.5 text-indigo-600 dark:text-indigo-400">
+                          <span className="flex items-center gap-0.5 text-cyan-600 dark:text-cyan-400">
                             <Link2 className="h-3 w-3" />
                             <span>{issue.extractedLinks.length}</span>
                           </span>
@@ -205,7 +205,7 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
 
                     {/* Quick Move Status Dropdown on Hover (Only for Editor) */}
                     {isEditor && (
-                      <div className="absolute right-2 top-2 hidden group-hover:flex items-center gap-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur rounded-lg p-0.5 border border-slate-200 dark:border-slate-700 shadow-md">
+                      <div className="absolute right-2 top-2 hidden group-hover:flex items-center gap-1 bg-white/95 dark:bg-[#0a1628]/95 backdrop-blur rounded-lg p-0.5 border border-sky-200 dark:border-slate-700 shadow-md">
                         <select
                           value={issue.action}
                           onClick={(e) => e.stopPropagation()}
@@ -213,10 +213,10 @@ export const KanbanView: React.FC<KanbanViewProps> = ({
                             e.stopPropagation();
                             onUpdateStatus(issue.id, e.target.value as IssueStatus);
                           }}
-                          className="bg-transparent text-[10px] text-slate-700 dark:text-slate-200 border-none focus:ring-0 cursor-pointer py-0 px-1 font-semibold"
+                          className="bg-transparent text-[10px] text-sky-700 dark:text-sky-100 border-none focus:ring-0 cursor-pointer py-0 px-1 font-semibold"
                         >
                           {COLUMNS.map((c) => (
-                            <option key={c.status} value={c.status} className="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">
+                            <option key={c.status} value={c.status} className="bg-white dark:bg-[#061220] text-sky-800 dark:text-sky-50">
                               {c.title}
                             </option>
                           ))}

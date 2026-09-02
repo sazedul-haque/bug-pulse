@@ -34,7 +34,7 @@ const DEFAULT_MAPPINGS: AgentMappingRecord = {
 };
 
 const AVATAR_COLORS = [
-  'bg-indigo-500 text-white',
+  'bg-cyan-500 text-white',
   'bg-purple-500 text-white',
   'bg-pink-500 text-white',
   'bg-emerald-500 text-white',

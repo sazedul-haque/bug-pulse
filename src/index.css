@@ -4,23 +4,23 @@
 
 @layer base {
   :root {
-    --bg-primary: #f8fafc;
+    --bg-primary: #f0f8ff;
     --bg-card: #ffffff;
-    --bg-card-hover: #f1f5f9;
-    --border-color: #e2e8f0;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
+    --bg-card-hover: #e8f4fd;
+    --border-color: #bae6fd;
+    --text-primary: #0c1a2e;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
   }
 
   .dark {
-    --bg-primary: #0b0f17;
-    --bg-card: #111827;
-    --bg-card-hover: #1f2937;
-    --border-color: #1e293b;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    --bg-primary: #030b14;
+    --bg-card: #0a1628;
+    --bg-card-hover: #0f2040;
+    --border-color: #152a4a;
+    --text-primary: #e0f2fe;
+    --text-secondary: #7eb8d4;
+    --text-muted: #3a5a7a;
   }
 
   body {
@@ -43,33 +43,33 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: #bae6fd;
     border-radius: 9999px;
   }
 
   .dark ::-webkit-scrollbar-thumb {
-    background: #272f3d;
+    background: #152a4a;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #7dd3fc;
   }
 
   .dark ::-webkit-scrollbar-thumb:hover {
-    background: #3b465a;
+    background: #1e3a5a;
   }
 }
 
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(240, 248, 255, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid rgba(186, 230, 253, 0.8);
 }
 
 .dark .glass-panel {
-  background: rgba(17, 24, 39, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 22, 40, 0.85);
+  border: 1px solid rgba(21, 42, 74, 0.9);
 }
 
 .glow-effect {
@@ -79,7 +79,7 @@
   content: '';
   position: absolute;
   inset: -1px;
-  background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+  background: linear-gradient(90deg, #06b6d4, #0ea5e9, #22d3ee);
   border-radius: inherit;
   z-index: -1;
   opacity: 0;

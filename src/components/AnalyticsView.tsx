@@ -129,14 +129,14 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {/* Top Visualizations Row */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Status Distribution */}
-        <div className="rounded-2xl bg-white dark:bg-slate-900 p-5 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col justify-between transition-colors">
+        <div className="rounded-2xl bg-white dark:bg-[#061220] p-5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-white">Workflow Status</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Resolution state of reported tickets</p>
+                <h3 className="text-base font-semibold text-sky-900 dark:text-sky-50">Workflow Status</h3>
+                <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">Resolution state of reported tickets</p>
               </div>
-              <span className="rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+              <span className="rounded-md bg-sky-100 dark:bg-[#0f2040] px-2 py-1 text-xs font-medium text-sky-700 dark:text-sky-200">
                 {issues.length} total
               </span>
             </div>
@@ -165,16 +165,16 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </div>
 
         {/* Categories Breakdown */}
-        <div className="rounded-2xl bg-white dark:bg-slate-900 p-5 border border-slate-200/80 dark:border-slate-800 shadow-xs lg:col-span-2 flex flex-col justify-between transition-colors">
+        <div className="rounded-2xl bg-white dark:bg-[#061220] p-5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs lg:col-span-2 flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-white">Category Distribution</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <h3 className="text-base font-semibold text-sky-900 dark:text-sky-50">Category Distribution</h3>
+                <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
                   Issues clustered by plugin domain & feature area
                 </p>
               </div>
-              <span className="rounded-md bg-indigo-50 dark:bg-indigo-950/80 px-2.5 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40">
+              <span className="rounded-md bg-cyan-50 dark:bg-cyan-950/80 px-2.5 py-1 text-xs font-semibold text-cyan-600 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800/40">
                 {sortedCategories.length} Domains
               </span>
             </div>
@@ -213,13 +213,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {/* Second Row: Critical Attention Queue + Top Support Reporters */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Critical & Accepted Attention Items */}
-        <div className="rounded-2xl bg-white dark:bg-slate-900 p-5 border border-slate-200/80 dark:border-slate-800 shadow-xs lg:col-span-2 transition-colors">
+        <div className="rounded-2xl bg-white dark:bg-[#061220] p-5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs lg:col-span-2 transition-colors">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Flame className="h-5 w-5 text-rose-500 animate-pulse" />
               <div>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-white">High Priority Action Queue</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <h3 className="text-base font-semibold text-sky-900 dark:text-sky-50">High Priority Action Queue</h3>
+                <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
                   Urgent customer-impacting bugs pending fix or verification
                 </p>
               </div>
@@ -231,7 +231,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
           <div className="space-y-2.5">
             {criticalHighlights.length === 0 ? (
-              <div className="p-8 text-center text-sm text-slate-400 dark:text-slate-500">
+              <div className="p-8 text-center text-sm text-sky-400/70 dark:text-[#3a5a7a]">
                 No high-priority issues currently open! 🎉
               </div>
             ) : (
@@ -239,23 +239,23 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 <div
                   key={issue.id}
                   onClick={() => onSelectIssue(issue)}
-                  className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-indigo-50/60 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/60 hover:border-indigo-300 dark:hover:border-indigo-500/40 cursor-pointer transition-all group shadow-2xs"
+                  className="flex items-center justify-between p-3.5 rounded-xl bg-sky-50 dark:bg-[#0f2040]/60 hover:bg-cyan-50/60 dark:hover:bg-[#0f2040] border border-sky-200/80 dark:border-slate-700/60 hover:border-cyan-300 dark:hover:border-cyan-500/40 cursor-pointer transition-all group shadow-2xs"
                 >
                   <div className="flex items-start gap-3 min-w-0 pr-4">
                     <span className="mt-1.5 flex h-2 w-2 rounded-full bg-rose-500 shrink-0"></span>
                     <div className="min-w-0">
-                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors truncate">
+                      <h4 className="text-xs sm:text-sm font-semibold text-sky-900 dark:text-sky-50 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors truncate">
                         {issue.name}
                       </h4>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
-                        <span className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium">
+                        <span className="text-[11px] text-cyan-600 dark:text-cyan-400 font-medium">
                           {issue.category}
                         </span>
-                        <span className="text-slate-300 dark:text-slate-600">•</span>
-                        <span className="text-[11px] text-slate-500 dark:text-slate-400">{issue.createdTime}</span>
+                        <span className="text-slate-300 dark:text-[#3a5a7a]">•</span>
+                        <span className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a]">{issue.createdTime}</span>
                         {issue.userImpactCount > 0 && (
                           <>
-                            <span className="text-slate-300 dark:text-slate-600">•</span>
+                            <span className="text-slate-300 dark:text-[#3a5a7a]">•</span>
                             <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
                               👥 {issue.userImpactCount} users impacted
                             </span>
@@ -270,12 +270,12 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                       className={`rounded-md px-2 py-0.5 text-xs font-semibold ${
                         issue.action === 'Accepted'
                           ? 'bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40'
-                          : 'bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/40'
+                          : 'bg-cyan-50 dark:bg-cyan-950/70 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40'
                       }`}
                     >
                       {issue.action}
                     </span>
-                    <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors" />
+                    <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-sky-600 dark:group-hover:text-slate-200 transition-colors" />
                   </div>
                 </div>
               ))
@@ -284,13 +284,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </div>
 
         {/* Support Reporters Leaderboard */}
-        <div className="rounded-2xl bg-white dark:bg-slate-900 p-5 border border-slate-200/80 dark:border-slate-800 shadow-xs transition-colors">
+        <div className="rounded-2xl bg-white dark:bg-[#061220] p-5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs transition-colors">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <UserCheck className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+              <UserCheck className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
               <div>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-white">Top Reporters</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Slack agents by logged workflow items</p>
+                <h3 className="text-base font-semibold text-sky-900 dark:text-sky-50">Top Reporters</h3>
+                <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">Slack agents by logged workflow items</p>
               </div>
             </div>
 
@@ -298,7 +298,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
               <button
                 onClick={openAgentModal}
                 title="Edit Agent Names & Roles"
-                className="flex items-center gap-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/70 hover:bg-indigo-100 dark:hover:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/40 px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer"
+                className="flex items-center gap-1 rounded-lg bg-cyan-50 dark:bg-cyan-950/70 hover:bg-cyan-100 dark:hover:bg-cyan-900/70 text-cyan-600 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40 px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer"
               >
                 <Users className="h-3.5 w-3.5" />
                 <span>Manage Names</span>
@@ -319,16 +319,16 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     if (isEditor) openAgentModal();
                   }}
                   title={isEditor ? 'Click to edit agent display name' : undefined}
-                  className={`flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 transition-colors ${
-                    isEditor ? 'hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer group' : ''
+                  className={`flex items-center justify-between p-2.5 rounded-xl bg-sky-50 dark:bg-[#0f2040]/60 border border-sky-200/80 dark:border-slate-700/60 transition-colors ${
+                    isEditor ? 'hover:bg-sky-100 dark:hover:bg-[#0f2040] cursor-pointer group' : ''
                   }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-950/90 text-xs font-bold text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40 shrink-0">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-100 dark:bg-cyan-950/90 text-xs font-bold text-cyan-700 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800/40 shrink-0">
                       #{idx + 1}
                     </div>
                     <div className="min-w-0">
-                      <span className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 block truncate">
+                      <span className="text-xs font-bold text-sky-800 dark:text-sky-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 block truncate">
                         {displayName}
                       </span>
                       <p className="text-[10px] text-slate-500 font-mono truncate">
@@ -337,8 +337,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                    <span className="text-sm font-bold text-slate-900 dark:text-white">{count}</span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">issues</span>
+                    <span className="text-sm font-bold text-sky-900 dark:text-sky-50">{count}</span>
+                    <span className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">issues</span>
                   </div>
                 </div>
               );
@@ -346,8 +346,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </div>
 
           {isEditor && (
-            <div className="mt-4 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-800/40 text-xs text-indigo-800 dark:text-indigo-300 flex items-start gap-2">
-              <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+            <div className="mt-4 p-3 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100 dark:border-cyan-800/40 text-xs text-cyan-800 dark:text-cyan-300 flex items-start gap-2">
+              <Sparkles className="h-4 w-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
               <p>
                 Click <strong>Manage Names</strong> to map your team's Slack IDs to their real display names.
               </p>

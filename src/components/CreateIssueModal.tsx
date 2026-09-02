@@ -107,21 +107,21 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-[#050d1f]/85 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-colors cursor-default"
+        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#061220] border border-sky-200 dark:border-[#152a4a] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-colors cursor-default"
       >
         {/* Header */}
-        <div className="border-b border-slate-200 dark:border-slate-800 p-5 bg-slate-50/80 dark:bg-slate-950/50 flex items-center justify-between">
+        <div className="border-b border-sky-200 dark:border-[#152a4a] p-5 bg-sky-50/80 dark:bg-[#050d1f]/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-50 dark:bg-cyan-600/20 text-cyan-600 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-500/30">
               <FilePlus2 className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-white">Create New Workflow Issue</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <h3 className="text-base font-bold text-sky-900 dark:text-sky-50">Create New Workflow Issue</h3>
+              <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
                 Log a customer bug report or feature request into BugPulse
               </p>
             </div>
@@ -129,7 +129,7 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
 
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            className="rounded-lg p-1.5 text-slate-400 hover:text-sky-700 dark:hover:text-sky-50 hover:bg-sky-100 dark:hover:bg-[#0f2040] transition-colors cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
@@ -139,7 +139,7 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           {/* Issue Title */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
               Issue Title / Subject <span className="text-rose-500">*</span>
             </label>
             <input
@@ -148,13 +148,13 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
               placeholder="e.g. WooCommerce subscription renewal failure on guest checkout"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3.5 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3.5 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none focus:ring-1 focus:ring-cyan-500"
             />
           </div>
 
           {/* Details & Repro */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
               Details, Steps to Reproduce & URLs
             </label>
             <textarea
@@ -162,10 +162,10 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
               placeholder="Paste the customer explanation, error logs, and links (Loom video, screenshots, test credentials)..."
               value={details}
               onChange={(e) => setDetails(e.target.value)}
-              className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3.5 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-sans"
+              className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3.5 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none focus:ring-1 focus:ring-cyan-500 font-sans"
             />
             {autoDetectedCategory && (
-              <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-indigo-600 dark:text-indigo-400">
+              <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-cyan-600 dark:text-cyan-400">
                 <Sparkles className="h-3.5 w-3.5" />
                 <span>Auto-categorized as: <strong>{autoDetectedCategory}</strong></span>
               </div>
@@ -176,51 +176,51 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {/* Priority */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
                 Priority
               </label>
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value as IssuePriority)}
-                className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none cursor-pointer"
+                className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none cursor-pointer"
               >
-                <option value="High" className="bg-white dark:bg-slate-900">🔥 High Priority</option>
-                <option value="Mid" className="bg-white dark:bg-slate-900">⚡ Mid Priority</option>
-                <option value="Low" className="bg-white dark:bg-slate-900">🌱 Low Priority</option>
-                <option value="Unassigned" className="bg-white dark:bg-slate-900">Unassigned</option>
+                <option value="High" className="bg-white dark:bg-[#061220]">🔥 High Priority</option>
+                <option value="Mid" className="bg-white dark:bg-[#061220]">⚡ Mid Priority</option>
+                <option value="Low" className="bg-white dark:bg-[#061220]">🌱 Low Priority</option>
+                <option value="Unassigned" className="bg-white dark:bg-[#061220]">Unassigned</option>
               </select>
             </div>
 
             {/* Workflow Action Status */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
                 Initial Status
               </label>
               <select
                 value={action}
                 onChange={(e) => setAction(e.target.value as IssueStatus)}
-                className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none cursor-pointer"
+                className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none cursor-pointer"
               >
-                <option value="New" className="bg-white dark:bg-slate-900">New / Triage</option>
-                <option value="Accepted" className="bg-white dark:bg-slate-900">Accepted (In Pipeline)</option>
-                <option value="Feature" className="bg-white dark:bg-slate-900">Feature Request</option>
-                <option value="Request" className="bg-white dark:bg-slate-900">Request / Tweak</option>
-                <option value="Done" className="bg-white dark:bg-slate-900">Done (Resolved)</option>
+                <option value="New" className="bg-white dark:bg-[#061220]">New / Triage</option>
+                <option value="Accepted" className="bg-white dark:bg-[#061220]">Accepted (In Pipeline)</option>
+                <option value="Feature" className="bg-white dark:bg-[#061220]">Feature Request</option>
+                <option value="Request" className="bg-white dark:bg-[#061220]">Request / Tweak</option>
+                <option value="Done" className="bg-white dark:bg-[#061220]">Done (Resolved)</option>
               </select>
             </div>
 
             {/* Category */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
                 Category
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as IssueCategory)}
-                className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none cursor-pointer"
+                className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none cursor-pointer"
               >
                 {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat} className="bg-white dark:bg-slate-900">
+                  <option key={cat} value={cat} className="bg-white dark:bg-[#061220]">
                     {cat}
                   </option>
                 ))}
@@ -231,7 +231,7 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
           {/* Second Row: Reporter, Impact Count, Target Version */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
                 Reporter (Slack User ID)
               </label>
               <input
@@ -239,12 +239,12 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
                 value={createdBy}
                 onChange={(e) => setCreatedBy(e.target.value)}
                 placeholder="e.g. U07ACRUL5N1"
-                className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none"
+                className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
                 Customer Impact Count
               </label>
               <input
@@ -252,12 +252,12 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
                 min="0"
                 value={userImpactCount}
                 onChange={(e) => setUserImpactCount(parseInt(e.target.value, 10) || 0)}
-                className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none"
+                className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
                 Target / Fixed Version
               </label>
               <input
@@ -265,14 +265,14 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
                 placeholder="e.g. 4.0.5"
                 value={fixedVersion}
                 onChange={(e) => setFixedVersion(e.target.value)}
-                className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none"
+                className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none"
               />
             </div>
           </div>
 
           {/* Files */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-sky-700 dark:text-sky-200 mb-1">
               File Attachment IDs (Slack / CDN)
             </label>
             <input
@@ -280,22 +280,22 @@ export const CreateIssueModal: React.FC<CreateIssueModalProps> = ({
               placeholder="e.g. F0BG23JC80H, F0BHKS1TT6G"
               value={files}
               onChange={(e) => setFiles(e.target.value)}
-              className="w-full rounded-xl bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none font-mono text-[11px]"
+              className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-slate-600 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none font-mono text-[11px]"
             />
           </div>
 
           {/* Submit Buttons */}
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-2">
+          <div className="pt-4 border-t border-sky-200 dark:border-[#152a4a] flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl px-4 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              className="rounded-xl px-4 py-2 text-xs font-medium text-sky-600 dark:text-sky-200 hover:bg-sky-100 dark:hover:bg-[#0f2040] transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-2 text-xs font-bold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-cyan-600 to-purple-600 px-5 py-2 text-xs font-bold text-white shadow-md shadow-cyan-500/20 hover:from-cyan-500 hover:to-purple-500 transition-all cursor-pointer"
             >
               <PlusCircle className="h-4 w-4" />
               <span>Add Issue to SQLite DB</span>

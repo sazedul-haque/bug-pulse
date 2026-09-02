@@ -77,13 +77,13 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
         );
       case 'Low':
         return (
-          <span className="inline-flex items-center rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-xs font-medium text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+          <span className="inline-flex items-center rounded bg-sky-100 dark:bg-[#0f2040] px-2 py-0.5 text-xs font-medium text-sky-600 dark:text-[#4a6a8a] border border-sky-200 dark:border-slate-700">
             Low
           </span>
         );
       default:
         return (
-          <span className="rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-xs text-slate-500">
+          <span className="rounded bg-sky-100 dark:bg-[#0f2040] px-2 py-0.5 text-xs text-slate-500">
             Unassigned
           </span>
         );
@@ -112,13 +112,13 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
         );
       case 'Request':
         return (
-          <span className="rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/40 px-2.5 py-0.5 text-xs font-semibold">
+          <span className="rounded-full bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40 px-2.5 py-0.5 text-xs font-semibold">
             Request
           </span>
         );
       case 'Rejected':
         return (
-          <span className="rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700 px-2.5 py-0.5 text-xs font-medium">
+          <span className="rounded-full bg-sky-100 dark:bg-[#0f2040] text-slate-500 border border-sky-200 dark:border-slate-700 px-2.5 py-0.5 text-xs font-medium">
             Rejected
           </span>
         );
@@ -139,16 +139,16 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
       <div className="absolute inset-y-0 right-0 flex max-w-full pl-10">
         <div
           onClick={(e) => e.stopPropagation()}
-          className="w-screen max-w-2xl bg-white dark:bg-slate-900 shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-colors cursor-default"
+          className="w-screen max-w-2xl bg-white dark:bg-[#061220] shadow-2xl border-l border-sky-200 dark:border-[#152a4a] flex flex-col justify-between transition-colors cursor-default"
         >
           {/* Header */}
-          <div className="border-b border-slate-200 dark:border-slate-800 p-5 bg-slate-50/70 dark:bg-slate-950/50">
+          <div className="border-b border-sky-200 dark:border-[#152a4a] p-5 bg-sky-50/70 dark:bg-[#050d1f]/50">
             <div className="flex items-center justify-between gap-4 mb-3">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-mono text-xs font-bold text-slate-400 dark:text-slate-500">
+                <span className="font-mono text-xs font-bold text-sky-400/70 dark:text-[#3a5a7a]">
                   #{issue.id}
                 </span>
-                <span className="rounded-md bg-indigo-50 dark:bg-indigo-950/80 px-2 py-0.5 text-xs font-semibold text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/40">
+                <span className="rounded-md bg-cyan-50 dark:bg-cyan-950/80 px-2 py-0.5 text-xs font-semibold text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40">
                   {issue.category}
                 </span>
                 {getStatusBadge(issue.action)}
@@ -159,7 +159,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                 <button
                   onClick={handleCopySummary}
                   title="Copy formatted summary"
-                  className="flex items-center gap-1 rounded-lg bg-white dark:bg-slate-800 px-2.5 py-1 text-xs text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+                  className="flex items-center gap-1 rounded-lg bg-white dark:bg-[#0f2040] px-2.5 py-1 text-xs text-sky-600 dark:text-sky-200 hover:text-sky-900 dark:hover:text-sky-50 border border-sky-200 dark:border-slate-700 transition-colors cursor-pointer"
                 >
                   {copied ? (
                     <Check className="h-3 w-3 text-emerald-500" />
@@ -171,14 +171,14 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
                 <button
                   onClick={onClose}
-                  className="rounded-lg p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                  className="rounded-lg p-1 text-slate-400 hover:text-sky-600 dark:hover:text-sky-100 hover:bg-slate-200/60 dark:hover:bg-[#0f2040] transition-colors cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
             </div>
 
-            <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
+            <h3 className="text-base font-bold text-sky-900 dark:text-sky-50 leading-snug">
               {issue.name || '(Untitled Issue)'}
             </h3>
           </div>
@@ -187,16 +187,16 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Quick Actions / Status Row (Editable only if isEditor) */}
             {isEditor && (
-              <div className="grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800">
+              <div className="grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-sky-50 dark:bg-[#050d1f]/70 border border-sky-200 dark:border-[#152a4a]">
                 {/* Status */}
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
+                  <label className="block text-[11px] font-medium text-sky-500/80 dark:text-[#4a6a8a] mb-1">
                     Status
                   </label>
                   <select
                     value={issue.action}
                     onChange={(e) => onUpdateStatus(issue.id, e.target.value as IssueStatus)}
-                    className="w-full rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none cursor-pointer"
+                    className="w-full rounded-lg bg-white dark:bg-[#061220] px-2.5 py-1.5 text-xs font-semibold text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-slate-700 focus:border-cyan-500 focus:outline-none cursor-pointer"
                   >
                     <option value="Done">Done (Resolved)</option>
                     <option value="Accepted">Accepted (In Progress)</option>
@@ -209,13 +209,13 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
                 {/* Priority */}
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
+                  <label className="block text-[11px] font-medium text-sky-500/80 dark:text-[#4a6a8a] mb-1">
                     Priority
                   </label>
                   <select
                     value={issue.priority}
                     onChange={(e) => onUpdatePriority(issue.id, e.target.value as IssuePriority)}
-                    className="w-full rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none cursor-pointer"
+                    className="w-full rounded-lg bg-white dark:bg-[#061220] px-2.5 py-1.5 text-xs font-semibold text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-slate-700 focus:border-cyan-500 focus:outline-none cursor-pointer"
                   >
                     <option value="High">🔥 High / Urgent</option>
                     <option value="Mid">⚡ Mid</option>
@@ -226,7 +226,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
                 {/* Users Impacted */}
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
+                  <label className="block text-[11px] font-medium text-sky-500/80 dark:text-[#4a6a8a] mb-1">
                     Users Impacted
                   </label>
                   <div className="flex items-center gap-1.5">
@@ -235,12 +235,12 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                       min="0"
                       value={issue.userImpactCount}
                       onChange={(e) => onUpdateImpact(issue.id, parseInt(e.target.value, 10) || 0)}
-                      className="w-full rounded-lg bg-white dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700"
+                      className="w-full rounded-lg bg-white dark:bg-[#061220] px-2.5 py-1.5 text-xs font-semibold text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-slate-700"
                     />
                     <button
                       onClick={() => onUpdateImpact(issue.id, issue.userImpactCount + 1)}
                       title="Increment count"
-                      className="rounded-lg bg-slate-200 dark:bg-slate-800 px-2 py-1 text-xs text-amber-700 dark:text-amber-300 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold cursor-pointer"
+                      className="rounded-lg bg-slate-200 dark:bg-[#0f2040] px-2 py-1 text-xs text-amber-700 dark:text-amber-300 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold cursor-pointer"
                     >
                       +1
                     </button>
@@ -251,10 +251,10 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
             {/* Issue Description / Content */}
             <div className="space-y-2">
-              <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
+              <span className="text-xs font-bold text-sky-700 dark:text-sky-200 uppercase tracking-wider block">
                 Issue Description & Logs
               </span>
-              <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-950/50 border border-slate-200/80 dark:border-slate-800 font-mono text-xs text-slate-800 dark:text-slate-200 whitespace-pre-wrap break-words leading-relaxed">
+              <div className="p-4 rounded-xl bg-sky-50/80 dark:bg-[#050d1f]/50 border border-sky-200/80 dark:border-[#152a4a] font-mono text-xs text-sky-800 dark:text-sky-100 whitespace-pre-wrap break-words leading-relaxed">
                 {issue.details || '(No description provided)'}
               </div>
             </div>
@@ -262,7 +262,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
             {/* Captured Links & Attachments */}
             {issue.extractedLinks.length > 0 && (
               <div className="space-y-2.5">
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
+                <span className="text-xs font-bold text-sky-700 dark:text-sky-200 uppercase tracking-wider block">
                   Captured Media & Attachments ({issue.extractedLinks.length})
                 </span>
                 <div className="grid grid-cols-1 gap-2">
@@ -272,7 +272,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 border border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors group"
+                      className="flex items-center justify-between p-3 rounded-xl bg-sky-50 dark:bg-[#050d1f]/70 hover:bg-cyan-50 dark:hover:bg-cyan-950/40 border border-sky-200 dark:border-[#152a4a] hover:border-cyan-300 dark:hover:border-cyan-700 transition-colors group"
                     >
                       <div className="flex items-center gap-3 min-w-0 pr-2">
                         {link.type === 'loom' || link.type === 'youtube' ? (
@@ -289,14 +289,14 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                           </div>
                         )}
                         <div className="min-w-0">
-                          <div className="text-xs font-semibold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 truncate">
+                          <div className="text-xs font-semibold text-sky-800 dark:text-sky-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 truncate">
                             {link.label}
                           </div>
                           <div className="text-[11px] text-slate-400 truncate">{link.url}</div>
                         </div>
                       </div>
 
-                      <ExternalLink className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 shrink-0" />
+                      <ExternalLink className="h-3.5 w-3.5 text-slate-400 group-hover:text-sky-700 dark:group-hover:text-slate-200 shrink-0" />
                     </a>
                   ))}
                 </div>
@@ -304,14 +304,14 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
             )}
 
             {/* Context & Metadata Grid */}
-            <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
-              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
+            <div className="space-y-3 pt-4 border-t border-sky-200 dark:border-[#152a4a]">
+              <span className="text-xs font-bold text-sky-500/80 dark:text-[#4a6a8a] uppercase tracking-wider block">
                 Workflow Details
               </span>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 {/* Author / Reporter */}
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800">
+                <div className="p-3 rounded-xl bg-sky-50 dark:bg-[#050d1f]/40 border border-sky-200 dark:border-[#152a4a]">
                   <span className="text-slate-400 block text-[10px] font-medium">Reported By</span>
                   <div className="flex items-center gap-1.5 mt-1">
                     <div
@@ -321,22 +321,22 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                     >
                       {resolveAgentName(issue.createdBy).slice(0, 1).toUpperCase()}
                     </div>
-                    <span className="text-slate-800 dark:text-slate-200 font-semibold truncate">
+                    <span className="text-sky-800 dark:text-sky-100 font-semibold truncate">
                       {resolveAgentName(issue.createdBy)}
                     </span>
                   </div>
                 </div>
 
                 {/* Date */}
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800">
+                <div className="p-3 rounded-xl bg-sky-50 dark:bg-[#050d1f]/40 border border-sky-200 dark:border-[#152a4a]">
                   <span className="text-slate-400 block text-[10px] font-medium">Logged Date</span>
-                  <span className="text-slate-800 dark:text-slate-200 font-medium block mt-1">
+                  <span className="text-sky-800 dark:text-sky-100 font-medium block mt-1">
                     {issue.createdTime || 'N/A'}
                   </span>
                 </div>
 
                 {/* Impact */}
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800">
+                <div className="p-3 rounded-xl bg-sky-50 dark:bg-[#050d1f]/40 border border-sky-200 dark:border-[#152a4a]">
                   <span className="text-slate-400 block text-[10px] font-medium">Customer Impact</span>
                   <span className="text-amber-600 dark:text-amber-400 font-semibold block mt-1">
                     {issue.userImpactCount > 0
@@ -347,7 +347,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
                 {/* Target Version */}
                 {issue.fixedVersion && (
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800">
+                  <div className="p-3 rounded-xl bg-sky-50 dark:bg-[#050d1f]/40 border border-sky-200 dark:border-[#152a4a]">
                     <span className="text-slate-400 block text-[10px] font-medium">Target Version</span>
                     <span className="text-emerald-600 dark:text-emerald-400 font-semibold block mt-1">
                       {issue.fixedVersion}
@@ -359,7 +359,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
           </div>
 
           {/* Drawer Footer */}
-          <div className="border-t border-slate-200 dark:border-slate-800 p-4 bg-slate-50/80 dark:bg-slate-950/50 flex items-center justify-between">
+          <div className="border-t border-sky-200 dark:border-[#152a4a] p-4 bg-sky-50/80 dark:bg-[#050d1f]/50 flex items-center justify-between">
             {isEditor ? (
               <button
                 onClick={() => {
@@ -380,7 +380,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
             <button
               onClick={onClose}
-              className="rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-4 py-1.5 text-xs font-semibold text-slate-800 dark:text-white transition-colors cursor-pointer"
+              className="rounded-lg bg-sky-100 dark:bg-[#0f2040] hover:bg-slate-200 dark:hover:bg-slate-700 px-4 py-1.5 text-xs font-semibold text-sky-800 dark:text-sky-50 transition-colors cursor-pointer"
             >
               Close
             </button>
