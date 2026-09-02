@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Palette } from '../utils/themeTokens';
 
 type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
+  palette: Palette;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
+  setPalette: (palette: Palette) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -14,11 +17,18 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [theme, setThemeState] = useState<Theme>(() => {
     const saved = localStorage.getItem('bugpulse_theme');
     if (saved === 'light' || saved === 'dark') return saved;
-    // Default to light or check system preference
     if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }
-    return 'light';
+    return 'dark'; // Default to dark for premium modern feel
+  });
+
+  const [palette, setPaletteState] = useState<Palette>(() => {
+    const saved = localStorage.getItem('bugpulse_palette');
+    if (saved === 'haze' || saved === 'ocean' || saved === 'carbon' || saved === 'violet') {
+      return saved;
+    }
+    return 'ocean'; // Default to Deep Ocean Blue
   });
 
   useEffect(() => {
@@ -28,8 +38,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } else {
       root.classList.remove('dark');
     }
+    root.setAttribute('data-palette', palette);
     localStorage.setItem('bugpulse_theme', theme);
-  }, [theme]);
+    localStorage.setItem('bugpulse_palette', palette);
+  }, [theme, palette]);
 
   const toggleTheme = () => {
     setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
@@ -39,8 +51,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setThemeState(newTheme);
   };
 
+  const setPalette = (newPalette: Palette) => {
+    setPaletteState(newPalette);
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, palette, toggleTheme, setTheme, setPalette }}>
       {children}
     </ThemeContext.Provider>
   );

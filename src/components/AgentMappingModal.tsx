@@ -112,19 +112,19 @@ export const AgentMappingModal: React.FC<AgentMappingModalProps> = ({ issues }) 
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#091120] border border-sky-200 dark:border-[#132238] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-colors cursor-default"
+        className="w-full max-w-2xl rounded-2xl bg-[var(--surface)] bg-[var(--surface)] border border-[var(--border)] border-[var(--border)] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-colors cursor-default"
       >
         {/* Header */}
-        <div className="border-b border-sky-200 dark:border-[#132238] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
+        <div className="border-b border-[var(--border)] border-[var(--border)] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-100 dark:bg-cyan-600/20 text-cyan-700 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-500/30">
               <Users className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-sky-900 dark:text-sky-50">
+              <h3 className="text-base font-bold text-[var(--text-primary)]">
                 Slack Team & Agent Names
               </h3>
-              <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
+              <p className="text-xs text-[var(--text-muted)]">
                 Map raw Slack user IDs to team member display names & roles
               </p>
             </div>
@@ -139,7 +139,7 @@ export const AgentMappingModal: React.FC<AgentMappingModalProps> = ({ issues }) 
         </div>
 
         {/* Filter bar */}
-        <div className="border-b border-sky-200 dark:border-[#132238] px-6 py-3 bg-sky-50/40 dark:bg-[#040812]/30 flex items-center justify-between gap-3">
+        <div className="border-b border-[var(--border)] border-[var(--border)] px-6 py-3 bg-sky-50/40 dark:bg-[#040812]/30 flex items-center justify-between gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
             <input
@@ -147,7 +147,7 @@ export const AgentMappingModal: React.FC<AgentMappingModalProps> = ({ issues }) 
               placeholder="Search Slack ID or name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-xl bg-white dark:bg-[#040812] pl-8 pr-3 py-1.5 text-xs text-sky-800 dark:text-sky-100 placeholder-slate-400 border border-sky-200 dark:border-[#132238] focus:outline-none focus:border-cyan-500"
+              className="w-full rounded-xl bg-[var(--surface)] dark:bg-[#040812] pl-8 pr-3 py-1.5 text-xs text-sky-800 dark:text-sky-100 placeholder-slate-400 border border-[var(--border)] border-[var(--border)] focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -181,7 +181,7 @@ export const AgentMappingModal: React.FC<AgentMappingModalProps> = ({ issues }) 
               return (
                 <div
                   key={agent.id}
-                  className="p-3.5 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition-colors"
+                  className="p-3.5 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-[var(--border)] border-[var(--border)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition-colors"
                 >
                   {/* Left: Avatar & ID */}
                   <div className="flex items-center gap-3 min-w-[180px]">
@@ -191,10 +191,10 @@ export const AgentMappingModal: React.FC<AgentMappingModalProps> = ({ issues }) 
                       {initials}
                     </div>
                     <div>
-                      <span className="font-mono text-xs font-bold text-sky-900 dark:text-sky-50 block">
+                      <span className="font-mono text-xs font-bold text-[var(--text-primary)] block">
                         {agent.id}
                       </span>
-                      <span className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a]">
+                      <span className="text-[11px] text-[var(--text-muted)]">
                         {agent.count} issues logged
                       </span>
                     </div>
@@ -208,7 +208,7 @@ export const AgentMappingModal: React.FC<AgentMappingModalProps> = ({ issues }) 
                         placeholder="Real Name (e.g. Sazedul Haque)"
                         value={localMap[agent.id]?.name || ''}
                         onChange={(e) => handleNameChange(agent.id, e.target.value)}
-                        className="w-full rounded-lg bg-white dark:bg-[#091120] px-3 py-1.5 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-slate-700 focus:border-cyan-500 focus:outline-none"
+                        className="w-full rounded-lg bg-[var(--surface)] bg-[var(--surface)] px-3 py-1.5 text-xs text-[var(--text-primary)] border border-[var(--border)] dark:border-slate-700 focus:border-cyan-500 focus:outline-none"
                       />
                     </div>
 
@@ -218,7 +218,7 @@ export const AgentMappingModal: React.FC<AgentMappingModalProps> = ({ issues }) 
                         placeholder="Role / Title"
                         value={localMap[agent.id]?.role || ''}
                         onChange={(e) => handleRoleChange(agent.id, e.target.value)}
-                        className="w-full rounded-lg bg-white dark:bg-[#091120] px-2.5 py-1.5 text-xs text-sky-700 dark:text-sky-200 border border-sky-200 dark:border-slate-700 focus:border-cyan-500 focus:outline-none"
+                        className="w-full rounded-lg bg-[var(--surface)] bg-[var(--surface)] px-2.5 py-1.5 text-xs text-sky-700 dark:text-sky-200 border border-[var(--border)] dark:border-slate-700 focus:border-cyan-500 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -229,8 +229,8 @@ export const AgentMappingModal: React.FC<AgentMappingModalProps> = ({ issues }) 
         </div>
 
         {/* Footer */}
-        <div className="border-t border-sky-200 dark:border-[#132238] p-4 bg-sky-50/90 dark:bg-[#040812]/70 flex items-center justify-between">
-          <p className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a]">
+        <div className="border-t border-[var(--border)] border-[var(--border)] p-4 bg-sky-50/90 dark:bg-[#040812]/70 flex items-center justify-between">
+          <p className="text-[11px] text-[var(--text-muted)]">
             Names will instantly update on Leaderboards, Data Grid, Kanban, and Drawers.
           </p>
 

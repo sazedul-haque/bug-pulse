@@ -18,6 +18,8 @@ import {
 import { Issue, IssuePriority, IssueStatus } from '../types/issue';
 import { useAuth } from '../context/AuthContext';
 import { useAgent } from '../context/AgentContext';
+import { getCategoryStyle } from '../utils/categoryColors';
+import { getStatusBadgeClass } from '../utils/statusColors';
 
 interface IssueDrawerProps {
   issue: Issue | null;
@@ -77,7 +79,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
         );
       case 'Low':
         return (
-          <span className="inline-flex items-center rounded bg-sky-100 dark:bg-[#0e1a2f] px-2 py-0.5 text-xs font-medium text-sky-600 dark:text-[#4a6a8a] border border-sky-200 dark:border-slate-700">
+          <span className="inline-flex items-center rounded bg-sky-100 dark:bg-[#0e1a2f] px-2 py-0.5 text-xs font-medium text-sky-600 dark:text-[#4a6a8a] border border-[var(--border)] dark:border-slate-700">
             Low
           </span>
         );
@@ -90,45 +92,12 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'Done':
-        return (
-          <span className="rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40 px-2.5 py-0.5 text-xs font-semibold">
-            Done
-          </span>
-        );
-      case 'Accepted':
-        return (
-          <span className="rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 px-2.5 py-0.5 text-xs font-semibold">
-            Accepted
-          </span>
-        );
-      case 'Feature':
-        return (
-          <span className="rounded-full bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800/40 px-2.5 py-0.5 text-xs font-semibold">
-            Feature
-          </span>
-        );
-      case 'Request':
-        return (
-          <span className="rounded-full bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40 px-2.5 py-0.5 text-xs font-semibold">
-            Request
-          </span>
-        );
-      case 'Rejected':
-        return (
-          <span className="rounded-full bg-sky-100 dark:bg-[#0e1a2f] text-slate-500 border border-sky-200 dark:border-slate-700 px-2.5 py-0.5 text-xs font-medium">
-            Rejected
-          </span>
-        );
-      default:
-        return (
-          <span className="rounded-full bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/40 px-2.5 py-0.5 text-xs font-semibold">
-            New
-          </span>
-        );
-    }
+  const getStatusBadge = (status: IssueStatus) => {
+    return (
+      <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold border ${getStatusBadgeClass(status)}`}>
+        {status}
+      </span>
+    );
   };
 
   return (
@@ -139,16 +108,16 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
       <div className="absolute inset-y-0 right-0 flex max-w-full pl-10">
         <div
           onClick={(e) => e.stopPropagation()}
-          className="w-screen max-w-2xl bg-white dark:bg-[#091120] shadow-2xl border-l border-sky-200 dark:border-[#132238] flex flex-col justify-between transition-colors cursor-default"
+          className="w-screen max-w-2xl bg-[var(--surface)] shadow-2xl border-l border-[var(--border)] flex flex-col justify-between transition-colors cursor-default"
         >
           {/* Header */}
-          <div className="border-b border-sky-200 dark:border-[#132238] p-5 bg-sky-50/60 dark:bg-[#040812]/80">
+          <div className="border-b border-[var(--border)] p-5 bg-[var(--surface-inner)]">
             <div className="flex items-center justify-between gap-4 mb-3">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-mono text-xs font-bold text-slate-400 dark:text-[#42698f]">
+                <span className="font-mono text-xs font-bold text-[var(--text-muted)]">
                   #{issue.id}
                 </span>
-                <span className="rounded-md bg-cyan-50 dark:bg-cyan-950/80 px-2 py-0.5 text-xs font-semibold text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40">
+                <span className={`rounded-md px-2 py-0.5 text-xs font-semibold border ${getCategoryStyle(issue.category).badge}`}>
                   {issue.category}
                 </span>
                 {getStatusBadge(issue.action)}
@@ -159,7 +128,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                 <button
                   onClick={handleCopySummary}
                   title="Copy formatted summary"
-                  className="flex items-center gap-1 rounded-lg bg-white dark:bg-[#0e1a2f] px-2.5 py-1 text-xs text-slate-700 dark:text-sky-200 hover:text-cyan-600 dark:hover:text-sky-50 border border-sky-200 dark:border-[#1a3150] transition-colors cursor-pointer"
+                  className="flex items-center gap-1 rounded-lg bg-[var(--surface)] px-2.5 py-1 text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] border border-[var(--border)] transition-colors cursor-pointer"
                 >
                   {copied ? (
                     <Check className="h-3 w-3 text-emerald-500" />
@@ -171,14 +140,14 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
                 <button
                   onClick={onClose}
-                  className="rounded-lg p-1 text-slate-400 hover:text-slate-700 dark:hover:text-sky-100 hover:bg-slate-100 dark:hover:bg-[#0e1a2f] transition-colors cursor-pointer"
+                  className="rounded-lg p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-inner)] transition-colors cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
             </div>
 
-            <h3 className="text-base font-bold text-slate-900 dark:text-sky-50 leading-snug">
+            <h3 className="text-base font-bold text-[var(--text-primary)] leading-snug">
               {issue.name || '(Untitled Issue)'}
             </h3>
           </div>
@@ -187,16 +156,16 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Quick Actions / Status Row (Editable only if isEditor) */}
             {isEditor && (
-              <div className="grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] border border-sky-200 dark:border-[#1a3150]">
+              <div className="grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-[var(--surface-inner)] border border-[var(--border)]">
                 {/* Status */}
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 dark:text-[#42698f] mb-1">
+                  <label className="block text-[11px] font-medium text-[var(--text-muted)] mb-1">
                     Status
                   </label>
                   <select
                     value={issue.action}
                     onChange={(e) => onUpdateStatus(issue.id, e.target.value as IssueStatus)}
-                    className="w-full rounded-lg bg-white dark:bg-[#091120] px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-sky-50 border border-sky-200 dark:border-[#1a3150] focus:border-cyan-500 focus:outline-none cursor-pointer"
+                    className="w-full rounded-lg bg-[var(--surface)] px-2.5 py-1.5 text-xs font-semibold text-[var(--text-primary)] border border-[var(--border)] focus:border-[var(--accent)] focus:outline-none cursor-pointer"
                   >
                     <option value="Done">Done (Resolved)</option>
                     <option value="Accepted">Accepted (In Progress)</option>
@@ -209,13 +178,13 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
                 {/* Priority */}
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 dark:text-[#42698f] mb-1">
+                  <label className="block text-[11px] font-medium text-[var(--text-muted)] mb-1">
                     Priority
                   </label>
                   <select
                     value={issue.priority}
                     onChange={(e) => onUpdatePriority(issue.id, e.target.value as IssuePriority)}
-                    className="w-full rounded-lg bg-white dark:bg-[#091120] px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-sky-50 border border-sky-200 dark:border-[#1a3150] focus:border-cyan-500 focus:outline-none cursor-pointer"
+                    className="w-full rounded-lg bg-[var(--surface)] px-2.5 py-1.5 text-xs font-semibold text-[var(--text-primary)] border border-[var(--border)] focus:border-[var(--accent)] focus:outline-none cursor-pointer"
                   >
                     <option value="High">🔥 High / Urgent</option>
                     <option value="Mid">⚡ Mid</option>
@@ -226,7 +195,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
                 {/* Users Impacted */}
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 dark:text-[#42698f] mb-1">
+                  <label className="block text-[11px] font-medium text-[var(--text-muted)] mb-1">
                     Users Impacted
                   </label>
                   <div className="flex items-center gap-1.5">
@@ -235,12 +204,12 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                       min="0"
                       value={issue.userImpactCount}
                       onChange={(e) => onUpdateImpact(issue.id, parseInt(e.target.value, 10) || 0)}
-                      className="w-full rounded-lg bg-white dark:bg-[#091120] px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-sky-50 border border-sky-200 dark:border-[#1a3150]"
+                      className="w-full rounded-lg bg-[var(--surface)] px-2.5 py-1.5 text-xs font-semibold text-[var(--text-primary)] border border-[var(--border)]"
                     />
                     <button
                       onClick={() => onUpdateImpact(issue.id, issue.userImpactCount + 1)}
                       title="Increment count"
-                      className="rounded-lg bg-slate-100 dark:bg-[#142644] px-2 py-1 text-xs text-amber-700 dark:text-amber-300 hover:bg-slate-200 dark:hover:bg-[#1a3560] font-bold cursor-pointer"
+                      className="rounded-lg bg-[var(--surface-hover)] px-2 py-1 text-xs text-amber-500 hover:opacity-80 font-bold cursor-pointer border border-[var(--border)]"
                     >
                       +1
                     </button>
@@ -251,10 +220,10 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
             {/* Issue Description / Content */}
             <div className="space-y-2">
-              <span className="text-xs font-bold text-slate-700 dark:text-sky-200 uppercase tracking-wider block">
+              <span className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider block">
                 Issue Description & Logs
               </span>
-              <div className="p-4 rounded-xl bg-sky-50/60 dark:bg-[#040812]/80 border border-sky-200/80 dark:border-[#1a3150] font-mono text-xs text-slate-800 dark:text-sky-100 whitespace-pre-wrap break-words leading-relaxed">
+              <div className="p-4 rounded-xl bg-[var(--surface-inner)] border border-[var(--border)] font-mono text-xs text-[var(--text-primary)] whitespace-pre-wrap break-words leading-relaxed">
                 {issue.details || '(No description provided)'}
               </div>
             </div>
@@ -262,7 +231,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
             {/* Captured Links & Attachments */}
             {issue.extractedLinks.length > 0 && (
               <div className="space-y-2.5">
-                <span className="text-xs font-bold text-slate-700 dark:text-sky-200 uppercase tracking-wider block">
+                <span className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider block">
                   Captured Media & Attachments ({issue.extractedLinks.length})
                 </span>
                 <div className="grid grid-cols-1 gap-2">
@@ -272,31 +241,31 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between p-3 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] hover:bg-cyan-50/60 dark:hover:bg-[#142644] border border-sky-200 dark:border-[#1a3150] hover:border-cyan-300 dark:hover:border-cyan-500/50 transition-colors group"
+                      className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface-inner)] hover:bg-[var(--surface-hover)] border border-[var(--border)] hover:border-[var(--accent)] transition-colors group"
                     >
                       <div className="flex items-center gap-3 min-w-0 pr-2">
                         {link.type === 'loom' || link.type === 'youtube' ? (
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-100 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 shrink-0">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-500/15 text-rose-500 shrink-0">
                             <Video className="h-4 w-4" />
                           </div>
                         ) : link.type === 'image' ? (
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-100 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 shrink-0">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-subtle)] text-[var(--accent)] shrink-0">
                             <ImageIcon className="h-4 w-4" />
                           </div>
                         ) : (
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 shrink-0">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-500/15 text-sky-500 shrink-0">
                             <FileText className="h-4 w-4" />
                           </div>
                         )}
                         <div className="min-w-0">
-                          <div className="text-xs font-semibold text-slate-800 dark:text-sky-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 truncate">
+                          <div className="text-xs font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] truncate">
                             {link.label}
                           </div>
-                          <div className="text-[11px] text-slate-400 dark:text-[#42698f] truncate">{link.url}</div>
+                          <div className="text-[11px] text-[var(--text-muted)] truncate">{link.url}</div>
                         </div>
                       </div>
 
-                      <ExternalLink className="h-3.5 w-3.5 text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 shrink-0" />
+                      <ExternalLink className="h-3.5 w-3.5 text-[var(--text-muted)] group-hover:text-[var(--accent)] shrink-0" />
                     </a>
                   ))}
                 </div>
@@ -304,15 +273,15 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
             )}
 
             {/* Context & Metadata Grid */}
-            <div className="space-y-3 pt-4 border-t border-sky-200 dark:border-[#132238]">
-              <span className="text-xs font-bold text-slate-500 dark:text-[#42698f] uppercase tracking-wider block">
+            <div className="space-y-3 pt-4 border-t border-[var(--border)]">
+              <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider block">
                 Workflow Details
               </span>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 {/* Author / Reporter */}
-                <div className="p-3 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] border border-sky-200 dark:border-[#1a3150]">
-                  <span className="text-slate-400 dark:text-[#42698f] block text-[10px] font-medium">Reported By</span>
+                <div className="p-3 rounded-xl bg-[var(--surface-inner)] border border-[var(--border)]">
+                  <span className="text-[var(--text-muted)] block text-[10px] font-medium">Reported By</span>
                   <div className="flex items-center gap-1.5 mt-1">
                     <div
                       className={`h-4 w-4 rounded-xs flex items-center justify-center font-bold text-[8px] shrink-0 ${getAgentAvatarBg(
@@ -321,24 +290,24 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                     >
                       {resolveAgentName(issue.createdBy).slice(0, 1).toUpperCase()}
                     </div>
-                    <span className="text-slate-800 dark:text-sky-100 font-semibold truncate">
+                    <span className="text-[var(--text-primary)] font-semibold truncate">
                       {resolveAgentName(issue.createdBy)}
                     </span>
                   </div>
                 </div>
 
                 {/* Date */}
-                <div className="p-3 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] border border-sky-200 dark:border-[#1a3150]">
-                  <span className="text-slate-400 dark:text-[#42698f] block text-[10px] font-medium">Logged Date</span>
-                  <span className="text-slate-800 dark:text-sky-100 font-medium block mt-1">
+                <div className="p-3 rounded-xl bg-[var(--surface-inner)] border border-[var(--border)]">
+                  <span className="text-[var(--text-muted)] block text-[10px] font-medium">Logged Date</span>
+                  <span className="text-[var(--text-primary)] font-medium block mt-1">
                     {issue.createdTime || 'N/A'}
                   </span>
                 </div>
 
                 {/* Impact */}
-                <div className="p-3 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] border border-sky-200 dark:border-[#1a3150]">
-                  <span className="text-slate-400 dark:text-[#42698f] block text-[10px] font-medium">Customer Impact</span>
-                  <span className="text-amber-600 dark:text-amber-400 font-semibold block mt-1">
+                <div className="p-3 rounded-xl bg-[var(--surface-inner)] border border-[var(--border)]">
+                  <span className="text-[var(--text-muted)] block text-[10px] font-medium">Customer Impact</span>
+                  <span className="text-amber-500 font-semibold block mt-1">
                     {issue.userImpactCount > 0
                       ? `👥 ${issue.userImpactCount} users impacted`
                       : 'Single report'}
@@ -347,9 +316,9 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
                 {/* Target Version */}
                 {issue.fixedVersion && (
-                  <div className="p-3 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] border border-sky-200 dark:border-[#1a3150]">
-                    <span className="text-slate-400 dark:text-[#42698f] block text-[10px] font-medium">Target Version</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold block mt-1">
+                  <div className="p-3 rounded-xl bg-[var(--surface-inner)] border border-[var(--border)]">
+                    <span className="text-[var(--text-muted)] block text-[10px] font-medium">Target Version</span>
+                    <span className="text-emerald-500 font-semibold block mt-1">
                       {issue.fixedVersion}
                     </span>
                   </div>
@@ -359,7 +328,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
           </div>
 
           {/* Drawer Footer */}
-          <div className="border-t border-sky-200 dark:border-[#132238] p-4 bg-sky-50/60 dark:bg-[#040812]/80 flex items-center justify-between">
+          <div className="border-t border-[var(--border)] p-4 bg-[var(--surface-inner)] flex items-center justify-between">
             {isEditor ? (
               <button
                 onClick={() => {
@@ -369,7 +338,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
                   }
                 }}
                 title="Delete this issue"
-                className="flex items-center gap-1.5 text-xs text-rose-600 dark:text-rose-400 hover:text-rose-700 px-3 py-1.5 rounded-lg border border-rose-200 dark:border-rose-900/40 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-xs text-rose-500 hover:text-rose-600 px-3 py-1.5 rounded-lg border border-rose-500/30 hover:bg-rose-500/10 transition-colors cursor-pointer"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 <span>Delete Issue</span>
@@ -380,7 +349,7 @@ export const IssueDrawer: React.FC<IssueDrawerProps> = ({
 
             <button
               onClick={onClose}
-              className="rounded-lg bg-slate-100 dark:bg-[#0e1a2f] hover:bg-slate-200 dark:hover:bg-[#142644] px-4 py-1.5 text-xs font-semibold text-slate-800 dark:text-sky-50 border border-transparent dark:border-[#1a3150] transition-colors cursor-pointer"
+              className="rounded-lg bg-[var(--surface)] hover:bg-[var(--surface-hover)] px-4 py-1.5 text-xs font-semibold text-[var(--text-primary)] border border-[var(--border)] transition-colors cursor-pointer"
             >
               Close
             </button>

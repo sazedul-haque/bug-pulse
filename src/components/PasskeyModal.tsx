@@ -101,10 +101,10 @@ export const PasskeyModal: React.FC = () => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-2xl bg-white dark:bg-[#091120] border border-sky-200 dark:border-[#132238] shadow-2xl overflow-hidden flex flex-col transition-colors cursor-default"
+        className="w-full max-w-md rounded-2xl bg-[var(--surface)] bg-[var(--surface)] border border-[var(--border)] border-[var(--border)] shadow-2xl overflow-hidden flex flex-col transition-colors cursor-default"
       >
         {/* Header */}
-        <div className="border-b border-sky-200 dark:border-[#132238] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
+        <div className="border-b border-[var(--border)] border-[var(--border)] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div
               className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
@@ -116,10 +116,10 @@ export const PasskeyModal: React.FC = () => {
               {isEditor ? <ShieldCheck className="h-5 w-5" /> : <KeyRound className="h-5 w-5" />}
             </div>
             <div>
-              <h3 className="text-base font-bold text-sky-900 dark:text-sky-50">
+              <h3 className="text-base font-bold text-[var(--text-primary)]">
                 {isEditor ? 'Editor Session Active' : 'Unlock Editor Mode'}
               </h3>
-              <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
+              <p className="text-xs text-[var(--text-muted)]">
                 {isEditor
                   ? 'You have write access to create, edit & triage issues'
                   : 'Enter team passkey to enable CRUD & triage operations'}
@@ -165,7 +165,7 @@ export const PasskeyModal: React.FC = () => {
                     value={passkeyInput}
                     onChange={(e) => setPasskeyInput(e.target.value)}
                     autoFocus
-                    className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2.5 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:outline-none pr-10"
+                    className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2.5 text-xs text-[var(--text-primary)] placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-[var(--border)] border-[var(--border)] focus:border-cyan-500 focus:outline-none pr-10"
                   />
                   <button
                     type="button"
@@ -178,7 +178,7 @@ export const PasskeyModal: React.FC = () => {
               </div>
 
               <div className="pt-2 flex items-center justify-between gap-3">
-                <p className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a] leading-relaxed">
+                <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
                   Prevents unauthorized visitors from modifying tickets or deleting issues.
                 </p>
                 <button
@@ -236,7 +236,7 @@ export const PasskeyModal: React.FC = () => {
                   placeholder="Current passkey..."
                   value={oldKey}
                   onChange={(e) => setOldKey(e.target.value)}
-                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#132238] focus:outline-none"
+                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-[var(--text-primary)] border border-[var(--border)] border-[var(--border)] focus:outline-none"
                 />
               </div>
 
@@ -249,7 +249,7 @@ export const PasskeyModal: React.FC = () => {
                   placeholder="New passkey (min 4 chars)..."
                   value={newKey}
                   onChange={(e) => setNewKey(e.target.value)}
-                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#132238] focus:outline-none"
+                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-[var(--text-primary)] border border-[var(--border)] border-[var(--border)] focus:outline-none"
                 />
               </div>
 
@@ -262,7 +262,7 @@ export const PasskeyModal: React.FC = () => {
                   placeholder="Confirm new passkey..."
                   value={confirmKey}
                   onChange={(e) => setConfirmKey(e.target.value)}
-                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#132238] focus:outline-none"
+                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-[var(--text-primary)] border border-[var(--border)] border-[var(--border)] focus:outline-none"
                 />
               </div>
 

@@ -8,21 +8,22 @@ import {
   LinearScale,
   BarElement,
   Title,
-  PointElement,
-  LineElement,
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
-import { Issue } from '../types/issue';
-import { useTheme } from '../context/ThemeContext';
-import { useAgent } from '../context/AgentContext';
-import { useAuth } from '../context/AuthContext';
 import {
+  ExternalLink,
   Flame,
   UserCheck,
-  ExternalLink,
-  Sparkles,
   Users,
+  Sparkles,
 } from 'lucide-react';
+import { Issue } from '../types/issue';
+import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { useAgent } from '../context/AgentContext';
+import { getChartPalette } from '../utils/themeTokens';
+import { getCategoryStyle } from '../utils/categoryColors';
+import { getStatusBadgeClass } from '../utils/statusColors';
 
 ChartJS.register(
   ArcElement,
@@ -31,9 +32,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
-  PointElement,
-  LineElement
+  Title
 );
 
 interface AnalyticsViewProps {
@@ -46,13 +45,12 @@ interface AnalyticsViewProps {
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   issues,
   onSelectIssue,
-  onFilterCategory,
-  onFilterStatus,
 }) => {
-  const { theme } = useTheme();
+  const { theme, palette } = useTheme();
   const { isEditor } = useAuth();
   const { resolveAgentName, agentMap, openAgentModal } = useAgent();
   const isDark = theme === 'dark';
+  const chartTokens = getChartPalette(palette, isDark);
 
   // Status breakdown
   const statusCounts: Record<string, number> = {};
@@ -71,14 +69,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           statusCounts['Feature'] || 0,
           statusCounts['Rejected'] || 0,
         ],
-        backgroundColor: [
-          '#10b981', // emerald
-          '#f59e0b', // amber
-          '#06b6d4', // cyan
-          '#38bdf8', // sky
-          '#64748b', // slate
-        ],
-        borderColor: isDark ? '#091120' : '#ffffff',
+        backgroundColor: chartTokens.donutColors,
+        borderColor: chartTokens.donutBorder,
         borderWidth: 2,
       },
     ],
@@ -98,8 +90,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {
         label: 'Issues Count',
         data: sortedCategories.map(([, count]) => count),
-        backgroundColor: isDark ? 'rgba(6, 182, 212, 0.85)' : 'rgba(2, 132, 199, 0.75)',
-        hoverBackgroundColor: isDark ? 'rgba(34, 211, 238, 1)' : 'rgba(3, 105, 161, 1)',
+        backgroundColor: sortedCategories.map(([name]) => getCategoryStyle(name).chartColor),
+        hoverBackgroundColor: sortedCategories.map(([name]) => getCategoryStyle(name).chartHoverColor),
         borderRadius: 6,
       },
     ],
@@ -129,14 +121,14 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {/* Top Visualizations Row */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Status Distribution */}
-        <div className="rounded-2xl bg-white dark:bg-[#091120] p-5 border border-sky-200/80 dark:border-[#132238] shadow-xs flex flex-col justify-between transition-colors">
+        <div className="rounded-2xl bg-[var(--surface)] p-5 border border-[var(--border)] shadow-xs flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-sky-50">Workflow Status</h3>
-                <p className="text-xs text-slate-500 dark:text-[#42698f]">Resolution state of reported tickets</p>
+                <h3 className="text-base font-semibold text-[var(--text-primary)]">Workflow Status</h3>
+                <p className="text-xs text-[var(--text-muted)]">Resolution state of reported tickets</p>
               </div>
-              <span className="rounded-md bg-sky-100/70 dark:bg-[#0e1a2f] px-2 py-1 text-xs font-medium text-sky-700 dark:text-sky-200 border border-sky-200/60 dark:border-[#1a3150]">
+              <span className="rounded-md bg-[var(--surface-inner)] px-2 py-1 text-xs font-medium text-[var(--text-secondary)] border border-[var(--border)]">
                 {issues.length} total
               </span>
             </div>
@@ -150,7 +142,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     legend: {
                       position: 'bottom',
                       labels: {
-                        color: isDark ? '#8ec8f2' : '#475569',
+                        color: chartTokens.tickColor,
                         font: { size: 11 },
                         padding: 12,
                         boxWidth: 12,
@@ -165,16 +157,16 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </div>
 
         {/* Categories Breakdown */}
-        <div className="rounded-2xl bg-white dark:bg-[#091120] p-5 border border-sky-200/80 dark:border-[#132238] shadow-xs lg:col-span-2 flex flex-col justify-between transition-colors">
+        <div className="rounded-2xl bg-[var(--surface)] p-5 border border-[var(--border)] shadow-xs lg:col-span-2 flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-sky-50">Category Distribution</h3>
-                <p className="text-xs text-slate-500 dark:text-[#42698f]">
+                <h3 className="text-base font-semibold text-[var(--text-primary)]">Category Distribution</h3>
+                <p className="text-xs text-[var(--text-muted)]">
                   Issues clustered by plugin domain & feature area
                 </p>
               </div>
-              <span className="rounded-md bg-cyan-50 dark:bg-cyan-950/70 px-2.5 py-1 text-xs font-semibold text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40">
+              <span className="rounded-md bg-[var(--accent-subtle)] px-2.5 py-1 text-xs font-semibold text-[var(--accent)] border border-[var(--border)]">
                 {sortedCategories.length} Domains
               </span>
             </div>
@@ -195,12 +187,12 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                   },
                   scales: {
                     x: {
-                      grid: { color: isDark ? 'rgba(19, 34, 56, 0.8)' : 'rgba(225, 236, 246, 0.8)' },
-                      ticks: { color: isDark ? '#42698f' : '#64748b', font: { size: 10 } },
+                      grid: { color: chartTokens.gridColor },
+                      ticks: { color: chartTokens.tickColor, font: { size: 10 } },
                     },
                     y: {
                       grid: { display: false },
-                      ticks: { color: isDark ? '#8ec8f2' : '#334155', font: { size: 11 } },
+                      ticks: { color: chartTokens.tickColor, font: { size: 11 } },
                     },
                   },
                 }}
@@ -213,25 +205,25 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {/* Second Row: Critical Attention Queue + Top Support Reporters */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Critical & Accepted Attention Items */}
-        <div className="rounded-2xl bg-white dark:bg-[#091120] p-5 border border-sky-200/80 dark:border-[#132238] shadow-xs lg:col-span-2 transition-colors">
+        <div className="rounded-2xl bg-[var(--surface)] p-5 border border-[var(--border)] shadow-xs lg:col-span-2 transition-colors">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Flame className="h-5 w-5 text-rose-500 animate-pulse" />
               <div>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-sky-50">High Priority Action Queue</h3>
-                <p className="text-xs text-slate-500 dark:text-[#42698f]">
+                <h3 className="text-base font-semibold text-[var(--text-primary)]">High Priority Action Queue</h3>
+                <p className="text-xs text-[var(--text-muted)]">
                   Urgent customer-impacting bugs pending fix or verification
                 </p>
               </div>
             </div>
-            <span className="rounded-full bg-rose-50 dark:bg-rose-500/10 px-2.5 py-0.5 text-xs font-semibold text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20">
+            <span className="rounded-full bg-rose-500/10 px-2.5 py-0.5 text-xs font-semibold text-rose-500 border border-rose-500/20">
               {criticalHighlights.length} Urgent Items
             </span>
           </div>
 
           <div className="space-y-2.5">
             {criticalHighlights.length === 0 ? (
-              <div className="p-8 text-center text-sm text-slate-400 dark:text-[#42698f]">
+              <div className="p-8 text-center text-sm text-[var(--text-muted)]">
                 No high-priority issues currently open! 🎉
               </div>
             ) : (
@@ -239,24 +231,24 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 <div
                   key={issue.id}
                   onClick={() => onSelectIssue(issue)}
-                  className="flex items-center justify-between p-3.5 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] hover:bg-cyan-50/60 dark:hover:bg-[#142644] border border-sky-200/70 dark:border-[#1a3150] hover:border-cyan-300 dark:hover:border-cyan-500/40 cursor-pointer transition-all group shadow-2xs"
+                  className="flex items-center justify-between p-3.5 rounded-xl bg-[var(--surface-inner)] hover:bg-[var(--surface-hover)] border border-[var(--border)] hover:border-[var(--accent)] cursor-pointer transition-all group shadow-2xs"
                 >
                   <div className="flex items-start gap-3 min-w-0 pr-4">
                     <span className="mt-1.5 flex h-2 w-2 rounded-full bg-rose-500 shrink-0"></span>
                     <div className="min-w-0">
-                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-sky-50 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors truncate">
+                      <h4 className="text-xs sm:text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors truncate">
                         {issue.name}
                       </h4>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
-                        <span className="text-[11px] text-cyan-700 dark:text-cyan-400 font-medium">
+                        <span className={`text-[11px] font-semibold rounded-md px-1.5 py-0.5 border ${getCategoryStyle(issue.category).badge}`}>
                           {issue.category}
                         </span>
-                        <span className="text-slate-300 dark:text-[#1a3150]">•</span>
-                        <span className="text-[11px] text-slate-500 dark:text-[#42698f]">{issue.createdTime}</span>
+                        <span className="text-[var(--text-muted)] opacity-40">•</span>
+                        <span className="text-[11px] text-[var(--text-muted)]">{issue.createdTime}</span>
                         {issue.userImpactCount > 0 && (
                           <>
-                            <span className="text-slate-300 dark:text-[#1a3150]">•</span>
-                            <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
+                            <span className="text-[var(--text-muted)] opacity-40">•</span>
+                            <span className="text-[11px] text-amber-500 font-medium">
                               👥 {issue.userImpactCount} users impacted
                             </span>
                           </>
@@ -267,15 +259,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
                   <div className="flex items-center gap-2 shrink-0">
                     <span
-                      className={`rounded-md px-2 py-0.5 text-xs font-semibold ${
-                        issue.action === 'Accepted'
-                          ? 'bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40'
-                          : 'bg-cyan-50 dark:bg-cyan-950/70 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40'
-                      }`}
+                      className={`rounded-md px-2 py-0.5 text-xs font-semibold border ${getStatusBadgeClass(
+                        issue.action
+                      )}`}
                     >
                       {issue.action}
                     </span>
-                    <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors" />
+                    <ExternalLink className="h-4 w-4 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors" />
                   </div>
                 </div>
               ))
@@ -284,13 +274,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </div>
 
         {/* Support Reporters Leaderboard */}
-        <div className="rounded-2xl bg-white dark:bg-[#091120] p-5 border border-sky-200/80 dark:border-[#132238] shadow-xs transition-colors">
+        <div className="rounded-2xl bg-[var(--surface)] p-5 border border-[var(--border)] shadow-xs transition-colors">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <UserCheck className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+              <UserCheck className="h-5 w-5 text-[var(--accent)]" />
               <div>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-sky-50">Top Reporters</h3>
-                <p className="text-xs text-slate-500 dark:text-[#42698f]">Slack agents by logged workflow items</p>
+                <h3 className="text-base font-semibold text-[var(--text-primary)]">Top Reporters</h3>
+                <p className="text-xs text-[var(--text-muted)]">Slack agents by logged workflow items</p>
               </div>
             </div>
 
@@ -298,7 +288,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
               <button
                 onClick={openAgentModal}
                 title="Edit Agent Names & Roles"
-                className="flex items-center gap-1 rounded-lg bg-cyan-50 dark:bg-cyan-950/70 hover:bg-cyan-100 dark:hover:bg-cyan-900/70 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40 px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer"
+                className="flex items-center gap-1 rounded-lg bg-[var(--accent-subtle)] hover:opacity-90 text-[var(--accent)] border border-[var(--border)] px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer"
               >
                 <Users className="h-3.5 w-3.5" />
                 <span>Manage Names</span>
@@ -319,26 +309,26 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     if (isEditor) openAgentModal();
                   }}
                   title={isEditor ? 'Click to edit agent display name' : undefined}
-                  className={`flex items-center justify-between p-2.5 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] border border-sky-200/70 dark:border-[#1a3150] transition-colors ${
-                    isEditor ? 'hover:bg-cyan-50/60 dark:hover:bg-[#142644] cursor-pointer group' : ''
+                  className={`flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-inner)] border border-[var(--border)] transition-colors ${
+                    isEditor ? 'hover:bg-[var(--surface-hover)] cursor-pointer group' : ''
                   }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-100/80 dark:bg-cyan-950/90 text-xs font-bold text-cyan-800 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40 shrink-0">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--accent-subtle)] text-xs font-bold text-[var(--accent)] border border-[var(--border)] shrink-0">
                       #{idx + 1}
                     </div>
                     <div className="min-w-0">
-                      <span className="text-xs font-bold text-slate-800 dark:text-sky-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 block truncate">
+                      <span className="text-xs font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] block truncate">
                         {displayName}
                       </span>
-                      <p className="text-[10px] text-slate-500 dark:text-[#42698f] font-mono truncate">
+                      <p className="text-[10px] text-[var(--text-muted)] font-mono truncate">
                         {role} {displayName !== reporter ? `• ${reporter}` : ''}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                    <span className="text-sm font-bold text-slate-900 dark:text-sky-50">{count}</span>
-                    <span className="text-xs text-slate-500 dark:text-[#42698f]">issues</span>
+                    <span className="text-sm font-bold text-[var(--text-primary)]">{count}</span>
+                    <span className="text-xs text-[var(--text-muted)]">issues</span>
                   </div>
                 </div>
               );
@@ -346,8 +336,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </div>
 
           {isEditor && (
-            <div className="mt-4 p-3 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-100 dark:border-cyan-800/40 text-xs text-cyan-800 dark:text-cyan-300 flex items-start gap-2">
-              <Sparkles className="h-4 w-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
+            <div className="mt-4 p-3 rounded-xl bg-[var(--accent-subtle)] border border-[var(--border)] text-xs text-[var(--text-secondary)] flex items-start gap-2">
+              <Sparkles className="h-4 w-4 text-[var(--accent)] shrink-0 mt-0.5" />
               <p>
                 Click <strong>Manage Names</strong> to map your team's Slack IDs to their real display names.
               </p>

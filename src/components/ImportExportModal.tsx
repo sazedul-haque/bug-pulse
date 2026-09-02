@@ -308,22 +308,22 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#091120] border border-sky-200 dark:border-[#132238] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] transition-colors cursor-default"
+        className="w-full max-w-2xl rounded-2xl bg-[var(--surface)] bg-[var(--surface)] border border-[var(--border)] border-[var(--border)] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] transition-colors cursor-default"
       >
         {/* Header */}
-        <div className="border-b border-sky-200 dark:border-[#132238] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
+        <div className="border-b border-[var(--border)] border-[var(--border)] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-600/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30">
               <Zap className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold text-sky-900 dark:text-sky-50">Slack & Data Sync Hub</h3>
+                <h3 className="text-base font-bold text-[var(--text-primary)]">Slack & Data Sync Hub</h3>
                 <span className="rounded bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 text-[10px] font-semibold text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40">
                   Two-Way Sync Ready
                 </span>
               </div>
-              <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
+              <p className="text-xs text-[var(--text-muted)]">
                 Connect live Slack Workflow Google Sheets or import/export SQLite data
               </p>
             </div>
@@ -338,7 +338,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-1 border-b border-sky-200 dark:border-[#132238] bg-sky-50/50 dark:bg-[#040812]/40 px-5 pt-2">
+        <div className="flex items-center gap-1 border-b border-[var(--border)] border-[var(--border)] bg-sky-50/50 dark:bg-[#040812]/40 px-5 pt-2">
           <button
             onClick={() => setActiveTab('live_sync')}
             className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border-b-2 transition-all cursor-pointer ${
@@ -437,7 +437,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                     <span>Google Sheet CSV Link or Web App URL</span>
                   </label>
                   {lastSyncTime && (
-                    <span className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a] flex items-center gap-1 font-mono">
+                    <span className="text-[11px] text-[var(--text-muted)] flex items-center gap-1 font-mono">
                       <Clock className="h-3 w-3" /> Last synced: {lastSyncTime}
                     </span>
                   )}
@@ -452,7 +452,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                       setSheetUrl(e.target.value);
                       googleSheetSyncService.saveUrl(e.target.value);
                     }}
-                    className="flex-1 rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none font-mono"
+                    className="flex-1 rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2 text-xs text-[var(--text-primary)] placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-[var(--border)] border-[var(--border)] focus:border-cyan-500 focus:bg-[var(--surface)] dark:focus:bg-slate-950 focus:outline-none font-mono"
                   />
 
                   <button
@@ -464,18 +464,18 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                     <span>{isSyncing ? 'Syncing...' : 'Sync Now'}</span>
                   </button>
                 </div>
-                <p className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a]">
+                <p className="text-[11px] text-[var(--text-muted)]">
                   Accepts Google Sheet Share Links, Published CSV links, or Apps Script URLs.
                 </p>
               </div>
 
               {/* Auto Sync Toggle */}
-              <div className="p-3.5 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] flex items-center justify-between">
+              <div className="p-3.5 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-[var(--border)] border-[var(--border)] flex items-center justify-between">
                 <div>
                   <span className="text-xs font-semibold text-sky-800 dark:text-sky-100 block">
                     Auto-Sync on Application Launch
                   </span>
-                  <span className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a]">
+                  <span className="text-[11px] text-[var(--text-muted)]">
                     Automatically fetch the latest issues from Slack / Google Sheets whenever you open BugPulse
                   </span>
                 </div>
@@ -486,7 +486,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                     onChange={(e) => handleAutoSyncToggle(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-cyan-600"></div>
+                  <div className="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--surface)] after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-cyan-600"></div>
                 </label>
               </div>
 
@@ -536,7 +536,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                       setWebhookUrl(e.target.value);
                       googleSheetSyncService.saveWebhookUrl(e.target.value);
                     }}
-                    className="flex-1 rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#132238] focus:border-purple-500 focus:outline-none font-mono"
+                    className="flex-1 rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2 text-xs text-[var(--text-primary)] placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-[var(--border)] border-[var(--border)] focus:border-purple-500 focus:outline-none font-mono"
                   />
                   <button
                     onClick={handleTestTwoWay}
@@ -569,7 +569,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                   </button>
                 </div>
 
-                <ol className="text-xs text-sky-600 dark:text-[#4a6a8a] space-y-2 list-decimal list-inside p-3.5 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] leading-relaxed">
+                <ol className="text-xs text-sky-600 dark:text-[#4a6a8a] space-y-2 list-decimal list-inside p-3.5 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-[var(--border)] border-[var(--border)] leading-relaxed">
                   <li>
                     Open your <strong>Google Sheet</strong> and click <strong>Extensions → Apps Script</strong>.
                   </li>
@@ -602,7 +602,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
 
               {/* File drop / select */}
               <div>
-                <label className="flex flex-col items-center justify-center border-2 border-dashed border-sky-200 dark:border-[#132238] hover:border-cyan-500/60 dark:hover:border-cyan-500/60 rounded-xl p-6 bg-sky-50/70 dark:bg-[#040812]/50 cursor-pointer transition-colors group">
+                <label className="flex flex-col items-center justify-center border-2 border-dashed border-[var(--border)] border-[var(--border)] hover:border-cyan-500/60 dark:hover:border-cyan-500/60 rounded-xl p-6 bg-sky-50/70 dark:bg-[#040812]/50 cursor-pointer transition-colors group">
                   <Upload className="h-8 w-8 text-sky-400/70 dark:text-[#3a5a7a] group-hover:text-cyan-600 dark:group-hover:text-cyan-400 mb-2 transition-colors" />
                   <span className="text-xs font-semibold text-sky-700 dark:text-sky-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-300">
                     Click to select exported Slack CSV file
@@ -621,7 +621,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
 
               {/* Raw Text Paste fallback */}
               <div className="pt-2">
-                <label className="block text-[11px] font-semibold text-sky-500/80 dark:text-[#4a6a8a] mb-1">
+                <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
                   Or Paste Raw CSV Text:
                 </label>
                 <textarea
@@ -629,7 +629,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                   placeholder="Name,Details,Files,Action,Fixed Version,Created by,..."
                   value={csvText}
                   onChange={(e) => setCsvText(e.target.value)}
-                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] p-2.5 font-mono text-[11px] text-sky-800 dark:text-sky-200 border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:outline-none"
+                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] p-2.5 font-mono text-[11px] text-sky-800 dark:text-sky-200 border border-[var(--border)] border-[var(--border)] focus:border-cyan-500 focus:outline-none"
                 />
                 <div className="flex justify-end mt-2">
                   <button
@@ -649,13 +649,13 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
             <div className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* CSV Export */}
-                <div className="p-4 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] flex flex-col justify-between">
+                <div className="p-4 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-[var(--border)] border-[var(--border)] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <FileSpreadsheet className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                      <span className="text-xs font-bold text-sky-900 dark:text-sky-50">Export Slack CSV</span>
+                      <span className="text-xs font-bold text-[var(--text-primary)]">Export Slack CSV</span>
                     </div>
-                    <p className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a] mb-4 leading-relaxed">
+                    <p className="text-[11px] text-[var(--text-muted)] mb-4 leading-relaxed">
                       Download complete dataset formatted for spreadsheet imports.
                     </p>
                   </div>
@@ -669,13 +669,13 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                 </div>
 
                 {/* SQLite Export */}
-                <div className="p-4 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] flex flex-col justify-between">
+                <div className="p-4 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-[var(--border)] border-[var(--border)] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <Database className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-                      <span className="text-xs font-bold text-sky-900 dark:text-sky-50">Export SQLite File</span>
+                      <span className="text-xs font-bold text-[var(--text-primary)]">Export SQLite File</span>
                     </div>
-                    <p className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a] mb-4 leading-relaxed">
+                    <p className="text-[11px] text-[var(--text-muted)] mb-4 leading-relaxed">
                       Download full standalone `.sqlite` binary DB to open in DBeaver or SQLite tools.
                     </p>
                   </div>
@@ -690,21 +690,21 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
               </div>
 
               {/* Reset Database */}
-              <div className="pt-4 border-t border-sky-200 dark:border-[#132238] flex items-center justify-between">
+              <div className="pt-4 border-t border-[var(--border)] border-[var(--border)] flex items-center justify-between">
                 <div>
                   <span className="text-xs font-semibold text-sky-800 dark:text-sky-200 block">
                     Reset to Seed Dataset
                   </span>
-                  <span className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a]">
+                  <span className="text-[11px] text-[var(--text-muted)]">
                     Restore the default initial Slack workflow issues
                   </span>
                 </div>
 
                 <button
                   onClick={handleReset}
-                  className="flex items-center gap-1.5 rounded-lg bg-sky-100 dark:bg-[#0e1a2f]/80 hover:bg-slate-200 dark:hover:bg-[#0e1a2f] text-sky-700 dark:text-sky-200 px-3 py-2 text-xs font-medium border border-sky-200 dark:border-slate-700 transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 rounded-lg bg-sky-100 dark:bg-[#0e1a2f]/80 hover:bg-slate-200 dark:hover:bg-[#0e1a2f] text-sky-700 dark:text-sky-200 px-3 py-2 text-xs font-medium border border-[var(--border)] dark:border-slate-700 transition-colors cursor-pointer"
                 >
-                  <RefreshCw className="h-3.5 w-3.5 text-sky-500/80 dark:text-[#4a6a8a]" />
+                  <RefreshCw className="h-3.5 w-3.5 text-[var(--text-muted)]" />
                   <span>Reset Data</span>
                 </button>
               </div>
@@ -713,7 +713,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-sky-200 dark:border-[#132238] p-4 bg-sky-50/90 dark:bg-[#040812]/70 flex items-center justify-end">
+        <div className="border-t border-[var(--border)] border-[var(--border)] p-4 bg-sky-50/90 dark:bg-[#040812]/70 flex items-center justify-end">
           <button
             onClick={onClose}
             className="rounded-xl bg-slate-200 dark:bg-[#0e1a2f] hover:bg-slate-300 dark:hover:bg-slate-700 px-4 py-2 text-xs font-semibold text-sky-800 dark:text-sky-50 transition-colors cursor-pointer"

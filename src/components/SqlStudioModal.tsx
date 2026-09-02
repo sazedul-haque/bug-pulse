@@ -97,22 +97,22 @@ export const SqlStudioModal: React.FC<SqlStudioModalProps> = ({ isOpen, onClose 
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-5xl rounded-2xl bg-white dark:bg-[#091120] border border-sky-200 dark:border-[#132238] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] transition-colors cursor-default"
+        className="w-full max-w-5xl rounded-2xl bg-[var(--surface)] bg-[var(--surface)] border border-[var(--border)] border-[var(--border)] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] transition-colors cursor-default"
       >
         {/* Header */}
-        <div className="border-b border-sky-200 dark:border-[#132238] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
+        <div className="border-b border-[var(--border)] border-[var(--border)] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-600/20 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/30">
               <Terminal className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold text-sky-900 dark:text-sky-50">In-Browser SQLite Studio</h3>
+                <h3 className="text-base font-bold text-[var(--text-primary)]">In-Browser SQLite Studio</h3>
                 <span className="rounded bg-purple-100 dark:bg-purple-950/80 px-2 py-0.5 text-[10px] font-mono font-semibold text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/40">
                   WASM Engine
                 </span>
               </div>
-              <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
+              <p className="text-xs text-[var(--text-muted)]">
                 Execute live SQL queries against the local `issues` table
               </p>
             </div>
@@ -130,7 +130,7 @@ export const SqlStudioModal: React.FC<SqlStudioModalProps> = ({ isOpen, onClose 
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {/* Preset Queries */}
           <div>
-            <span className="block text-[11px] font-semibold text-sky-500/80 dark:text-[#4a6a8a] uppercase tracking-wider mb-2">
+            <span className="block text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">
               Preset Quick Queries:
             </span>
             <div className="flex flex-wrap gap-2">
@@ -140,7 +140,7 @@ export const SqlStudioModal: React.FC<SqlStudioModalProps> = ({ isOpen, onClose 
                   onClick={() => {
                     setQuery(preset.sql);
                   }}
-                  className="rounded-lg bg-sky-100 dark:bg-[#040812] px-2.5 py-1 text-xs text-sky-700 dark:text-sky-200 hover:text-sky-900 dark:hover:text-sky-50 hover:bg-slate-200 dark:hover:bg-[#0e1a2f] border border-sky-200 dark:border-[#132238] transition-colors cursor-pointer"
+                  className="rounded-lg bg-sky-100 dark:bg-[#040812] px-2.5 py-1 text-xs text-sky-700 dark:text-sky-200 hover:text-sky-900 dark:hover:text-sky-50 hover:bg-slate-200 dark:hover:bg-[#0e1a2f] border border-[var(--border)] border-[var(--border)] transition-colors cursor-pointer"
                 >
                   {preset.name}
                 </button>
@@ -221,7 +221,7 @@ export const SqlStudioModal: React.FC<SqlStudioModalProps> = ({ isOpen, onClose 
                 )}
               </div>
 
-              <div className="rounded-xl bg-white dark:bg-[#040812] border border-sky-200 dark:border-[#132238] overflow-x-auto max-h-64 shadow-xs">
+              <div className="rounded-xl bg-[var(--surface)] dark:bg-[#040812] border border-[var(--border)] border-[var(--border)] overflow-x-auto max-h-64 shadow-xs">
                 {results.columns.length === 0 ? (
                   <div className="p-6 text-center text-xs text-sky-400/70 dark:text-[#3a5a7a]">
                     Query executed successfully with 0 rows returned.
@@ -229,7 +229,7 @@ export const SqlStudioModal: React.FC<SqlStudioModalProps> = ({ isOpen, onClose 
                 ) : (
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>
-                      <tr className="border-b border-sky-200 dark:border-[#132238] bg-sky-50 dark:bg-[#0a1628] text-[11px] font-semibold uppercase text-sky-600 dark:text-[#4a6a8a]">
+                      <tr className="border-b border-[var(--border)] border-[var(--border)] bg-sky-50 dark:bg-[#0a1628] text-[11px] font-semibold uppercase text-sky-600 dark:text-[#4a6a8a]">
                         {results.columns.map((col, idx) => (
                           <th key={idx} className="py-2 px-3 whitespace-nowrap">
                             {col}
@@ -263,7 +263,7 @@ export const SqlStudioModal: React.FC<SqlStudioModalProps> = ({ isOpen, onClose 
         </div>
 
         {/* Footer */}
-        <div className="border-t border-sky-200 dark:border-[#132238] p-4 bg-sky-50/90 dark:bg-[#040812]/70 flex items-center justify-end">
+        <div className="border-t border-[var(--border)] border-[var(--border)] p-4 bg-sky-50/90 dark:bg-[#040812]/70 flex items-center justify-end">
           <button
             onClick={onClose}
             className="rounded-xl bg-slate-200 dark:bg-[#0e1a2f] hover:bg-slate-300 dark:hover:bg-slate-700 px-4 py-2 text-xs font-semibold text-sky-800 dark:text-sky-50 transition-colors cursor-pointer"
