@@ -182,7 +182,7 @@ export const TableView: React.FC<TableViewProps> = ({
         );
       case 'Low':
         return (
-          <span className="inline-flex items-center rounded bg-sky-100 dark:bg-[#0f2040] px-2 py-0.5 text-xs font-medium text-sky-600 dark:text-[#4a6a8a] border border-sky-200 dark:border-slate-700">
+          <span className="inline-flex items-center rounded bg-sky-100 dark:bg-[#0e1a2f] px-2 py-0.5 text-xs font-medium text-sky-600 dark:text-[#4a6a8a] border border-sky-200 dark:border-slate-700">
             Low
           </span>
         );
@@ -204,14 +204,14 @@ export const TableView: React.FC<TableViewProps> = ({
       case 'Rejected':
         return 'bg-rose-50 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800/40';
       default:
-        return 'bg-sky-100 dark:bg-[#0f2040] text-sky-700 dark:text-sky-200 border-sky-200 dark:border-slate-700';
+        return 'bg-sky-100 dark:bg-[#0e1a2f] text-sky-700 dark:text-sky-200 border-sky-200 dark:border-slate-700';
     }
   };
 
   return (
     <div className="space-y-4">
       {/* Filter and Search Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white dark:bg-[#061220] p-3.5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs transition-colors">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white dark:bg-[#091120] p-3.5 border border-sky-200/80 dark:border-[#132238] shadow-xs transition-colors">
         <div className="flex flex-wrap items-center gap-2.5 flex-1 min-w-[300px]">
           <div className="relative flex-1 min-w-[200px] max-w-md">
             <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-sky-400/70 dark:text-[#3a5a7a]" />
@@ -220,7 +220,7 @@ export const TableView: React.FC<TableViewProps> = ({
               placeholder="Search title, details, reporter..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] py-1.5 pl-8 pr-3 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-all"
+              className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] py-1.5 pl-8 pr-3 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-all"
             />
           </div>
 
@@ -228,61 +228,61 @@ export const TableView: React.FC<TableViewProps> = ({
           <select
             value={statusFilter}
             onChange={(e) => handleStatusChange(e.target.value)}
-            className="rounded-xl bg-sky-50 dark:bg-[#050d1f] py-1.5 px-3 text-xs text-sky-700 dark:text-sky-100 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none cursor-pointer"
+            className="rounded-xl bg-sky-50 dark:bg-[#040812] py-1.5 px-3 text-xs text-sky-700 dark:text-sky-100 border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:outline-none cursor-pointer"
           >
-            <option value="All" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">All Statuses</option>
-            <option value="Done" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">Done</option>
-            <option value="Accepted" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">Accepted</option>
-            <option value="Feature" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">Feature</option>
-            <option value="Request" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">Request</option>
-            <option value="Rejected" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">Rejected</option>
-            <option value="New" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">New</option>
+            <option value="All" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">All Statuses</option>
+            <option value="Done" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">Done</option>
+            <option value="Accepted" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">Accepted</option>
+            <option value="Feature" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">Feature</option>
+            <option value="Request" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">Request</option>
+            <option value="Rejected" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">Rejected</option>
+            <option value="New" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">New</option>
           </select>
 
           {/* Priority Filter */}
           <select
             value={priorityFilter}
             onChange={(e) => handlePriorityChange(e.target.value)}
-            className="rounded-xl bg-sky-50 dark:bg-[#050d1f] py-1.5 px-3 text-xs text-sky-700 dark:text-sky-100 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none cursor-pointer"
+            className="rounded-xl bg-sky-50 dark:bg-[#040812] py-1.5 px-3 text-xs text-sky-700 dark:text-sky-100 border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:outline-none cursor-pointer"
           >
-            <option value="All" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">All Priorities</option>
-            <option value="High" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">High / Urgent</option>
-            <option value="Mid" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">Mid</option>
-            <option value="Low" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">Low</option>
+            <option value="All" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">All Priorities</option>
+            <option value="High" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">High / Urgent</option>
+            <option value="Mid" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">Mid</option>
+            <option value="Low" className="bg-white dark:bg-[#091120] text-sky-900 dark:text-sky-50">Low</option>
           </select>
 
           {/* Category Filter */}
           <select
             value={categoryFilter}
             onChange={(e) => handleCategoryChange(e.target.value)}
-            className="rounded-xl bg-sky-50 dark:bg-[#050d1f] py-1.5 px-3 text-xs text-sky-700 dark:text-sky-100 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none max-w-[200px] cursor-pointer"
+            className="rounded-xl bg-white dark:bg-[#0e1a2f] py-1.5 px-3 text-xs text-slate-700 dark:text-sky-100 border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:outline-none max-w-[200px] cursor-pointer"
           >
-            <option value="All" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">All Categories</option>
+            <option value="All" className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">All Categories</option>
             {categories.map((cat) => (
-              <option key={cat} value={cat} className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">
+              <option key={cat} value={cat} className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">
                 {cat}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs text-sky-500/80 dark:text-[#4a6a8a]">
+        <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#42698f]">
           <span>Showing</span>
-          <span className="font-semibold text-sky-800 dark:text-sky-100">{filteredIssues.length}</span>
+          <span className="font-semibold text-slate-800 dark:text-sky-100">{filteredIssues.length}</span>
           <span>of</span>
-          <span className="font-semibold text-sky-800 dark:text-sky-100">{issues.length}</span>
+          <span className="font-semibold text-slate-800 dark:text-sky-100">{issues.length}</span>
         </div>
       </div>
 
       {/* Table Card */}
-      <div className="rounded-2xl bg-white dark:bg-[#061220] border border-sky-200/80 dark:border-[#152a4a] overflow-hidden shadow-xs transition-colors">
+      <div className="rounded-2xl bg-white dark:bg-[#091120] border border-sky-200/80 dark:border-[#132238] overflow-hidden shadow-xs transition-colors">
         <div className="overflow-x-auto">
           <table className="w-full table-fixed text-left border-collapse">
             <thead>
-              <tr className="border-b border-sky-200/80 dark:border-[#152a4a] bg-sky-50/80 dark:bg-[#050d1f]/85 text-[11px] uppercase tracking-wider text-sky-500/80 dark:text-[#4a6a8a]">
+              <tr className="border-b border-sky-200/80 dark:border-[#132238] bg-sky-50/60 dark:bg-[#040812]/80 text-[11px] uppercase tracking-wider text-slate-500 dark:text-[#42698f]">
                 <th
                   onClick={() => handleSort('id')}
-                  className="py-3 px-3 w-14 cursor-pointer hover:text-sky-900 dark:hover:text-sky-50 transition-colors"
+                  className="py-3 px-3 w-14 cursor-pointer hover:text-slate-900 dark:hover:text-sky-50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>ID</span>
@@ -291,7 +291,7 @@ export const TableView: React.FC<TableViewProps> = ({
                 </th>
                 <th
                   onClick={() => handleSort('name')}
-                  className="py-3 px-3 cursor-pointer hover:text-sky-900 dark:hover:text-sky-50 transition-colors"
+                  className="py-3 px-3 cursor-pointer hover:text-slate-900 dark:hover:text-sky-50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>Issue Title & Description</span>
@@ -300,7 +300,7 @@ export const TableView: React.FC<TableViewProps> = ({
                 </th>
                 <th
                   onClick={() => handleSort('category')}
-                  className="py-3 px-2.5 w-36 lg:w-44 whitespace-nowrap cursor-pointer hover:text-sky-900 dark:hover:text-sky-50 transition-colors"
+                  className="py-3 px-2.5 w-36 lg:w-44 whitespace-nowrap cursor-pointer hover:text-slate-900 dark:hover:text-sky-50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>Category</span>
@@ -309,7 +309,7 @@ export const TableView: React.FC<TableViewProps> = ({
                 </th>
                 <th
                   onClick={() => handleSort('priority')}
-                  className="py-3 px-2.5 w-24 lg:w-28 whitespace-nowrap cursor-pointer hover:text-sky-900 dark:hover:text-sky-50 transition-colors"
+                  className="py-3 px-2.5 w-24 lg:w-28 whitespace-nowrap cursor-pointer hover:text-slate-900 dark:hover:text-sky-50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>Priority</span>
@@ -318,7 +318,7 @@ export const TableView: React.FC<TableViewProps> = ({
                 </th>
                 <th
                   onClick={() => handleSort('action')}
-                  className="py-3 px-2.5 w-28 lg:w-32 whitespace-nowrap cursor-pointer hover:text-sky-900 dark:hover:text-sky-50 transition-colors"
+                  className="py-3 px-2.5 w-28 lg:w-32 whitespace-nowrap cursor-pointer hover:text-slate-900 dark:hover:text-sky-50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>Status</span>
@@ -328,7 +328,7 @@ export const TableView: React.FC<TableViewProps> = ({
                 <th className="py-3 px-2.5 w-32 lg:w-36 whitespace-nowrap">Reporter</th>
                 <th
                   onClick={() => handleSort('createdTimestamp')}
-                  className="py-3 px-2.5 w-28 lg:w-36 whitespace-nowrap cursor-pointer hover:text-sky-900 dark:hover:text-sky-50 transition-colors"
+                  className="py-3 px-2.5 w-28 lg:w-36 whitespace-nowrap cursor-pointer hover:text-slate-900 dark:hover:text-sky-50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>Date Logged</span>
@@ -338,10 +338,10 @@ export const TableView: React.FC<TableViewProps> = ({
                 <th className="py-3 px-3 text-right whitespace-nowrap w-16">Links</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sky-100 dark:divide-[#152a4a] text-xs">
+            <tbody className="divide-y divide-sky-100 dark:divide-[#132238] text-xs">
               {paginatedIssues.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-sky-400/70 dark:text-[#3a5a7a]">
+                  <td colSpan={8} className="py-12 text-center text-slate-400 dark:text-[#42698f]">
                     No issues match the selected filters.
                   </td>
                 </tr>
@@ -350,19 +350,19 @@ export const TableView: React.FC<TableViewProps> = ({
                   <tr
                     key={issue.id}
                     onClick={() => onSelectIssue(issue)}
-                    className="hover:bg-sky-50/90 dark:hover:bg-[#0f2040]/60 cursor-pointer transition-colors group"
+                    className="hover:bg-sky-50/70 dark:hover:bg-[#0e1a2f] cursor-pointer transition-colors group"
                   >
                     {/* ID */}
-                    <td className="py-2.5 px-3 font-mono text-slate-400 dark:text-[#4a6a8a] group-hover:text-cyan-600 dark:group-hover:text-cyan-400 font-semibold whitespace-nowrap">
+                    <td className="py-2.5 px-3 font-mono text-slate-400 dark:text-[#42698f] group-hover:text-cyan-600 dark:group-hover:text-cyan-400 font-semibold whitespace-nowrap">
                       #{issue.id}
                     </td>
 
                     {/* Title & Preview (With strict truncation so long content never pushes other columns) */}
                     <td className="py-2.5 px-3 max-w-0">
-                      <div className="font-semibold text-sky-900 dark:text-sky-50 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors truncate">
+                      <div className="font-semibold text-slate-900 dark:text-sky-50 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors truncate">
                         {issue.name || '(Untitled Issue)'}
                       </div>
-                      <div className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a] truncate mt-0.5">
+                      <div className="text-[11px] text-slate-500 dark:text-[#42698f] truncate mt-0.5">
                         {issue.details}
                       </div>
                     </td>
@@ -393,22 +393,22 @@ export const TableView: React.FC<TableViewProps> = ({
                             issue.action
                           )} focus:outline-none`}
                         >
-                          <option value="Done" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">
+                          <option value="Done" className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">
                             Done
                           </option>
-                          <option value="Accepted" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">
+                          <option value="Accepted" className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">
                             Accepted
                           </option>
-                          <option value="Feature" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">
+                          <option value="Feature" className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">
                             Feature
                           </option>
-                          <option value="Request" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">
+                          <option value="Request" className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">
                             Request
                           </option>
-                          <option value="Rejected" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">
+                          <option value="Rejected" className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">
                             Rejected
                           </option>
-                          <option value="New" className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">
+                          <option value="New" className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">
                             New
                           </option>
                         </select>
@@ -434,7 +434,7 @@ export const TableView: React.FC<TableViewProps> = ({
                           {resolveAgentName(issue.createdBy).slice(0, 2).toUpperCase()}
                         </div>
                         <span
-                          className="text-sky-700 dark:text-sky-200 font-medium text-xs truncate max-w-[110px]"
+                          className="text-slate-700 dark:text-sky-200 font-medium text-xs truncate max-w-[110px]"
                           title={`${resolveAgentName(issue.createdBy)} (${issue.createdBy})`}
                         >
                           {resolveAgentName(issue.createdBy)}
@@ -443,7 +443,7 @@ export const TableView: React.FC<TableViewProps> = ({
                     </td>
 
                     {/* Date Logged */}
-                    <td className="py-2.5 px-2.5 whitespace-nowrap text-sky-500/80 dark:text-[#4a6a8a] text-[11px] truncate">
+                    <td className="py-2.5 px-2.5 whitespace-nowrap text-slate-500 dark:text-[#42698f] text-[11px] truncate">
                       {issue.createdTime}
                     </td>
 
@@ -455,7 +455,7 @@ export const TableView: React.FC<TableViewProps> = ({
                           <span>{issue.extractedLinks.length}</span>
                         </span>
                       ) : (
-                        <span className="text-slate-300 dark:text-[#3a5a7a]">-</span>
+                        <span className="text-slate-300 dark:text-[#42698f]">-</span>
                       )}
                     </td>
                   </tr>
@@ -466,18 +466,18 @@ export const TableView: React.FC<TableViewProps> = ({
         </div>
 
         {/* Pagination Footer */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-sky-200/80 dark:border-[#152a4a] px-4 py-3 bg-sky-50/80 dark:bg-[#050d1f]/85 text-xs text-sky-500/80 dark:text-[#4a6a8a]">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-sky-200/80 dark:border-[#132238] px-4 py-3 bg-sky-50/60 dark:bg-[#040812]/80 text-xs text-slate-500 dark:text-[#42698f]">
           <div className="flex items-center gap-2">
             <span>Rows per page:</span>
             <select
               value={pageSize}
               onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-              className="rounded-lg bg-white dark:bg-[#061220] py-1 px-2 text-xs text-sky-700 dark:text-sky-100 border border-sky-200 dark:border-[#152a4a] cursor-pointer"
+              className="rounded-lg bg-white dark:bg-[#0e1a2f] py-1 px-2 text-xs text-slate-700 dark:text-sky-100 border border-sky-200 dark:border-[#132238] cursor-pointer"
             >
-              <option value={10} className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">10</option>
-              <option value={15} className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">15</option>
-              <option value={25} className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">25</option>
-              <option value={50} className="bg-white dark:bg-[#061220] text-sky-900 dark:text-sky-50">50</option>
+              <option value={10} className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">10</option>
+              <option value={15} className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">15</option>
+              <option value={25} className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">25</option>
+              <option value={50} className="bg-white dark:bg-[#091120] text-slate-900 dark:text-sky-50">50</option>
             </select>
           </div>
 
@@ -489,14 +489,14 @@ export const TableView: React.FC<TableViewProps> = ({
               <button
                 disabled={currentPage <= 1}
                 onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                className="rounded-lg bg-white dark:bg-[#061220] p-1 text-sky-700 dark:text-sky-200 hover:bg-sky-100 dark:hover:bg-[#0f2040] disabled:opacity-40 disabled:cursor-not-allowed border border-sky-200 dark:border-[#152a4a] cursor-pointer"
+                className="rounded-lg bg-white dark:bg-[#0e1a2f] p-1 text-slate-700 dark:text-sky-200 hover:bg-sky-100 dark:hover:bg-[#142644] disabled:opacity-40 disabled:cursor-not-allowed border border-sky-200 dark:border-[#132238] cursor-pointer"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
               <button
                 disabled={currentPage >= totalPages}
                 onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                className="rounded-lg bg-white dark:bg-[#061220] p-1 text-sky-700 dark:text-sky-200 hover:bg-sky-100 dark:hover:bg-[#0f2040] disabled:opacity-40 disabled:cursor-not-allowed border border-sky-200 dark:border-[#152a4a] cursor-pointer"
+                className="rounded-lg bg-white dark:bg-[#0e1a2f] p-1 text-slate-700 dark:text-sky-200 hover:bg-sky-100 dark:hover:bg-[#142644] disabled:opacity-40 disabled:cursor-not-allowed border border-sky-200 dark:border-[#132238] cursor-pointer"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>

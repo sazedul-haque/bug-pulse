@@ -197,16 +197,16 @@ export const App: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center bg-sky-50 dark:bg-[#050d1f] text-sky-900 dark:text-sky-50 transition-colors">
-        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-cyan-600 to-purple-600 shadow-xl shadow-cyan-500/20 mb-4 animate-pulse">
+      <div className="flex h-screen w-screen flex-col items-center justify-center bg-[#f6f9fc] dark:bg-[#040812] text-slate-900 dark:text-sky-50 transition-colors">
+        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-cyan-600 via-sky-500 to-blue-600 shadow-xl shadow-cyan-500/20 mb-4 animate-pulse">
           <Activity className="h-8 w-8 text-white" />
         </div>
-        <h2 className="text-xl font-bold text-sky-900 dark:text-sky-50 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-sky-50 flex items-center gap-2">
           <span>Loading BugPulse</span>
           <Loader2 className="h-4 w-4 animate-spin text-cyan-600 dark:text-cyan-400" />
         </h2>
-        <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a] mt-2 font-mono flex items-center gap-1.5">
-          <Database className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+        <p className="text-xs text-slate-500 dark:text-[#42698f] mt-2 font-mono flex items-center gap-1.5">
+          <Database className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
           <span>Mounting SQLite WASM Database Engine & Slack Dataset...</span>
         </p>
       </div>
@@ -214,7 +214,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-sky-50 dark:bg-[#050d1f] text-sky-900 dark:text-sky-50 flex flex-col selection:bg-cyan-500 selection:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[#f6f9fc] dark:bg-[#040812] text-slate-900 dark:text-sky-50 flex flex-col selection:bg-cyan-500 selection:text-white transition-colors duration-200">
       {/* Top Clean Sticky Navigation */}
       <Navbar
         currentView={currentView}

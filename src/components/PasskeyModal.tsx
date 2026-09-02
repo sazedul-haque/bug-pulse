@@ -97,14 +97,14 @@ export const PasskeyModal: React.FC = () => {
   return (
     <div
       onClick={closePasskeyModal}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-[#050d1f]/85 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-[#040812]/85 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-2xl bg-white dark:bg-[#061220] border border-sky-200 dark:border-[#152a4a] shadow-2xl overflow-hidden flex flex-col transition-colors cursor-default"
+        className="w-full max-w-md rounded-2xl bg-white dark:bg-[#091120] border border-sky-200 dark:border-[#132238] shadow-2xl overflow-hidden flex flex-col transition-colors cursor-default"
       >
         {/* Header */}
-        <div className="border-b border-sky-200 dark:border-[#152a4a] p-5 bg-sky-50/80 dark:bg-[#050d1f]/50 flex items-center justify-between">
+        <div className="border-b border-sky-200 dark:border-[#132238] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div
               className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
@@ -129,7 +129,7 @@ export const PasskeyModal: React.FC = () => {
 
           <button
             onClick={closePasskeyModal}
-            className="rounded-lg p-1.5 text-slate-400 hover:text-sky-700 dark:hover:text-sky-50 hover:bg-sky-100 dark:hover:bg-[#0f2040] transition-colors cursor-pointer"
+            className="rounded-lg p-1.5 text-slate-400 hover:text-sky-700 dark:hover:text-sky-50 hover:bg-sky-100 dark:hover:bg-[#0e1a2f] transition-colors cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
@@ -165,7 +165,7 @@ export const PasskeyModal: React.FC = () => {
                     value={passkeyInput}
                     onChange={(e) => setPasskeyInput(e.target.value)}
                     autoFocus
-                    className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3.5 py-2.5 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none pr-10"
+                    className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2.5 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:outline-none pr-10"
                   />
                   <button
                     type="button"
@@ -236,7 +236,7 @@ export const PasskeyModal: React.FC = () => {
                   placeholder="Current passkey..."
                   value={oldKey}
                   onChange={(e) => setOldKey(e.target.value)}
-                  className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:outline-none"
+                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#132238] focus:outline-none"
                 />
               </div>
 
@@ -249,7 +249,7 @@ export const PasskeyModal: React.FC = () => {
                   placeholder="New passkey (min 4 chars)..."
                   value={newKey}
                   onChange={(e) => setNewKey(e.target.value)}
-                  className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:outline-none"
+                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#132238] focus:outline-none"
                 />
               </div>
 
@@ -262,7 +262,7 @@ export const PasskeyModal: React.FC = () => {
                   placeholder="Confirm new passkey..."
                   value={confirmKey}
                   onChange={(e) => setConfirmKey(e.target.value)}
-                  className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#152a4a] focus:outline-none"
+                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] px-3 py-2 text-xs text-sky-900 dark:text-sky-50 border border-sky-200 dark:border-[#132238] focus:outline-none"
                 />
               </div>
 

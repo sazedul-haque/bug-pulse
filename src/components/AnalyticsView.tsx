@@ -74,11 +74,11 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         backgroundColor: [
           '#10b981', // emerald
           '#f59e0b', // amber
-          '#0ea5e9', // sky
-          '#6366f1', // indigo
-          '#94a3b8', // slate
+          '#06b6d4', // cyan
+          '#38bdf8', // sky
+          '#64748b', // slate
         ],
-        borderColor: isDark ? '#0f172a' : '#ffffff',
+        borderColor: isDark ? '#091120' : '#ffffff',
         borderWidth: 2,
       },
     ],
@@ -98,8 +98,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {
         label: 'Issues Count',
         data: sortedCategories.map(([, count]) => count),
-        backgroundColor: isDark ? 'rgba(99, 102, 241, 0.85)' : 'rgba(99, 102, 241, 0.75)',
-        hoverBackgroundColor: isDark ? 'rgba(129, 140, 248, 1)' : 'rgba(79, 70, 229, 1)',
+        backgroundColor: isDark ? 'rgba(6, 182, 212, 0.85)' : 'rgba(2, 132, 199, 0.75)',
+        hoverBackgroundColor: isDark ? 'rgba(34, 211, 238, 1)' : 'rgba(3, 105, 161, 1)',
         borderRadius: 6,
       },
     ],
@@ -129,14 +129,14 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {/* Top Visualizations Row */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Status Distribution */}
-        <div className="rounded-2xl bg-white dark:bg-[#061220] p-5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs flex flex-col justify-between transition-colors">
+        <div className="rounded-2xl bg-white dark:bg-[#091120] p-5 border border-sky-200/80 dark:border-[#132238] shadow-xs flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-base font-semibold text-sky-900 dark:text-sky-50">Workflow Status</h3>
-                <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">Resolution state of reported tickets</p>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-sky-50">Workflow Status</h3>
+                <p className="text-xs text-slate-500 dark:text-[#42698f]">Resolution state of reported tickets</p>
               </div>
-              <span className="rounded-md bg-sky-100 dark:bg-[#0f2040] px-2 py-1 text-xs font-medium text-sky-700 dark:text-sky-200">
+              <span className="rounded-md bg-sky-100/70 dark:bg-[#0e1a2f] px-2 py-1 text-xs font-medium text-sky-700 dark:text-sky-200 border border-sky-200/60 dark:border-[#1a3150]">
                 {issues.length} total
               </span>
             </div>
@@ -150,7 +150,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     legend: {
                       position: 'bottom',
                       labels: {
-                        color: isDark ? '#94a3b8' : '#475569',
+                        color: isDark ? '#8ec8f2' : '#475569',
                         font: { size: 11 },
                         padding: 12,
                         boxWidth: 12,
@@ -165,16 +165,16 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </div>
 
         {/* Categories Breakdown */}
-        <div className="rounded-2xl bg-white dark:bg-[#061220] p-5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs lg:col-span-2 flex flex-col justify-between transition-colors">
+        <div className="rounded-2xl bg-white dark:bg-[#091120] p-5 border border-sky-200/80 dark:border-[#132238] shadow-xs lg:col-span-2 flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-base font-semibold text-sky-900 dark:text-sky-50">Category Distribution</h3>
-                <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
+                <h3 className="text-base font-semibold text-slate-900 dark:text-sky-50">Category Distribution</h3>
+                <p className="text-xs text-slate-500 dark:text-[#42698f]">
                   Issues clustered by plugin domain & feature area
                 </p>
               </div>
-              <span className="rounded-md bg-cyan-50 dark:bg-cyan-950/80 px-2.5 py-1 text-xs font-semibold text-cyan-600 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800/40">
+              <span className="rounded-md bg-cyan-50 dark:bg-cyan-950/70 px-2.5 py-1 text-xs font-semibold text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40">
                 {sortedCategories.length} Domains
               </span>
             </div>
@@ -195,12 +195,12 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                   },
                   scales: {
                     x: {
-                      grid: { color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' },
-                      ticks: { color: '#64748b', font: { size: 10 } },
+                      grid: { color: isDark ? 'rgba(19, 34, 56, 0.8)' : 'rgba(225, 236, 246, 0.8)' },
+                      ticks: { color: isDark ? '#42698f' : '#64748b', font: { size: 10 } },
                     },
                     y: {
                       grid: { display: false },
-                      ticks: { color: isDark ? '#cbd5e1' : '#334155', font: { size: 11 } },
+                      ticks: { color: isDark ? '#8ec8f2' : '#334155', font: { size: 11 } },
                     },
                   },
                 }}
@@ -213,13 +213,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {/* Second Row: Critical Attention Queue + Top Support Reporters */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Critical & Accepted Attention Items */}
-        <div className="rounded-2xl bg-white dark:bg-[#061220] p-5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs lg:col-span-2 transition-colors">
+        <div className="rounded-2xl bg-white dark:bg-[#091120] p-5 border border-sky-200/80 dark:border-[#132238] shadow-xs lg:col-span-2 transition-colors">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Flame className="h-5 w-5 text-rose-500 animate-pulse" />
               <div>
-                <h3 className="text-base font-semibold text-sky-900 dark:text-sky-50">High Priority Action Queue</h3>
-                <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">
+                <h3 className="text-base font-semibold text-slate-900 dark:text-sky-50">High Priority Action Queue</h3>
+                <p className="text-xs text-slate-500 dark:text-[#42698f]">
                   Urgent customer-impacting bugs pending fix or verification
                 </p>
               </div>
@@ -231,7 +231,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
           <div className="space-y-2.5">
             {criticalHighlights.length === 0 ? (
-              <div className="p-8 text-center text-sm text-sky-400/70 dark:text-[#3a5a7a]">
+              <div className="p-8 text-center text-sm text-slate-400 dark:text-[#42698f]">
                 No high-priority issues currently open! 🎉
               </div>
             ) : (
@@ -239,23 +239,23 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 <div
                   key={issue.id}
                   onClick={() => onSelectIssue(issue)}
-                  className="flex items-center justify-between p-3.5 rounded-xl bg-sky-50 dark:bg-[#0f2040]/60 hover:bg-cyan-50/60 dark:hover:bg-[#0f2040] border border-sky-200/80 dark:border-slate-700/60 hover:border-cyan-300 dark:hover:border-cyan-500/40 cursor-pointer transition-all group shadow-2xs"
+                  className="flex items-center justify-between p-3.5 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] hover:bg-cyan-50/60 dark:hover:bg-[#142644] border border-sky-200/70 dark:border-[#1a3150] hover:border-cyan-300 dark:hover:border-cyan-500/40 cursor-pointer transition-all group shadow-2xs"
                 >
                   <div className="flex items-start gap-3 min-w-0 pr-4">
                     <span className="mt-1.5 flex h-2 w-2 rounded-full bg-rose-500 shrink-0"></span>
                     <div className="min-w-0">
-                      <h4 className="text-xs sm:text-sm font-semibold text-sky-900 dark:text-sky-50 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors truncate">
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-sky-50 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors truncate">
                         {issue.name}
                       </h4>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
-                        <span className="text-[11px] text-cyan-600 dark:text-cyan-400 font-medium">
+                        <span className="text-[11px] text-cyan-700 dark:text-cyan-400 font-medium">
                           {issue.category}
                         </span>
-                        <span className="text-slate-300 dark:text-[#3a5a7a]">•</span>
-                        <span className="text-[11px] text-sky-500/80 dark:text-[#4a6a8a]">{issue.createdTime}</span>
+                        <span className="text-slate-300 dark:text-[#1a3150]">•</span>
+                        <span className="text-[11px] text-slate-500 dark:text-[#42698f]">{issue.createdTime}</span>
                         {issue.userImpactCount > 0 && (
                           <>
-                            <span className="text-slate-300 dark:text-[#3a5a7a]">•</span>
+                            <span className="text-slate-300 dark:text-[#1a3150]">•</span>
                             <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
                               👥 {issue.userImpactCount} users impacted
                             </span>
@@ -275,7 +275,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     >
                       {issue.action}
                     </span>
-                    <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-sky-600 dark:group-hover:text-slate-200 transition-colors" />
+                    <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors" />
                   </div>
                 </div>
               ))
@@ -284,13 +284,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </div>
 
         {/* Support Reporters Leaderboard */}
-        <div className="rounded-2xl bg-white dark:bg-[#061220] p-5 border border-sky-200/80 dark:border-[#152a4a] shadow-xs transition-colors">
+        <div className="rounded-2xl bg-white dark:bg-[#091120] p-5 border border-sky-200/80 dark:border-[#132238] shadow-xs transition-colors">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <UserCheck className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
               <div>
-                <h3 className="text-base font-semibold text-sky-900 dark:text-sky-50">Top Reporters</h3>
-                <p className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">Slack agents by logged workflow items</p>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-sky-50">Top Reporters</h3>
+                <p className="text-xs text-slate-500 dark:text-[#42698f]">Slack agents by logged workflow items</p>
               </div>
             </div>
 
@@ -298,7 +298,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
               <button
                 onClick={openAgentModal}
                 title="Edit Agent Names & Roles"
-                className="flex items-center gap-1 rounded-lg bg-cyan-50 dark:bg-cyan-950/70 hover:bg-cyan-100 dark:hover:bg-cyan-900/70 text-cyan-600 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40 px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer"
+                className="flex items-center gap-1 rounded-lg bg-cyan-50 dark:bg-cyan-950/70 hover:bg-cyan-100 dark:hover:bg-cyan-900/70 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40 px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer"
               >
                 <Users className="h-3.5 w-3.5" />
                 <span>Manage Names</span>
@@ -319,26 +319,26 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     if (isEditor) openAgentModal();
                   }}
                   title={isEditor ? 'Click to edit agent display name' : undefined}
-                  className={`flex items-center justify-between p-2.5 rounded-xl bg-sky-50 dark:bg-[#0f2040]/60 border border-sky-200/80 dark:border-slate-700/60 transition-colors ${
-                    isEditor ? 'hover:bg-sky-100 dark:hover:bg-[#0f2040] cursor-pointer group' : ''
+                  className={`flex items-center justify-between p-2.5 rounded-xl bg-sky-50/60 dark:bg-[#0e1a2f] border border-sky-200/70 dark:border-[#1a3150] transition-colors ${
+                    isEditor ? 'hover:bg-cyan-50/60 dark:hover:bg-[#142644] cursor-pointer group' : ''
                   }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-100 dark:bg-cyan-950/90 text-xs font-bold text-cyan-700 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800/40 shrink-0">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-100/80 dark:bg-cyan-950/90 text-xs font-bold text-cyan-800 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/40 shrink-0">
                       #{idx + 1}
                     </div>
                     <div className="min-w-0">
-                      <span className="text-xs font-bold text-sky-800 dark:text-sky-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 block truncate">
+                      <span className="text-xs font-bold text-slate-800 dark:text-sky-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 block truncate">
                         {displayName}
                       </span>
-                      <p className="text-[10px] text-slate-500 font-mono truncate">
+                      <p className="text-[10px] text-slate-500 dark:text-[#42698f] font-mono truncate">
                         {role} {displayName !== reporter ? `• ${reporter}` : ''}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                    <span className="text-sm font-bold text-sky-900 dark:text-sky-50">{count}</span>
-                    <span className="text-xs text-sky-500/80 dark:text-[#4a6a8a]">issues</span>
+                    <span className="text-sm font-bold text-slate-900 dark:text-sky-50">{count}</span>
+                    <span className="text-xs text-slate-500 dark:text-[#42698f]">issues</span>
                   </div>
                 </div>
               );

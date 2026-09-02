@@ -4,23 +4,23 @@
 
 @layer base {
   :root {
-    --bg-primary: #f0f8ff;
+    --bg-primary: #f6f9fc;
     --bg-card: #ffffff;
-    --bg-card-hover: #e8f4fd;
-    --border-color: #bae6fd;
-    --text-primary: #0c1a2e;
-    --text-secondary: #334155;
-    --text-muted: #64748b;
+    --bg-card-hover: #f0f6fc;
+    --border-color: #e1ecf6;
+    --text-primary: #0a1626;
+    --text-secondary: #334e68;
+    --text-muted: #627d98;
   }
 
   .dark {
-    --bg-primary: #030b14;
-    --bg-card: #0a1628;
-    --bg-card-hover: #0f2040;
-    --border-color: #152a4a;
-    --text-primary: #e0f2fe;
-    --text-secondary: #7eb8d4;
-    --text-muted: #3a5a7a;
+    --bg-primary: #040812;
+    --bg-card: #091120;
+    --bg-card-hover: #0e1a2f;
+    --border-color: #132238;
+    --text-primary: #f0f9ff;
+    --text-secondary: #8ec8f2;
+    --text-muted: #42698f;
   }
 
   body {
@@ -43,33 +43,33 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #bae6fd;
+    background: #cbd5e1;
     border-radius: 9999px;
   }
 
   .dark ::-webkit-scrollbar-thumb {
-    background: #152a4a;
+    background: #172a45;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #7dd3fc;
+    background: #94a3b8;
   }
 
   .dark ::-webkit-scrollbar-thumb:hover {
-    background: #1e3a5a;
+    background: #23416b;
   }
 }
 
 .glass-panel {
-  background: rgba(240, 248, 255, 0.88);
+  background: rgba(255, 255, 255, 0.90);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(186, 230, 253, 0.8);
+  border: 1px solid rgba(225, 236, 246, 0.9);
 }
 
 .dark .glass-panel {
-  background: rgba(10, 22, 40, 0.85);
-  border: 1px solid rgba(21, 42, 74, 0.9);
+  background: rgba(9, 17, 32, 0.85);
+  border: 1px solid rgba(19, 34, 56, 0.9);
 }
 
 .glow-effect {
@@ -79,14 +79,14 @@
   content: '';
   position: absolute;
   inset: -1px;
-  background: linear-gradient(90deg, #06b6d4, #0ea5e9, #22d3ee);
+  background: linear-gradient(90deg, #06b6d4, #38bdf8, #0284c7);
   border-radius: inherit;
   z-index: -1;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 .glow-effect:hover::after {
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 @keyframes pulse-subtle {

@@ -304,14 +304,14 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-[#050d1f]/85 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-[#040812]/85 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#061220] border border-sky-200 dark:border-[#152a4a] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] transition-colors cursor-default"
+        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#091120] border border-sky-200 dark:border-[#132238] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] transition-colors cursor-default"
       >
         {/* Header */}
-        <div className="border-b border-sky-200 dark:border-[#152a4a] p-5 bg-sky-50/80 dark:bg-[#050d1f]/50 flex items-center justify-between">
+        <div className="border-b border-sky-200 dark:border-[#132238] p-5 bg-sky-50/80 dark:bg-[#040812]/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-600/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30">
               <Zap className="h-5 w-5" />
@@ -331,14 +331,14 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
 
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:text-sky-700 dark:hover:text-sky-50 hover:bg-sky-100 dark:hover:bg-[#0f2040] transition-colors cursor-pointer"
+            className="rounded-lg p-1.5 text-slate-400 hover:text-sky-700 dark:hover:text-sky-50 hover:bg-sky-100 dark:hover:bg-[#0e1a2f] transition-colors cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-1 border-b border-sky-200 dark:border-[#152a4a] bg-sky-50/50 dark:bg-[#050d1f]/40 px-5 pt-2">
+        <div className="flex items-center gap-1 border-b border-sky-200 dark:border-[#132238] bg-sky-50/50 dark:bg-[#040812]/40 px-5 pt-2">
           <button
             onClick={() => setActiveTab('live_sync')}
             className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border-b-2 transition-all cursor-pointer ${
@@ -452,7 +452,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                       setSheetUrl(e.target.value);
                       googleSheetSyncService.saveUrl(e.target.value);
                     }}
-                    className="flex-1 rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3.5 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none font-mono"
+                    className="flex-1 rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none font-mono"
                   />
 
                   <button
@@ -470,7 +470,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
               </div>
 
               {/* Auto Sync Toggle */}
-              <div className="p-3.5 rounded-xl bg-sky-50 dark:bg-[#050d1f]/70 border border-sky-200 dark:border-[#152a4a] flex items-center justify-between">
+              <div className="p-3.5 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] flex items-center justify-between">
                 <div>
                   <span className="text-xs font-semibold text-sky-800 dark:text-sky-100 block">
                     Auto-Sync on Application Launch
@@ -536,7 +536,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                       setWebhookUrl(e.target.value);
                       googleSheetSyncService.saveWebhookUrl(e.target.value);
                     }}
-                    className="flex-1 rounded-xl bg-sky-50 dark:bg-[#050d1f] px-3.5 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#152a4a] focus:border-purple-500 focus:outline-none font-mono"
+                    className="flex-1 rounded-xl bg-sky-50 dark:bg-[#040812] px-3.5 py-2 text-xs text-sky-900 dark:text-sky-50 placeholder-slate-400 dark:placeholder-[#3a5a7a] border border-sky-200 dark:border-[#132238] focus:border-purple-500 focus:outline-none font-mono"
                   />
                   <button
                     onClick={handleTestTwoWay}
@@ -569,7 +569,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                   </button>
                 </div>
 
-                <ol className="text-xs text-sky-600 dark:text-[#4a6a8a] space-y-2 list-decimal list-inside p-3.5 rounded-xl bg-sky-50 dark:bg-[#050d1f]/70 border border-sky-200 dark:border-[#152a4a] leading-relaxed">
+                <ol className="text-xs text-sky-600 dark:text-[#4a6a8a] space-y-2 list-decimal list-inside p-3.5 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] leading-relaxed">
                   <li>
                     Open your <strong>Google Sheet</strong> and click <strong>Extensions → Apps Script</strong>.
                   </li>
@@ -602,7 +602,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
 
               {/* File drop / select */}
               <div>
-                <label className="flex flex-col items-center justify-center border-2 border-dashed border-sky-200 dark:border-[#152a4a] hover:border-cyan-500/60 dark:hover:border-cyan-500/60 rounded-xl p-6 bg-sky-50/70 dark:bg-[#050d1f]/50 cursor-pointer transition-colors group">
+                <label className="flex flex-col items-center justify-center border-2 border-dashed border-sky-200 dark:border-[#132238] hover:border-cyan-500/60 dark:hover:border-cyan-500/60 rounded-xl p-6 bg-sky-50/70 dark:bg-[#040812]/50 cursor-pointer transition-colors group">
                   <Upload className="h-8 w-8 text-sky-400/70 dark:text-[#3a5a7a] group-hover:text-cyan-600 dark:group-hover:text-cyan-400 mb-2 transition-colors" />
                   <span className="text-xs font-semibold text-sky-700 dark:text-sky-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-300">
                     Click to select exported Slack CSV file
@@ -629,7 +629,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                   placeholder="Name,Details,Files,Action,Fixed Version,Created by,..."
                   value={csvText}
                   onChange={(e) => setCsvText(e.target.value)}
-                  className="w-full rounded-xl bg-sky-50 dark:bg-[#050d1f] p-2.5 font-mono text-[11px] text-sky-800 dark:text-sky-200 border border-sky-200 dark:border-[#152a4a] focus:border-cyan-500 focus:outline-none"
+                  className="w-full rounded-xl bg-sky-50 dark:bg-[#040812] p-2.5 font-mono text-[11px] text-sky-800 dark:text-sky-200 border border-sky-200 dark:border-[#132238] focus:border-cyan-500 focus:outline-none"
                 />
                 <div className="flex justify-end mt-2">
                   <button
@@ -649,7 +649,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
             <div className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* CSV Export */}
-                <div className="p-4 rounded-xl bg-sky-50 dark:bg-[#050d1f]/70 border border-sky-200 dark:border-[#152a4a] flex flex-col justify-between">
+                <div className="p-4 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <FileSpreadsheet className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
@@ -669,7 +669,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
                 </div>
 
                 {/* SQLite Export */}
-                <div className="p-4 rounded-xl bg-sky-50 dark:bg-[#050d1f]/70 border border-sky-200 dark:border-[#152a4a] flex flex-col justify-between">
+                <div className="p-4 rounded-xl bg-sky-50 dark:bg-[#040812]/70 border border-sky-200 dark:border-[#132238] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <Database className="h-4 w-4 text-purple-600 dark:text-purple-400" />
@@ -690,7 +690,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
               </div>
 
               {/* Reset Database */}
-              <div className="pt-4 border-t border-sky-200 dark:border-[#152a4a] flex items-center justify-between">
+              <div className="pt-4 border-t border-sky-200 dark:border-[#132238] flex items-center justify-between">
                 <div>
                   <span className="text-xs font-semibold text-sky-800 dark:text-sky-200 block">
                     Reset to Seed Dataset
@@ -702,7 +702,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
 
                 <button
                   onClick={handleReset}
-                  className="flex items-center gap-1.5 rounded-lg bg-sky-100 dark:bg-[#0f2040]/80 hover:bg-slate-200 dark:hover:bg-[#0f2040] text-sky-700 dark:text-sky-200 px-3 py-2 text-xs font-medium border border-sky-200 dark:border-slate-700 transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 rounded-lg bg-sky-100 dark:bg-[#0e1a2f]/80 hover:bg-slate-200 dark:hover:bg-[#0e1a2f] text-sky-700 dark:text-sky-200 px-3 py-2 text-xs font-medium border border-sky-200 dark:border-slate-700 transition-colors cursor-pointer"
                 >
                   <RefreshCw className="h-3.5 w-3.5 text-sky-500/80 dark:text-[#4a6a8a]" />
                   <span>Reset Data</span>
@@ -713,10 +713,10 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-sky-200 dark:border-[#152a4a] p-4 bg-sky-50/90 dark:bg-[#050d1f]/70 flex items-center justify-end">
+        <div className="border-t border-sky-200 dark:border-[#132238] p-4 bg-sky-50/90 dark:bg-[#040812]/70 flex items-center justify-end">
           <button
             onClick={onClose}
-            className="rounded-xl bg-slate-200 dark:bg-[#0f2040] hover:bg-slate-300 dark:hover:bg-slate-700 px-4 py-2 text-xs font-semibold text-sky-800 dark:text-sky-50 transition-colors cursor-pointer"
+            className="rounded-xl bg-slate-200 dark:bg-[#0e1a2f] hover:bg-slate-300 dark:hover:bg-slate-700 px-4 py-2 text-xs font-semibold text-sky-800 dark:text-sky-50 transition-colors cursor-pointer"
           >
             Done
           </button>
