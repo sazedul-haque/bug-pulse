@@ -12,7 +12,7 @@ import {
   parseDateToTimestamp,
 } from '../services/categorization';
 
-const STORAGE_KEY = 'bugpulse_sqlite_db_v3';
+const STORAGE_KEY = 'bugpulse_sqlite_db_v4';
 
 class DatabaseService {
   private db: Database | null = null;
