@@ -57,357 +57,134 @@ export function normalizeStatus(raw: string | undefined | null): IssueStatus {
   return 'New';
 }
 
-interface CategoryRule {
+// ---------------------------------------------------------------------------
+// Strict Title-First Deterministic Categorization Engine (Solution 2)
+// ---------------------------------------------------------------------------
+
+interface StrictModuleRule {
   category: IssueCategory;
-  // Strong unambiguous triggers (high confidence)
-  highConfidence: RegExp[];
-  // Standard domain keywords
-  keywords: RegExp[];
-  // Generic / weak context words that only count slightly in details
-  weakKeywords?: RegExp[];
+  // Level 1: Strict subject match in the Issue Title
+  titlePattern: RegExp;
+  // Level 2: Unambiguous signature match in Details (only evaluated if Title has no match)
+  detailsPattern: RegExp;
 }
 
-const CATEGORY_RULES: CategoryRule[] = [
-  {
-    category: 'Email Notifications',
-    highConfidence: [
-      /\bduplicate\s+emails?\b/i,
-      /\bemails?\s+notification/i,
-      /\benrollment\s+emails?\b/i,
-      /\bwelcome\s+emails?\b/i,
-      /\breset\s+password\s+emails?\b/i,
-      /\bemail\s+templates?\b/i,
-      /\bsmtp\b/i,
-      /\bwp_mail\b/i,
-      /\bphpmailer\b/i,
-      /\bmailgun\b/i,
-      /\bsendgrid\b/i,
-      /\bdeliverability\b/i,
-    ],
-    keywords: [
-      /\bemails?\b/i,
-      /\bmailers?\b/i,
-      /\bmailboxes?\b/i,
-      /\bunsubscribe\b/i,
-    ],
-    weakKeywords: [
-      /\bnotifications?\b/i,
-      /\bnotified\b/i,
-    ],
-  },
-  {
-    category: 'Security & Auth',
-    highConfidence: [
-      /\bsql\s+injection\b/i,
-      /\bsqli\b/i,
-      /\bidor\b/i,
-      /\bbola\b/i,
-      /\bxss\b/i,
-      /\bcsrf\b/i,
-      /\bvulnerabilit(y|ies)\b/i,
-      /\b2fa\b/i,
-      /\btwo[- ]factor\b/i,
-      /\botp\b/i,
-      /\bnonces?\b/i,
-      /\bprivilege\s+escalation\b/i,
-      /\bunauthenticated\b/i,
-      /\bactive\s+device\s+limit\b/i,
-      /\bbrute\s+force\b/i,
-      /\bsanitiz(e|ation)\b/i,
-    ],
-    keywords: [
-      /\bsecurit(y|ies)\b/i,
-      /\bauthoriz(e|ation)\b/i,
-      /\bauthenticat(e|ion)\b/i,
-      /\bpermissions?\b/i,
-      /\bprivileges?\b/i,
-    ],
-    weakKeywords: [
-      /\blogin\b/i,
-      /\baccess\s+control\b/i,
-    ],
-  },
+const STRICT_RULES: StrictModuleRule[] = [
+  // 1. Monetization, Subscriptions & Payments (including Course Bundles)
   {
     category: 'Monetization & Payments',
-    highConfidence: [
-      /\bstripe\b/i,
-      /\bwoocommerce\b/i,
-      /\bpaypal\b/i,
-      /\brazorpay\b/i,
-      /\bsepa\b/i,
-      /\bideal\b/i,
-      /\bauthorize\.net\b/i,
-      /\bmollie\b/i,
-      /\bpaystack\b/i,
-      /\bpayment\s+gateway/i,
-      /\brecurring\s+payment/i,
-      /\bsubscriptions?\b/i,
-      /\brebill\b/i,
-      /\bmonetiz(e|ation)\b/i,
-      /\bearnings?\b/i,
-      /\bpayouts?\b/i,
-      /\bcommissions?\b/i,
-      /\bcoupons?\b/i,
-    ],
-    keywords: [
-      /\bpayments?\b/i,
-      /\bcheckouts?\b/i,
-      /\bpricing\b/i,
-      /\bdiscounts?\b/i,
-      /\bwithdraw(als?)?\b/i,
-      /\brefunds?\b/i,
-      /\bcart\b/i,
-    ],
-    weakKeywords: [
-      /\borders?\b/i,
-      /\bprices?\b/i,
-      /\bpurchas(e|es|ed)\b/i,
-      /\binvoices?\b/i,
-    ],
+    titlePattern:
+      /\b(subscriptions?|stripe|woocommerce|paypal|razorpay|sepa|ideal|authorize\.net|mollie|paystack|payments?|checkouts?|course[- ]bundles?|bundles?|earnings?|payouts?|commissions?|coupons?|rebill|refunds?|monetiz(e|ation)|cart|pricing|billings?|renewals?)\b/i,
+    detailsPattern:
+      /\b(stripe|woocommerce|paypal|razorpay|authorize\.net|mollie|paystack|subscriptions?|payment\s+gateway|payouts?|course\s+bundles?|recurring\s+payments?|checkouts?\s+page|native\s+subscriptions?)\b/i,
   },
+
+  // 2. Email Notifications
+  {
+    category: 'Email Notifications',
+    titlePattern:
+      /\b(emails?|mailers?|smtp|wp_mail|phpmailer|mailgun|sendgrid|deliverability|notifications?|digest)\b/i,
+    detailsPattern:
+      /\b(duplicate\s+emails?|emails?\s+notifications?|smtp\b|wp_mail|phpmailer|mailgun|sendgrid|emails?\s+templates?|welcome\s+emails?|enrollment\s+emails?)\b/i,
+  },
+
+  // 3. Security, Authentication & Permissions
+  {
+    category: 'Security & Auth',
+    titlePattern:
+      /\b(vulnerabilit(y|ies)|sql\s+injection|sqli|idor|bola|xss|csrf|2fa|two[- ]factor|otp|nonces?|privilege\s+escalation|unauthenticated|active\s+device|brute\s+force|sanitiz(e|ation)|securit(y|ies)|authoriz(e|ation)|authenticat(e|ion))\b/i,
+    detailsPattern:
+      /\b(sql\s+injection|sqli\b|idor\b|bola\b|xss\b|csrf\b|vulnerabilit(y|ies)|2fa\b|two[- ]factor|nonces?\b|privilege\s+escalation|unauthenticated)\b/i,
+  },
+
+  // 4. Quizzes & Grading
   {
     category: 'Quizzes & Grading',
-    highConfidence: [
-      /\bgradebooks?\b/i,
-      /\bpassing\s+grade\b/i,
-      /\btrue\s*\/\s*false\b/i,
-      /\blatex\b/i,
-      /\bfill\s+in\s+the\s+blank\b/i,
-      /\bshort\s+answer\b/i,
-      /\bopen\s+ended\b/i,
-      /\bshuffle\s+questions?\b/i,
-      /\bquiz\s+attempts?\b/i,
-      /\bquiz\s+results?\b/i,
-    ],
-    keywords: [
-      /\bquiz(zes)?\b/i,
-      /\bquestions?\b/i,
-      /\bgrades?\b/i,
-      /\bgrading\b/i,
-      /\bmarks?\b/i,
-      /\bassessments?\b/i,
-    ],
-    weakKeywords: [
-      /\bscores?\b/i,
-      /\bpoints?\b/i,
-    ],
+    titlePattern:
+      /\b(quiz(zes)?|questions?|gradebooks?|grad(ing|es?)|marks?|assessments?|latex|passing\s+grade|true\s*\/\s*false|short\s+answer|fill\s+in\s+the\s+blank)\b/i,
+    detailsPattern:
+      /\b(gradebooks?|latex\s+formula|passing\s+grade|quiz\s+attempts?|true\s*\/\s*false|single\s+choice\s+question|multiple\s+choice\s+question)\b/i,
   },
+
+  // 5. Video & Media Player
   {
     category: 'Video & Media Player',
-    highConfidence: [
-      /\bbunny\.?net\b/i,
-      /\byoutube\b/i,
-      /\bvimeo\b/i,
-      /\bstreamable\b/i,
-      /\bhls\b/i,
-      /\bpresto\s+player\b/i,
-      /\bvideo\s+players?\b/i,
-      /\bplayback\s+speed\b/i,
-      /\bsubtitles?\b/i,
-      /\bvtt\b/i,
-      /\bcaptions?\b/i,
-      /\bfullscreen\s+video\b/i,
-      /\bvideo\s+sources?\b/i,
-    ],
-    keywords: [
-      /\bvideos?\b/i,
-      /\bplayers?\b/i,
-      /\bstreams?\b/i,
-      /\bstreaming\b/i,
-      /\bmp4\b/i,
-      /\bplayback\b/i,
-      /\bwebcam\b/i,
-    ],
-    weakKeywords: [
-      /\bmedia\b/i,
-      /\bembed\b/i,
-    ],
+    titlePattern:
+      /\b(videos?|players?|bunny\.?net|youtube|vimeo|streamable|hls|presto|playback|subtitles?|vtt|captions?|mp4|fullscreen\s+video)\b/i,
+    detailsPattern:
+      /\b(bunny\.?net|youtube\.com|vimeo\.com|streamable\.com|hls\s+stream|video\s+players?|playback\s+speed|presto\s+player)\b/i,
   },
+
+  // 6. Translations & i18n
   {
     category: 'Translations & i18n',
-    highConfidence: [
-      /\bwpml\b/i,
-      /\bloco(\s+translate)?\b/i,
-      /\bpot\s+files?\b/i,
-      /\bpoedit\b/i,
-      /\bpolylang\b/i,
-      /\btranslatepress\b/i,
-      /\bmultilingual\b/i,
-      /\bi18n\b/i,
-      /\bl10n\b/i,
-      /\bslug\s+generation\b/i,
-      /\bhangul\b/i,
-      /\bkanji\b/i,
-      /\bkatakana\b/i,
-      /\bhiragana\b/i,
-    ],
-    keywords: [
-      /\btranslations?\b/i,
-      /\blanguages?\b/i,
-      /\brtl\b/i,
-      /\bkorean\b/i,
-      /\bjapanese\b/i,
-      /\bhebrew\b/i,
-      /\bbangla\b/i,
-      /\barabic\b/i,
-      /\bunicode\b/i,
-      /\blocales?\b/i,
-      /\btranslating\b/i,
-    ],
-    weakKeywords: [
-      /\bstrings?\b/i,
-    ],
+    titlePattern:
+      /\b(translations?|wpml|loco|pot\s+files?|poedit|polylang|translatepress|languages?|rtl|korean|japanese|hebrew|bangla|arabic|unicode|slug\s+issue|slug\s+generation|multilingual|i18n|l10n|locales?)\b/i,
+    detailsPattern:
+      /\b(wpml\b|loco\s+translate|pot\s+files?|poedit|polylang|translatepress|slug\s+generation|rtl\s+direction|multilingual)\b/i,
   },
+
+  // 7. Certificates & Badges
   {
     category: 'Certificates & Badges',
-    highConfidence: [
-      /\bcert_hash\b/i,
-      /\bcertificate\s+builders?\b/i,
-      /\bverify\s+certificates?\b/i,
-      /\bcert\s+templates?\b/i,
-      /\bpdf\s+certificates?\b/i,
-      /\bdownload\s+certificates?\b/i,
-      /\bgamipress\s+badges?\b/i,
-      /\bbadges?\b/i,
-    ],
-    keywords: [
-      /\bcertificates?\b/i,
-      /\bcerts?\b/i,
-    ],
-    weakKeywords: [
-      /\btemplates?\b/i,
-    ],
+    titlePattern:
+      /\b(certificates?|certs?|cert_hash|badges?|cert\s+templates?|pdf\s+certificates?)\b/i,
+    detailsPattern:
+      /\b(cert_hash|certificate\s+builders?|verify\s+certificates?|pdf\s+certificates?|gamipress\s+badges?)\b/i,
   },
-  {
-    category: 'Course Progression & Drip',
-    highConfidence: [
-      /\bcontent\s+drips?\b/i,
-      /\bdrip\s+contents?\b/i,
-      /\bcourse\s+progression\b/i,
-      /\bprerequisites?\b/i,
-      /\bcourse\s+bundles?\b/i,
-      /\blesson\s+drips?\b/i,
-      /\benrollment\s+expirations?\b/i,
-      /\bcourse\s+builders?\b/i,
-      /\bcurriculum\s+builders?\b/i,
-    ],
-    keywords: [
-      /\bdrips?\b/i,
-      /\benroll(ments?|ed|ing)?\b/i,
-      /\bprogression\b/i,
-      /\blessons?\b/i,
-      /\bcurriculum\b/i,
-      /\bassignments?\b/i,
-      /\bannouncements?\b/i,
-    ],
-    weakKeywords: [
-      /\bcourses?\b/i,
-      /\bcompleting\b/i,
-    ],
-  },
+
+  // 8. Integrations & Addons
   {
     category: 'Integrations & Addons',
-    highConfidence: [
-      /\belementor\b/i,
-      /\bdivi\b/i,
-      /\bgutenberg\b/i,
-      /\bgoogle\s+meet\b/i,
-      /\bgoogle\s+classroom\b/i,
-      /\bzoom\b/i,
-      /\bh5p\b/i,
-      /\blearndash\b/i,
-      /\blearnpress\b/i,
-      /\bbuddypress\b/i,
-      /\bbuddyboss\b/i,
-      /\bpaid\s+memberships\s+pro\b/i,
-      /\bpmpro\b/i,
-      /\brest\s+apis?\b/i,
-      /\bwebhooks?\b/i,
-      /\bzapier\b/i,
-    ],
-    keywords: [
-      /\bintegrations?\b/i,
-      /\baddons?\b/i,
-      /\bmigrations?\b/i,
-      /\bplugin\s+compatibility\b/i,
-    ],
-    weakKeywords: [
-      /\bapis?\b/i,
-      /\bextensions?\b/i,
-    ],
+    titlePattern:
+      /\b(elementor|divi|gutenberg|google\s+meet|google\s+classroom|zoom|h5p|learndash|learnpress|buddypress|buddyboss|paid\s+memberships\s+pro|pmpro|rest\s+apis?|webhooks?|zapier|integrations?|addons?)\b/i,
+    detailsPattern:
+      /\b(elementor\b|divi\b|google\s+meet|google\s+classroom|zoom\s+meeting|h5p\b|learndash|pmpro\b|rest\s+apis?\s+endpoint)\b/i,
   },
+
+  // 9. Course Progression & Drip
+  {
+    category: 'Course Progression & Drip',
+    titlePattern:
+      /\b(content\s+drips?|drips?|course\s+progression|progression|prerequisites?|curriculum|assignments?|announcements?|course\s+builder)\b/i,
+    detailsPattern:
+      /\b(content\s+drips?|drip\s+content|course\s+progression|prerequisites?\s+course|curriculum\s+builders?)\b/i,
+  },
+
+  // 10. Dashboard & UI/UX
   {
     category: 'Dashboard & UI/UX',
-    highConfidence: [
-      /\bdark\s+modes?\b/i,
-      /\bfrontend\s+dashboards?\b/i,
-      /\bstudent\s+dashboards?\b/i,
-      /\binstructor\s+dashboards?\b/i,
-      /\bresponsive\s+layouts?\b/i,
-      /\bmobile\s+menus?\b/i,
-      /\bdrawers?\b/i,
-      /\bmodals?\b/i,
-    ],
-    keywords: [
-      /\bdashboards?\b/i,
-      /\bui\b/i,
-      /\bux\b/i,
-      /\bmobile\b/i,
-      /\bresponsives?\b/i,
-      /\bsidebars?\b/i,
-      /\bnavbars?\b/i,
-      /\bdropdowns?\b/i,
-      /\bbuttons?\b/i,
-      /\bstyling\b/i,
-      /\bthemes?\b/i,
-      /\blayouts?\b/i,
-      /\bcss\b/i,
-      /\bfrontends?\b/i,
-    ],
-    weakKeywords: [
-      /\btabs?\b/i,
-      /\bviews?\b/i,
-    ],
+    titlePattern:
+      /\b(dashboards?|dark\s+modes?|frontends?|responsives?|sidebars?|navbars?|drawers?|modals?|dropdowns?|\bui\b|\bux\b)\b/i,
+    detailsPattern:
+      /\b(dark\s+mode|frontend\s+dashboard|student\s+dashboard|instructor\s+dashboard|responsive\s+layout)\b/i,
   },
 ];
 
 export function detectCategory(title: string, details: string): IssueCategory {
-  const safeTitle = title || '';
-  const safeDetails = details || '';
+  const safeTitle = (title || '').trim();
+  const safeDetails = (details || '').trim();
 
-  let bestCategory: IssueCategory = 'General & Other';
-  let maxScore = 0;
-
-  for (const rule of CATEGORY_RULES) {
-    let score = 0;
-
-    // 1. High-confidence regex matches
-    for (const regex of rule.highConfidence) {
-      if (regex.test(safeTitle)) score += 15;
-      if (regex.test(safeDetails)) score += 5;
-    }
-
-    // 2. Standard domain keyword matches
-    for (const regex of rule.keywords) {
-      if (regex.test(safeTitle)) score += 10;
-      if (regex.test(safeDetails)) score += 2;
-    }
-
-    // 3. Weak / generic keyword matches
-    if (rule.weakKeywords) {
-      for (const regex of rule.weakKeywords) {
-        if (regex.test(safeTitle)) score += 4;
-        if (regex.test(safeDetails)) score += 0.5;
+  // LEVEL 1: Check Issue Title first (Primary Subject)
+  if (safeTitle) {
+    for (const rule of STRICT_RULES) {
+      if (rule.titlePattern.test(safeTitle)) {
+        return rule.category;
       }
-    }
-
-    if (score > maxScore) {
-      maxScore = score;
-      bestCategory = rule.category;
     }
   }
 
-  return maxScore > 0 ? bestCategory : 'General & Other';
+  // LEVEL 2: Check Details using high-confidence signature patterns only (no generic noise words)
+  if (safeDetails) {
+    for (const rule of STRICT_RULES) {
+      if (rule.detailsPattern.test(safeDetails)) {
+        return rule.category;
+      }
+    }
+  }
+
+  // LEVEL 3: Deterministic fallback
+  return 'General & Other';
 }
 
 export function extractMediaLinks(text: string): ExtractedLink[] {
